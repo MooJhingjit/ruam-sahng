@@ -1,5 +1,8 @@
 <template>
-    <div class="page ">
+    <div class="container centered">
+      <div class="columns">
+        <div class="column col-12 text-center text-gray">Moo Jhingjit 2018</div>
+      </div>
     </div>
 </template>
 
@@ -12,7 +15,7 @@ export default {
     // } 
   },
   components: {},
-  name: 'DashboardPage',
+  name: '',
   data () {
     return {
       property: 'Blank'
@@ -63,5 +66,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '~@/Assets/my-style.scss';
 </style>
