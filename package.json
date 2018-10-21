@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
+    "i": "^0.3.6",
+    "node-snackbar": "^0.1.11",
+    "npm": "^6.4.1",
     "register-service-worker": "^1.0.0",
     "spectre.css": "^0.5.3",
     "vue": "^2.5.17",

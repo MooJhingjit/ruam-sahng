@@ -1,18 +1,33 @@
 @import '~font-awesome/css/font-awesome.min.css';
+html{
+  font-size: 14px;
+}
 $size-xs: 480px;
 $size-sm: 600px;
 $size-md: 840px;
 $size-lg: 960px;
 $size-xl: 1280px;
 $size-2x: 1440px;
-
-$primary-color: #3b63e2;
-$dark-color: #41474c;
-$success-color: #55b962;
-$secondary-color: #cbd8ff;
-$white-color: #fff;
-$secondary-white-color: #ababab;
-
+// $primary-color: #6a7284;
+.flex-item-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 a:focus{
   box-shadow: none;
+}
+.table{
+  td, th {
+    border: .05rem solid #caced7 !important;
+    border-bottom: .05rem solid #caced7 !important;
+  }
+}
+.form-checkbox input:checked+.form-icon::before{
+  border: .1rem solid #fff !important;
+  border-left-width: 0 !important;
+  border-top-width: 0 !important;
+}
+.column{
+  padding: .4rem!important;
 }

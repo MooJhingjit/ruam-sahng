@@ -1,14 +1,18 @@
 <template>
   <div id="app">
-    <div class="header-wrapper bg-dark">
-      <header-wrapper></header-wrapper>
+    <div class="pages" v-if="normalPages">
+      <div class="header-wrapper">
+        <header-wrapper></header-wrapper>
+      </div>
+      <div class="body-wrapper">
+        <router-view/>
+      </div>
+      <div class="footer-wrapper">
+        <footer-wrapper></footer-wrapper>
+      </div>
     </div>
-    <!-- <div class="divider"></div> -->
-    <div class="body-wrapper">
+    <div v-else>
       <router-view/>
-    </div>
-    <div class="footer-wrapper fixed">
-      <footer-wrapper></footer-wrapper>
     </div>
   </div>
 </template>
@@ -23,21 +27,27 @@ export default {
   },
   name: 'App',
   data () {
-    return {}
+    return {
+      normalPages: true
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.normalPages = !(to.name === 'Login' || to.name === 'Schedule')
+    }
   }
 }
 </script>
 
-
 <style lang="scss">
 @import '~@/Assets/my-style.scss';
-// @import 'font-awesome/scss/font-awesome.scss';
 @import 'node_modules/spectre.css/src/spectre';
+@import 'node_modules/spectre.css/src/spectre-exp';
 #app{
-  font-size: 14px !important;
-  background: #f9f9f9;
+  font-size: .9em;
   height: 100vh;
   .header-wrapper{
+    font-size: 1.2em;
     position: relative;
     top: 0;
     width: 100%;
@@ -46,13 +56,7 @@ export default {
   .body-wrapper{
     position: relative;
     z-index: 2;
-    background: #f9f9f9;
-  }
-  .footer-wrapper{
-    // position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 3;
+    padding: 15px;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="container centered">
       <div class="columns">
-        <div class="column col-12 text-center text-gray">Moo Jhingjit 2018</div>
+        <div class="column col-12 text-center text-gray">บจก.ร่วมสร้าง @2018</div>
       </div>
     </div>
 </template>
@@ -12,7 +12,7 @@ export default {
     // mode: {
     //   type: String,
     //   required: true
-    // } 
+    // }
   },
   components: {},
   name: '',

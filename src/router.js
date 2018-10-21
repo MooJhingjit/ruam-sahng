@@ -7,13 +7,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: () => import('@Views/Home')
+      name: 'Status',
+      component: () => import('@Views/Status')
     },
     {
-      path: '/theme',
-      name: 'Theme',
-      component: () => import('@Views/theme.vue')
+      path: '/creation',
+      name: 'Creation',
+      component: () => import('@Views/Creation')
+    },
+    {
+      path: '/schedule',
+      name: 'Schedule',
+      component: () => import('@Views/Schedule')
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('@Views/Login')
     }
   ]
 })
