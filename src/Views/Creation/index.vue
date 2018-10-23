@@ -7,25 +7,53 @@
             <div class="column col-6 col-sm-12">
               <div class="form-group">
                 <label class="form-label" for="input-example-1">เลขที่</label>
-                <input class="form-input" type="text" id="input-example-1" placeholder="เลขที่">
+                <my-input
+                  :config="{
+                    type: 'text',
+                    key: 'jobId',
+                    placeholder: 'เลขที่',
+                    rules: 'required'
+                  }"
+                ></my-input>
               </div>
             </div>
             <div class="column col-6 col-sm-12">
               <div class="form-group">
                 <label class="form-label" for="input-example-1">ชื่อลูกค้า</label>
-                <input class="form-input" type="text" id="input-example-1" placeholder="ชื่อลูกค้า">
+                <my-input
+                  :config="{
+                    type: 'text',
+                    key: 'cusName',
+                    placeholder: 'ชื่อลูกค้า',
+                    rules: 'required'
+                  }"
+                ></my-input>
               </div>
             </div>
             <div class="column col-6 col-sm-12">
               <div class="form-group">
                 <label class="form-label" for="input-example-1">วันผลิต</label>
-                <input class="form-input" type="text" id="input-example-1" placeholder="วันผลิต">
+                <my-input
+                  :config="{
+                    type: 'text',
+                    key: 'dateStart',
+                    placeholder: 'วันผลิต',
+                    rules: 'required'
+                  }"
+                ></my-input>
               </div>
             </div>
             <div class="column col-6 col-sm-12">
               <div class="form-group">
                 <label class="form-label" for="input-example-1">กำหนดเสร็จ</label>
-                <input class="form-input" type="text" id="input-example-1" placeholder="กำหนดเสร็จ">
+                <my-input
+                  :config="{
+                    type: 'text',
+                    key: 'dateEnd',
+                    placeholder: 'กำหนดเสร็จ',
+                    rules: 'required'
+                  }"
+                ></my-input>
               </div>
             </div>
             <div class="column col-12 pt-3">
@@ -41,16 +69,48 @@
                 <tbody>
                   <tr class="" :key="index" v-for="(item, index) in local.inputs">
                     <td class="text-center">
-                      <input class="form-input" type="text" id="input-example-1" placeholder="ชื่อรายการผลิต">
+                      <my-input
+                        :config="{
+                          type: 'text',
+                          key: `jobName${index}`,
+                          placeholder: 'ชื่อรายการผลิต',
+                          rules: 'required'
+                        }"
+                      ></my-input>
+                      <!-- <input class="form-input" type="text" id="input-example-1" placeholder="ชื่อรายการผลิต"> -->
                     </td>
                     <td class="text-center">
-                      <input class="form-input" type="text" id="input-example-1" placeholder="จำนวน">
+                      <my-input
+                        :config="{
+                          type: 'text',
+                          key: `amount${index}`,
+                          placeholder: 'จำนวน',
+                          rules: 'required'
+                        }"
+                      ></my-input>
+                      <!-- <input class="form-input" type="text" id="input-example-1" placeholder="จำนวน"> -->
                     </td>
                     <td class="text-center">
-                      <input class="form-input" type="text" id="input-example-1" placeholder="หนา">
+                      <my-input
+                        :config="{
+                          type: 'text',
+                          key: `thick${index}`,
+                          placeholder: 'หนา',
+                          rules: 'required'
+                        }"
+                      ></my-input>
+                      <!-- <input class="form-input" type="text" id="input-example-1" placeholder="หนา"> -->
                     </td>
                     <td class="text-center">
-                      <input class="form-input" type="text" id="input-example-1" placeholder="ระบุหมายเหตุ">
+                      <my-input
+                        :config="{
+                          type: 'text',
+                          key: `note${index}`,
+                          placeholder: 'ระบุหมายเหตุ',
+                          rules: ''
+                        }"
+                      ></my-input>
+                      <!-- <input class="form-input" type="text" id="input-example-1" placeholder="ระบุหมายเหตุ"> -->
                     </td>
                   </tr>
                 </tbody>
@@ -180,10 +240,7 @@
         <div class="card-footer">
           <div class="columns">
             <div class="column col-12 center text-center">
-              <button class="btn btn-success">
-                <i class="fa fa-check-circle" aria-hidden="true"></i>
-                บันทึก
-              </button>
+              <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึก'}" @submit="(tf) => submitHandle('save', tf)"></my-button>
             </div>
           </div>
         </div>
@@ -196,6 +253,8 @@
 <script>
 import PageTitle from '@Components/PageTitle'
 import MyModal from '@Components/Modal'
+import MyInput from '@Components/Form/myInput'
+import MyButton from '@Components/Form/myButton'
 export default {
   props: {
     // mode: {
@@ -205,7 +264,9 @@ export default {
   },
   components: {
     PageTitle,
-    MyModal
+    MyModal,
+    MyInput,
+    MyButton
   },
   name: 'CreationPage',
   data () {
@@ -232,6 +293,11 @@ export default {
         this.local.inputs.pop()
       } else {
         this.local.inputs.push({})
+      }
+    },
+    submitHandle (btnTarget, tf) {
+      if (tf) {
+        this.$notify('TEST', 'success')
       }
     }
   }

@@ -14,9 +14,16 @@
         </template>
         <div class="has-icon-left" slot="right-slot">
           <div class="input-group">
-          <input type="text" class="form-input" placeholder="ค้นหางาน">
+          <my-input
+            :config="{
+              type: 'text',
+              key: 'keyword',
+              placeholder: 'ค้นหางาน',
+              rules: null
+            }"
+          ></my-input>
           <i class="form-icon fa fa-search"></i>
-          <button class="btn btn-primary input-group-btn" @click="searchItem()">ค้นหา</button>
+          <my-button :config="{icon: null, btnClass: 'btn btn-primary input-group-btn', doConfirm: false, text: 'ค้นหา'}" @submit="searchItem()"></my-button>
           </div>
         </div>
       </page-title>
@@ -38,6 +45,8 @@ import PageTitle from '@Components/PageTitle'
 import MyModal from '@Components/Modal'
 import SearchComponent from './search'
 import ItemSelectedComponent from './item'
+import MyButton from '@Components/Form/myButton'
+import MyInput from '@Components/Form/myInput'
 export default {
   props: {
     // mode: {
@@ -47,7 +56,9 @@ export default {
   },
   components: {
     PageTitle,
-    MyModal
+    MyModal,
+    MyButton,
+    MyInput
   },
   name: 'StatusPage',
   data () {

@@ -91,36 +91,21 @@
     <div class="card-footer">
       <div class="columns" v-if="!isAdmin">
         <div class="column col-12 center text-center">
-          <button class="btn btn-success">
-            <i class="fa fa-check-circle" aria-hidden="true"></i>
-            บันทึกการเปลี่ยนแปลง
-          </button>
+          <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึกการเปลี่ยนแปลง'}" @submit="(tf) => submitHandle('update', tf)"></my-button>
         </div>
       </div>
       <div class="columns" v-else>
         <div class="column text-center">
-          <button class="btn btn-error">
-            <i class="fa fa-minus-circle" aria-hidden="true"></i>
-            ยกเลิก
-          </button>
+          <my-button :config="{icon: 'fa fa-minus-circle', btnClass: 'btn btn-error', doConfirm: true, text: 'ยกเลิก'}" @submit="(tf) => submitHandle('cancel', tf)"></my-button>
         </div>
         <div class="column text-center">
-          <button class="btn btn-success" @click="NOTIFY('success')">
-            <i class="fa fa-check-circle"></i>
-            เสร็จสิ้น
-          </button>
+          <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'เสร็จสิ้น'}" @submit="(tf) => submitHandle('done', tf)"></my-button>
         </div>
         <div class="column text-center">
-          <button class="btn btn-secondary">
-            <i class="fa fa-print" aria-hidden="true"></i>
-            พิมพ์งาน
-          </button>
+          <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: true, text: 'พิมพ์งาน'}" @submit="(tf) => submitHandle('print', tf)"></my-button>
         </div>
         <div class="column text-center">
-          <button class="btn btn-secondary">
-            <i class="fa fa-print" aria-hidden="true"></i>
-            รายงาน
-          </button>
+          <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: true, text: 'รายงาน'}" @submit="(tf) => submitHandle('report', tf)"></my-button>
         </div>
       </div>
     </div>
@@ -130,6 +115,8 @@
 
 <script>
 import MyModal from '@Components/Modal'
+import MyInput from '@Components/Form/myInput'
+import MyButton from '@Components/Form/myButton'
 export default {
   props: {
     // mode: {
@@ -138,7 +125,9 @@ export default {
     // }
   },
   components: {
-    MyModal
+    MyModal,
+    MyInput,
+    MyButton
   },
   name: 'StatusPage',
   data () {
@@ -198,6 +187,11 @@ export default {
     },
     changeViewType (viewType) {
       this.local.viewType = viewType
+    },
+    submitHandle (btnTarget, tf) {
+      if (tf) {
+        this.$notify('TEST', 'success')
+      }
     }
   }
 }

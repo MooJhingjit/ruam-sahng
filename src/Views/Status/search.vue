@@ -19,35 +19,45 @@
                 <td class="">Summit network</td>
                 <td class="">20/09/2018</td>
                 <td class=""><span class="label">กำลังดำเนินงาน</span></td>
-                <td class=""><button class="btn btn-primary" @click="goToDetail()">รายละเอียด <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button></td>
+                <td class="">
+                  <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail()"></my-button>
+                </td>
               </tr>
               <tr>
                 <td class="">JOB C61-08-358</td>
                 <td class="">Summit network02</td>
                 <td class="">20/09/2018</td>
                 <td class=""><span class="label">กำลังดำเนินงาน</span></td>
-                <td class=""><button class="btn btn-primary" @click="goToDetail()">รายละเอียด <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button></td>
+                <td class="">
+                  <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail()"></my-button>
+                </td>
               </tr>
               <tr>
                 <td class="">JOB C61-08-566</td>
                 <td class="">Summit network03</td>
                 <td class="">20/09/2018</td>
                 <td class=""><span class="label">กำลังดำเนินงาน</span></td>
-                <td class=""><button class="btn btn-primary" @click="goToDetail()">รายละเอียด <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button></td>
+                <td class="">
+                  <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail()"></my-button>
+                </td>
               </tr>
               <tr>
                 <td class="">JOB C61-08-178</td>
                 <td class="">Summit network04</td>
                 <td class="">20/09/2018</td>
                 <td class=""><span class="label">กำลังดำเนินงาน</span></td>
-                <td class=""><button class="btn btn-primary" @click="goToDetail()">รายละเอียด <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button></td>
+                <td class="">
+                  <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail()"></my-button>
+                </td>
               </tr>
               <tr>
                 <td class="">JOB C61-08-179</td>
                 <td class="">Summit network05</td>
                 <td class="">20/09/2018</td>
                 <td class=""><span class="label">กำลังดำเนินงาน</span></td>
-                <td class=""><button class="btn btn-primary" @click="goToDetail()">รายละเอียด <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button></td>
+                <td class="">
+                  <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail()"></my-button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -67,6 +77,7 @@
 </template>
 
 <script>
+import MyButton from '@Components/Form/myButton'
 export default {
   props: {
     obj: {
@@ -75,6 +86,7 @@ export default {
     }
   },
   components: {
+    MyButton
   },
   name: 'StatusPage',
   data () {

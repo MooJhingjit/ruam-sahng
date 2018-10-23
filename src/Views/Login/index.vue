@@ -11,15 +11,30 @@
             <div class="card-body">
               <div class="form-group">
                 <label class="form-label" for="usernameInput">ชื่อผู้ใช้</label>
-                <input class="form-input" id="usernameInput" type="text" placeholder="ชื่อผู้ใช้">
+                <my-input
+                  :config="{
+                    type: 'text',
+                    key: 'username',
+                    placeholder: 'ชื่อผู้ใช้',
+                    rules: 'required'
+                  }"
+                ></my-input>
               </div>
               <div class="form-group">
                 <label class="form-label" for="passwordInput">รหัสผ่าน</label>
-                <input class="form-input" id="passwordInput" type="password" placeholder="รหัสผ่าน">
+                <my-input
+                  :config="{
+                    type: 'password',
+                    key: 'password',
+                    placeholder: 'รหัสผ่าน',
+                    rules: 'required'
+                  }"
+                ></my-input>
               </div>
             </div>
             <div class="card-footer text-center">
-              <a class="btn btn-dark" href="#" @click="login()">เข้าใช้งาน</a>
+              <!-- <a class="btn btn-dark" href="#" @click="login()">เข้าใช้งาน</a> -->
+              <my-button :config="{icon: null, btnClass: 'btn btn-dark', doConfirm: false, text: 'เข้าใช้งาน'}" @submit="(tf) => submitHandle('login', tf)"></my-button>
             </div>
           </div>
         </div>
@@ -29,6 +44,8 @@
 </template>
 
 <script>
+import MyInput from '@Components/Form/myInput'
+import MyButton from '@Components/Form/myButton'
 export default {
   props: {
     // mode: {
@@ -36,7 +53,10 @@ export default {
     //   required: true
     // }
   },
-  components: {},
+  components: {
+    MyInput,
+    MyButton
+  },
   name: 'LoginPage',
   data () {
     return {
@@ -55,8 +75,9 @@ export default {
   beforeDestroy () {},
   destroyed () {},
   methods: {
-    login () {
+    submitHandle (btnTarget, tf) {
       this.GOTOPAGE('Status')
+      // Login
     }
   }
 }
