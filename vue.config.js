@@ -12,7 +12,9 @@ module.exports = {
         '@Views': resolve ('src/Views'),
         '@Layouts': resolve('src/Layouts'),
         '@Components': resolve ('src/Components'),
-        '@Libraries': resolve ('src/Libraries')
+        '@Libraries': resolve ('src/Libraries'),
+        '@Config': resolve ('src/Config'),
+        '@Services': resolve ('src/Services')
       }
     }
   }

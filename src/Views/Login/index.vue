@@ -1,7 +1,7 @@
 <template>
   <section class="login-wrapper container">
     <div class="columns bg-gray">
-      <div class="column col-4 col-mx-auto">
+      <div class="column col-md-12 col-4 col-mx-auto">
         <div class="bg-gray docs-block">
           <div class="card">
             <div class="card-header">

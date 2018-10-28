@@ -31,6 +31,10 @@ export default {
     config: {
       type: Object,
       required: true
+    },
+    value: {
+      type: String,
+      required: false
     }
   },
   components: {},
@@ -42,7 +46,9 @@ export default {
   },
   computed: {
   },
-  created () {},
+  created () {
+    this.setData()
+  },
   beforeMount () {},
   mounted () {},
   beforeUpdate () {},
@@ -50,13 +56,23 @@ export default {
   beforeDestroy () {},
   destroyed () {},
   methods: {
+    setData () {
+      this.$validator = this.config.validator
+      this.myValue = this.value
+    },
     getInputClass () {
       return [
         'form-input',
         { 'is-error': this.errors.has(this.config.key) }
       ]
     }
+  },
+  watch: {
+    myValue () {
+      this.$emit('input', this.myValue)
+    }
   }
+   
 }
 </script>
 

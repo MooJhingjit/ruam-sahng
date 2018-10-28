@@ -22,7 +22,7 @@
                     <figure class="avatar" data-initial="P"></figure>
                   </div> -->
                   <div class="tile-content">
-                    <span class="tile-title text-bold">Pokkrong</span>
+                    <span class="tile-title text-bold c-hand" @click="GOTOPAGE('UserEdit', {key: 1234})">Pokkrong</span>
                     <i class="fa fa-power-off text-error c-hand" aria-hidden="true" @click="logout()"></i>
                     <!-- <button class="btn btn-action btn-sm"></button> -->
                     <!-- <p class="tile-subtitle">Earth's Mightiest Heroes joined forces to take on threats that were too big for any one hero to tackle...</p> -->

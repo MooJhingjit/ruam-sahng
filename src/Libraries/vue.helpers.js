@@ -38,27 +38,10 @@ export default {
     NOTIFY (type) {
       switch (type) {
         case 'success':
-          // nodeSnackbar.show({ pos: 'top-left', showAction: false })
-          // this.$snackbar.open({
-          //   duration: 5000,
-          //   message: 'ทำรายการเสร็จสิ้น',
-          //   type: 'is-primary',
-          //   position: 'is-bottom-left',
-          //   actionText: '',
-          //   queue: false,
-          //   onAction: () => {}
-          // })
+          this.$notify('ทำรายการเสร็จสิ้น', 'success')
           break
         case 'error':
-          // this.$snackbar.open({
-          //   duration: 5000,
-          //   message: 'เกิดข้อผิดพลาด โปรดทำรายการอีกครั้ง',
-          //   type: 'is-danger',
-          //   position: 'is-bottom-right',
-          //   actionText: '',
-          //   queue: false,
-          //   onAction: () => {}
-          // })
+          this.$notify('เกิดข้อผิดพลาด โปรดลองอีกครั้ง', 'error')
           break
       }
     }

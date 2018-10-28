@@ -1,5 +1,5 @@
 module.exports.isAuthorized  = function(req, res, next) {
-  console.log('call auth middleware')
+  // console.log('call auth middleware')
   next();
   // User.findById(req.session.userId).exec(function (error, user) {
   //     if (error) {

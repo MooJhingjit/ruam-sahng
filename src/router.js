@@ -24,6 +24,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: () => import('@Views/Login')
+    },
+    {
+      path: '/user/:key',
+      name: 'UserEdit',
+      component: () => import('@Views/User/edit')
     }
   ]
 })
