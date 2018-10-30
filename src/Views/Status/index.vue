@@ -19,7 +19,8 @@
               type: 'text',
               key: 'keyword',
               placeholder: 'ค้นหางาน',
-              rules: null
+              rules: null,
+              validator: $validator
             }"
           ></my-input>
           <i class="form-icon fa fa-search"></i>

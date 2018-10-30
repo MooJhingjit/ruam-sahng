@@ -1,14 +1,12 @@
 // import { mapGetters, mapActions } from 'vuex'
 // import Helper from '@Libraries/common.helpers'
 // import service from '@Services/app-service'
-// import config from '@Config/app.config'
+import config from '@Config/app.config'
 // import moment from 'moment'
 // import nodeSnackbar from 'node-snackbar'
+import Helper from '@Libraries/common.helpers'
 export default {
   computed: {
-    // ...mapGetters([
-    //   'userData'
-    // ]),
   },
   filters: {},
   methods: {
@@ -20,11 +18,19 @@ export default {
     // ADDCOMMAS (number, digit = 0) {
 
     // },
-    GOTOPAGE (pageName, options = {}) {
+    GO_TOPAGE (pageName, options = {}) {
       this.$router.push({
         name: pageName,
         params: { key: options.key }
       })
+    },
+    CHECK_AUTH () {
+      let hasAuth = false
+      // console.log(Helper.GET_STORAGEITEM(config.variable.authStorage))
+      if (Helper.GET_STORAGEITEM(config.variable.authStorage) === '1') {
+        hasAuth = true
+      }
+      return hasAuth
     },
     // BUILDPARAM (params = []) {
     //   let queryString = ''
@@ -35,21 +41,30 @@ export default {
     //     return queryString.slice(0, -1)
     //   }
     // },
-    NOTIFY (type) {
+    NOTIFY (type, msg = null, options = {}) {
       switch (type) {
         case 'success':
-          this.$notify('ทำรายการเสร็จสิ้น', 'success')
+          if (msg === null) {
+            msg = 'ทำรายการเสร็จสิ้น'
+          }
+          this.$notify(msg, 'success')
           break
         case 'error':
-          this.$notify('เกิดข้อผิดพลาด โปรดลองอีกครั้ง', 'error')
+          if (msg === null) {
+            msg = 'เกิดข้อผิดพลาด โปรดลองอีกครั้ง'
+          }
+          this.$notify(msg, 'error')
           break
       }
+    },
+    REDIRECT_TOHOMEPAGE () {
+      this.GO_TOPAGE('Status')
     }
     // LOGOUT () {
     //   Helper.REMOVE_STORAGEITEM('isAuth')
     //   Helper.REMOVE_STORAGEITEM('app_token')
     //   Helper.REMOVE_STORAGEITEM('userData')
-    //   this.GOTOPAGE('Login')
+    //   this.GO_TOPAGE('Login')
     // },
     // SETAUTH (token) {
     //   Helper.SET_STORAGEITEM('isAuth', 1)

@@ -16,8 +16,11 @@
                     type: 'text',
                     key: 'username',
                     placeholder: 'ชื่อผู้ใช้',
-                    rules: 'required'
+                    rules: 'required',
+                    validator: $validator
                   }"
+                  :value="local.username"
+                  @input="value => {local.username = value}"
                 ></my-input>
               </div>
               <div class="form-group">
@@ -27,14 +30,24 @@
                     type: 'password',
                     key: 'password',
                     placeholder: 'รหัสผ่าน',
-                    rules: 'required'
+                    rules: 'required',
+                    validator: $validator
                   }"
+                  :value="local.password"
+                  @input="value => {local.password = value}"
                 ></my-input>
               </div>
             </div>
             <div class="card-footer text-center">
               <!-- <a class="btn btn-dark" href="#" @click="login()">เข้าใช้งาน</a> -->
-              <my-button :config="{icon: null, btnClass: 'btn btn-dark', doConfirm: false, text: 'เข้าใช้งาน'}" @submit="(tf) => submitHandle('login', tf)"></my-button>
+              <my-button 
+              :config="{
+                icon: null,
+                btnClass: 'btn btn-dark',
+                doConfirm: false,
+                text: 'เข้าใช้งาน'
+              }"
+              @submit="(tf) => doLogin(tf)"></my-button>
             </div>
           </div>
         </div>
@@ -44,15 +57,13 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import config from '@Config/app.config'
+import service from '@Services/app.service'
 import MyInput from '@Components/Form/myInput'
 import MyButton from '@Components/Form/myButton'
+import Helper from '@Libraries/common.helpers'
 export default {
-  props: {
-    // mode: {
-    //   type: String,
-    //   required: true
-    // }
-  },
   components: {
     MyInput,
     MyButton
@@ -60,24 +71,46 @@ export default {
   name: 'LoginPage',
   data () {
     return {
-      property: 'Blank'
+      local: {
+        username: null,
+        password: null
+      }
     }
   },
   computed: {
-    // propertyComputed() {
-    // }
+    // ...mapGetters([
+    // 'HAS_AUTH_STORE'
+    // ])
   },
-  created () {},
-  beforeMount () {},
-  mounted () {},
-  beforeUpdate () {},
-  updated () {},
-  beforeDestroy () {},
-  destroyed () {},
+  created () {
+  },
   methods: {
-    submitHandle (btnTarget, tf) {
-      this.GOTOPAGE('Status')
-      // Login
+    ...mapActions([
+      // 'SET_AUTH_STORE',
+      // 'SET_USERDATA_STORE'
+    ]),
+    async doLogin (tf) {
+      let isPass = await this.$validator.validate()
+      if (isPass) {
+        let data = {
+          username: this.local.username,
+          password: this.local.password
+        }
+        let resourceName = config.api.login
+        try {
+          let res = await service.postResource({data, resourceName})
+          this.setData(res.data)
+        } catch (error) {
+          this.NOTIFY('error', 'ข้อมูลไม่ถูกต้อง โปรดตรวจสอบ')
+        }
+      }
+    },
+    setData (data) {
+      // this.SET_AUTH_STORE(true)
+      // this.SET_USERDATA_STORE(data.user)
+      Helper.SET_STORAGEITEM(config.variable.tokenStorage, data.token)
+      Helper.SET_STORAGEITEM(config.variable.authStorage, 1)
+      this.REDIRECT_TOHOMEPAGE()
     }
   }
 }

@@ -1,7 +1,8 @@
 import axios from 'axios'
 import commonHelper from '@Libraries/common.helpers'
+import config from '@Config/app.config'
 const createHeader = () => {
-  let token = commonHelper.GET_STORAGEITEM('app_token')
+  let token = commonHelper.GET_STORAGEITEM(config.variable.tokenName)
   let headers = {'Content-Type': 'application/json'}
   if (token) {
     // headers.Authorization = `${token.substring(1, token.length - 1)}`

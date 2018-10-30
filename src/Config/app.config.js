@@ -5,13 +5,17 @@ const api = {
   'app': {
     'resource': '/app/resource'
   },
+  'login': '/login',
   'user': {
     'index': '/user'
   },
   'login': '/login'
 }
 
-const variable = {}
+const variable = {
+  tokenStorage: 'ruamsahng_token',
+  authStorage: 'ruamsahng_auth'
+}
 
 export default {
   api,

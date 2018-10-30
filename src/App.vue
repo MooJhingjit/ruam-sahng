@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="pages" v-if="normalPages">
+    <div class="pages" v-if="normalPages && CHECK_AUTH()">
       <div class="header-wrapper">
         <header-wrapper></header-wrapper>
       </div>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import headerWrapper from '@Layouts/Header'
 import footerWrapper from '@Layouts/Footer'
 export default {
@@ -26,14 +27,30 @@ export default {
     footerWrapper
   },
   name: 'App',
+  computed: {
+    ...mapGetters([
+      // 'HAS_AUTH_STORE'
+    ])
+  },
   data () {
     return {
       normalPages: true
     }
   },
+  created () {
+  },
   watch: {
     '$route' (to, from) {
       this.normalPages = !(to.name === 'Login' || to.name === 'Schedule')
+      if (this.CHECK_AUTH()) {
+        if (to.name === 'Login') {
+          this.REDIRECT_TOHOMEPAGE()
+        }
+      } else {
+        if (to.name !== 'Login') {
+          this.GO_TOPAGE('Login')
+        }
+      }
     }
   }
 }

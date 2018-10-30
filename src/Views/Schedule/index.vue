@@ -2,7 +2,7 @@
   <section class="p-2">
     <div class="columns">
       <div class="column text-left">
-        <h5 class="text-bold text-primary"><i class="fa fa-sign-out c-hand text-gray" aria-hidden="true" @click="GOTOPAGE('Status')"></i> ตารางงาน: 21/10/2018</h5>
+        <h5 class="text-bold text-primary"><i class="fa fa-sign-out c-hand text-gray" aria-hidden="true" @click="GO_TOPAGE('Status')"></i> ตารางงาน: 21/10/2018</h5>
       </div>
       <div class="column text-right">
         <h5 class="text-bold text-primary">1/5</h5>
