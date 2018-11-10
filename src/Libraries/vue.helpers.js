@@ -7,6 +7,21 @@ import config from '@Config/app.config'
 import Helper from '@Libraries/common.helpers'
 export default {
   computed: {
+    PRODUCTTYPE () {
+      return config.variable.productType
+    },
+    PRODUCTDEPARTMENT () {
+      return config.variable.productDepartment
+    },
+    EQUIPMENT () {
+      return config.variable.equipment
+    },
+    COLORTYPE () {
+      return config.variable.colorType
+    },
+    ACCESSORY () {
+      return config.variable.accessory
+    }
   },
   filters: {},
   methods: {
@@ -59,6 +74,11 @@ export default {
     },
     REDIRECT_TOHOMEPAGE () {
       this.GO_TOPAGE('Status')
+    },
+    LOGOUT () {
+      Helper.REMOVE_STORAGEITEM(config.variable.tokenStorage)
+      Helper.REMOVE_STORAGEITEM(config.variable.authStorage)
+      this.GO_TOPAGE('Login')
     }
     // LOGOUT () {
     //   Helper.REMOVE_STORAGEITEM('isAuth')

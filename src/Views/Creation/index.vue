@@ -5,6 +5,7 @@
         <div class="card-body">
           <div class="columns">
             <div class="column col-6 col-sm-12">
+              <!-- {{this.local.inputs}} -->
               <div class="form-group">
                 <label class="form-label" for="input-example-1">เลขที่</label>
                 <my-input
@@ -12,8 +13,11 @@
                     type: 'text',
                     key: 'jobId',
                     placeholder: 'เลขที่',
-                    rules: 'required'
+                    rules: 'required',
+                    validator: $validator
                   }"
+                  :value="local.inputs.header.jobId"
+                  @input="val => {local.inputs.header.jobId = val}"
                 ></my-input>
               </div>
             </div>
@@ -25,37 +29,31 @@
                     type: 'text',
                     key: 'cusName',
                     placeholder: 'ชื่อลูกค้า',
-                    rules: 'required'
+                    rules: 'required',
+                    validator: $validator
                   }"
+                  :value="local.inputs.header.cusName"
+                  @input="val => {local.inputs.header.cusName = val}"
                 ></my-input>
               </div>
             </div>
             <div class="column col-6 col-sm-12">
               <div class="form-group">
-                <label class="form-label" for="input-example-1">วันผลิต</label>
+                <label class="form-label" for="input-example-1">วันเริ่มเปิดจ็อบ</label>
                 <my-input
                   :config="{
                     type: 'text',
                     key: 'dateStart',
-                    placeholder: 'วันผลิต',
-                    rules: 'required'
+                    placeholder: 'วันเริ่มเปิดจ็อบ',
+                    rules: 'required',
+                    validator: $validator
                   }"
+                  :value="local.inputs.header.createDate"
+                  @input="val => {local.inputs.header.createDate = val}"
                 ></my-input>
               </div>
             </div>
-            <div class="column col-6 col-sm-12">
-              <div class="form-group">
-                <label class="form-label" for="input-example-1">กำหนดเสร็จ</label>
-                <my-input
-                  :config="{
-                    type: 'text',
-                    key: 'dateEnd',
-                    placeholder: 'กำหนดเสร็จ',
-                    rules: 'required'
-                  }"
-                ></my-input>
-              </div>
-            </div>
+            <div class="column col-6 col-sm-12"></div>
             <div class="column col-12 pt-3">
               <table class="table table-striped table-hover">
                 <thead>
@@ -64,18 +62,22 @@
                     <th class="text-center" width="100">จำนวน</th>
                     <th class="text-center" width="100">หนา</th>
                     <th class="text-center">หมายเหตุ</th>
+                    <th width="10"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="" :key="index" v-for="(item, index) in local.inputs">
+                  <tr :key="index" v-for="(product, index) in local.inputs.products">
                     <td class="text-center">
                       <my-input
                         :config="{
                           type: 'text',
                           key: `jobName${index}`,
                           placeholder: 'ชื่อรายการผลิต',
-                          rules: 'required'
+                          rules: 'required',
+                          validator: $validator
                         }"
+                        :value="product.name"
+                        @input="val => {product.name = val}"
                       ></my-input>
                       <!-- <input class="form-input" type="text" id="input-example-1" placeholder="ชื่อรายการผลิต"> -->
                     </td>
@@ -85,7 +87,8 @@
                           type: 'text',
                           key: `amount${index}`,
                           placeholder: 'จำนวน',
-                          rules: 'required'
+                          rules: 'required',
+                          validator: $validator
                         }"
                       ></my-input>
                       <!-- <input class="form-input" type="text" id="input-example-1" placeholder="จำนวน"> -->
@@ -94,10 +97,13 @@
                       <my-input
                         :config="{
                           type: 'text',
-                          key: `thick${index}`,
+                          key: `thickness${index}`,
                           placeholder: 'หนา',
-                          rules: 'required'
+                          rules: 'required',
+                          validator: $validator
                         }"
+                        :value="product.thickness"
+                        @input="val => {product.thickness = val}"
                       ></my-input>
                       <!-- <input class="form-input" type="text" id="input-example-1" placeholder="หนา"> -->
                     </td>
@@ -109,8 +115,13 @@
                           placeholder: 'ระบุหมายเหตุ',
                           rules: ''
                         }"
+                        :value="product.note"
+                        @input="val => {product.note = val}"
                       ></my-input>
                       <!-- <input class="form-input" type="text" id="input-example-1" placeholder="ระบุหมายเหตุ"> -->
+                    </td>
+                    <td>
+                      <i class="fa fa-ellipsis-h h4 p-2 c-hand" aria-hidden="true" @click="inputProductDetail(index)"></i>
                     </td>
                   </tr>
                 </tbody>
@@ -120,121 +131,125 @@
                 <i class="fa fa-plus-circle h4 p-2 c-hand" aria-hidden="true" @click="editTable('add')"></i>
               </div>
             </div>
-            <div class="column col-6 col-sm-12">
-              <div class="form-group">
-                <div class="col-12 col-sm-12">
-                  <label class="form-label" for="input-example-4">ประเภทตู้</label>
+            <template v-if="local.productSelected !== null">
+              <div class="column col-12">
+                <h5>รายละเอียดการผลิต: <span class="label label-primary">{{local.inputs.products[local.productSelected].name}}</span></h5>
+              </div>
+              <div class="column col-6 col-sm-12">
+                <div class="form-group">
+                  <div class="form-group">
+                      <label class="form-label" for="input-example-1">กำหนดส่ง</label>
+                      <my-input
+                        :config="{
+                          type: 'text',
+                          key: 'dateEnd',
+                          placeholder: 'กำหนดส่ง',
+                          rules: 'required',
+                          validator: $validator
+                        }"
+                        :value="local.inputs.products[local.productSelected].dateEnd"
+                        @input="val => {local.inputs.products[local.productSelected].dateEnd = val}"
+                      ></my-input>
+                    </div>
                 </div>
-                <div class="col-12 col-sm-12  panel p-2">
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> ตู้เปล่า
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> วายริ่ง
-                  </label>
+                <div class="form-group">
+                  <div class="col-12 col-sm-12">
+                    <label class="form-label" for="input-example-4">ประเภทตู้</label>
+                  </div>
+                  <div class="col-12 col-sm-12  panel p-2">
+                    <label :key="index" class="form-radio" v-for="(item, index) in PRODUCTTYPE">
+                      <input type="radio" name="productType"
+                      v-model="local.inputs.products[local.productSelected].type" :value="item.key">
+                      <i class="form-icon"></i> {{item.name}}
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-12 col-sm-12">
+                    <label class="form-label" for="input-example-4">แผนก</label>
+                  </div>
+                  <div class="col-12 col-sm-12 panel p-2">
+                    <label class="form-checkbox form-inline c-hand"
+                    :key="index"
+                    v-for="(item, index) in PRODUCTDEPARTMENT"
+                    >
+                      <input type="checkbox" :value="item.key"
+                      v-model="local.inputs.products[local.productSelected].departmentSelected">
+                      <i class="form-icon"></i> {{item.name}}
+                    </label>
+                  </div>
                 </div>
               </div>
-              <div class="form-group">
-                <div class="col-12 col-sm-12">
-                  <label class="form-label" for="input-example-4">แผนก</label>
-                </div>
-                <div class="col-12 col-sm-12 panel p-2">
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> สเปคงาน
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> แบบ
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> ตัด
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> พันท์
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> พับ
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> เชื่อมประกอบ
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> พ่นสี
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> ประกอบสำเร็จรูป
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> อุปกรณ์
-                  </label>
-                  <label class="form-checkbox form-inline c-hand">
-                    <input type="checkbox"><i class="form-icon"></i> วายริ่ง
-                  </label>
-                </div>
+              <div class="column col-6 col-sm-12">
+                  <div class="form-group">
+                    <div class="col-12 col-sm-12">
+                      <label class="form-label" for="input-example-4">วัสดุ</label>
+                    </div>
+                    <div class="col-12 col-sm-12  panel p-2">
+                      <label class="form-checkbox form-inline c-hand"
+                      :key="index"
+                      v-for="(item, index) in EQUIPMENT"
+                      >
+                        <input type="checkbox" :value="item.key"
+                        v-model="local.inputs.products[local.productSelected].equipment">
+                        <i class="form-icon"></i> {{item.name}}
+                      </label>
+                      <my-input
+                      :config="{
+                        type: 'text',
+                        key: 'surface',
+                        placeholder: 'พื้นผิว (สแตนเลส)',
+                        rules: 'required',
+                        validator: $validator
+                      }"
+                      :value="local.inputs.products[local.productSelected].options.surface"
+                      @input="val => {local.inputs.products[local.productSelected].options.surface = val}"
+                      ></my-input>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-12 col-sm-12">
+                      <label class="form-label" for="input-example-4">สี</label>
+                    </div>
+                    <div class="col-12 col-sm-12  panel p-2">
+                      <label class="form-radio"
+                      :key="index"
+                      v-for="(item, index) in COLORTYPE"
+                      >
+                        <input type="checkbox" :value="item.key"
+                        v-model="local.inputs.products[local.productSelected].colorType">
+                        <i class="form-icon"></i> {{item.name}}
+                      </label>
+                      <my-input
+                      :config="{
+                        type: 'text',
+                        key: 'colorCode',
+                        placeholder: 'รายการสี (พ่น)',
+                        rules: 'required',
+                        validator: $validator
+                      }"
+                      :value="local.inputs.products[local.productSelected].options.colorName"
+                      @input="val => {local.inputs.products[local.productSelected].options.colorName = val}"
+                      ></my-input>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-12 col-sm-12">
+                      <label class="form-label" for="input-example-4">อุปกรณ์เสริม</label>
+                    </div>
+                    <div class="col-12 col-sm-12  panel p-2">
+                      <label class="form-radio"
+                      :key="index"
+                      v-for="(item, index) in ACCESSORY"
+                      >
+                        <input type="checkbox" :value="item.key"
+                        v-model="local.inputs.products[local.productSelected].accessory">
+                        <i class="form-icon"></i> {{item.name}}
+                      </label>
+                    </div>
+                  </div>
               </div>
-            </div>
-            <div class="column col-6 col-sm-12">
-                <div class="form-group">
-                  <div class="col-12 col-sm-12">
-                    <label class="form-label" for="input-example-4">อุปกรณ์</label>
-                  </div>
-                  <div class="col-12 col-sm-12  panel p-2">
-                    <label class="form-checkbox form-inline c-hand">
-                      <input type="checkbox"><i class="form-icon"></i> รออุปกรณ์
-                    </label>
-                    <label class="form-checkbox form-inline c-hand">
-                      <input type="checkbox"><i class="form-icon"></i> อุปกรณ์ครบ
-                    </label>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-12 col-sm-12">
-                    <label class="form-label" for="input-example-4">วัสดุ</label>
-                  </div>
-                  <div class="col-12 col-sm-12  panel p-2">
-                    <label class="form-checkbox form-inline c-hand">
-                      <input type="checkbox"><i class="form-icon"></i> เหล็ก
-                    </label>
-                    <label class="form-checkbox form-inline c-hand">
-                      <input type="checkbox"><i class="form-icon"></i> สแตนเลส
-                    </label>
-                    <label class="form-checkbox form-inline c-hand">
-                      <input type="checkbox"><i class="form-icon"></i> สังกะสี
-                    </label>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-12 col-sm-12">
-                    <label class="form-label" for="input-example-4">สี</label>
-                  </div>
-                  <div class="col-12 col-sm-12  panel p-2">
-                    <label class="form-checkbox form-inline c-hand">
-                      <input type="checkbox"><i class="form-icon"></i> ชุบ
-                    </label>
-                    <label class="form-checkbox form-inline c-hand">
-                      <input type="checkbox"><i class="form-icon"></i> พ่น
-                    </label>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-12 col-sm-12">
-                    <label class="form-label" for="input-example-4">อุปกรณ์เสริม</label>
-                  </div>
-                  <div class="col-12 col-sm-12  panel p-2">
-                    <label class="form-checkbox form-inline c-hand">
-                      <input type="checkbox"><i class="form-icon"></i> ใส่กระจก
-                    </label>
-                    <label class="form-checkbox form-inline c-hand">
-                      <input type="checkbox"><i class="form-icon"></i> ใส่ยาง
-                    </label>
-                  </div>
-                </div>
-            </div>
-            <div class="column col-12">
-              <div class="form-group">
-                <label class="form-label" for="input-example-3">ระบุข้อมูลอื่นๆ</label>
-                <textarea class="form-input" id="input-example-3" placeholder="" rows="3"></textarea>
-              </div>
-            </div>
+            </template>
           </div>
         </div>
         <div class="card-footer">
@@ -255,6 +270,7 @@ import PageTitle from '@Components/PageTitle'
 import MyModal from '@Components/Modal'
 import MyInput from '@Components/Form/myInput'
 import MyButton from '@Components/Form/myButton'
+import Helper from '@Libraries/common.helpers'
 export default {
   props: {
     // mode: {
@@ -272,15 +288,36 @@ export default {
   data () {
     return {
       local: {
-        inputs: [{}]
+        inputs: {
+          header: {
+            jobId: null,
+            cusName: null,
+            createDate: null
+          },
+          products: []
+        },
+        productTemplate: {
+          name: null,
+          amount: null,
+          thickness: null,
+          note: null,
+          dateEnd: null,
+          type: null,
+          departmentSelected: [],
+          equipment: [],
+          colorType: [],
+          accessory: [],
+          options: {}
+        },
+        productSelected: null
       }
     }
   },
   computed: {
-    // propertyComputed() {
-    // }
   },
-  created () {},
+  created () {
+    this.editTable('add')
+  },
   beforeMount () {},
   mounted () {},
   beforeUpdate () {},
@@ -288,11 +325,15 @@ export default {
   beforeDestroy () {},
   destroyed () {},
   methods: {
+    inputProductDetail (productIndex) {
+      this.local.productSelected = productIndex
+    },
     editTable (actionType) {
       if (actionType === 'minus') {
-        this.local.inputs.pop()
+        this.local.inputs.products.pop()
       } else {
-        this.local.inputs.push({})
+        let product = Helper.COPY_OBJECT(this.local.productTemplate)
+        this.local.inputs.products.push(product)
       }
     },
     submitHandle (btnTarget, tf) {

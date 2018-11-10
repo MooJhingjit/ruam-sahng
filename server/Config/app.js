@@ -1,19 +1,4 @@
-
-const api = {
-  // 'apiEndPoint': 'http://localhost:3000/api',
-  'apiEndPoint': `${window.location.protocol}//${window.location.hostname}:3000/api`, // for production
-  'app': {
-    'resource': '/app/resource'
-  },
-  'login': '/login',
-  'user': {
-    'index': '/user'
-  }
-}
-
-const variable = {
-  tokenStorage: 'ruamsahng_token',
-  authStorage: 'ruamsahng_auth',
+module.exports.appConfig = {
   productType: [
     {
       key: 1,
@@ -50,9 +35,4 @@ const variable = {
     { key: 2, name: 'ใส่ยาง' },
     { key: 3, name: 'อะคริลิค' }
   ]
-}
-
-export default {
-  api,
-  variable
 }

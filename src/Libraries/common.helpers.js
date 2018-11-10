@@ -17,6 +17,10 @@ const REMOVE_STORAGEITEM = (key) => {
   return localStorage.removeItem(key)
 }
 
+const COPY_OBJECT = (object) => {
+  return JSON.parse(JSON.stringify(object))
+}
+
 const GET_FULLAPI = (path, queryString) => {
   let params = ''
   let endPoint = config.api.apiEndPoint
@@ -48,5 +52,6 @@ export default {
   GET_STORAGEITEM,
   REMOVE_STORAGEITEM,
   GET_FULLAPI,
-  GET_DATETHAI
+  GET_DATETHAI,
+  COPY_OBJECT
 }

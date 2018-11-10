@@ -57,7 +57,10 @@ export default {
   destroyed () {},
   methods: {
     setData () {
-      this.$validator = this.config.validator
+      // console.log(this.$validator)
+      if (this.config.validator) {
+        this.$validator = this.config.validator
+      }
       this.myValue = this.value
     },
     getInputClass () {

@@ -22,7 +22,7 @@
                     <figure class="avatar" data-initial="P"></figure>
                   </div> -->
                   <div class="tile-content">
-                    <span class="tile-title text-bold c-hand" @click="GO_TOPAGE('UserEdit', {key: 1234})">Pokkrong</span>
+                    <span class="tile-title text-bold c-hand" @click="GO_TOPAGE('UserEdit', {key: 1234})">Username</span>
                     <i class="fa fa-power-off text-error c-hand" aria-hidden="true" @click="logout()"></i>
                     <!-- <button class="btn btn-action btn-sm"></button> -->
                     <!-- <p class="tile-subtitle">Earth's Mightiest Heroes joined forces to take on threats that were too big for any one hero to tackle...</p> -->
@@ -65,9 +65,7 @@ export default {
   destroyed () {},
   methods: {
     logout () {
-      Helper.REMOVE_STORAGEITEM(config.variable.tokenStorage)
-      Helper.REMOVE_STORAGEITEM(config.variable.authStorage)
-      this.GO_TOPAGE('Login')
+      this.LOGOUT()
     }
   }
 }

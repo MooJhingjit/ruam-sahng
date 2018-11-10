@@ -132,7 +132,7 @@ export default {
   name: 'StatusPage',
   data () {
     return {
-      isAdmin: true,
+      isAdmin: false,
       local: {
         viewType: 'table',
         items: [

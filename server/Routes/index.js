@@ -7,8 +7,8 @@ app.use(bodyParser.json());
 
 app.use('/api', 
   [
-    require('./auth')
-    // require('./user')
+    require('./auth'),
+    require('./app')
   ]
 );
 

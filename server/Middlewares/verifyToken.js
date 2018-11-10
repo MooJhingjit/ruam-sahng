@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken')
 module.exports = (req, res, next) => {
-  if (req.url === '/api/login') {
+  if (req.url === '/api/login' || req.method === 'OPTIONS') {
     next()
     return
   }
-  
-  let token = req.headers['x-access-token']
+  let token = req.headers['authorization']
   if (!token) {
     return res.status(403).send({ auth: false, message: 'No token provided.' })
   }

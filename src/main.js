@@ -10,13 +10,13 @@ import 'alertifyjs/build/css/alertify.min.css'
 import 'alertifyjs/build/css/themes/default.min.css'
 import Alertifyjs from 'vue2-alertifyjs'
 const options = {
-  glossary:{
+  glossary: {
     // dialogs default title
     title: 'การแจ้งเตือน',
     // ok button text
     ok: 'ยืนยัน',
     // cancel button text
-    cancel: 'ยกเลิก'            
+    cancel: 'ยกเลิก'
   }
 }
 Vue.use(Alertifyjs, options)

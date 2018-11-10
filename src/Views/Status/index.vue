@@ -5,10 +5,10 @@
         <template slot="left-slot">
           <template v-if="currentState.status === 'itemView'">
             <div v-if="isAdmin" class="p-2 bg-primary">
-              JOB C61-08-108
+              JOB C61-08-108 xxxxxxxxxx
             </div>
             <div v-else class="p-2 bg-warning">
-              <span class="p-2">QC:</span> JOB C61-08-108
+              <span class="p-2">QC:</span>JOB C61-08-108 xxxxxxxxxx
             </div>
           </template>
         </template>
@@ -19,8 +19,7 @@
               type: 'text',
               key: 'keyword',
               placeholder: 'ค้นหางาน',
-              rules: null,
-              validator: $validator
+              rules: null
             }"
           ></my-input>
           <i class="form-icon fa fa-search"></i>
@@ -71,7 +70,7 @@ export default {
           search: null
         }
       },
-      isAdmin: true
+      isAdmin: false
     }
   },
   computed: {

@@ -18,9 +18,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import headerWrapper from '@Layouts/Header'
 import footerWrapper from '@Layouts/Footer'
+import config from '@Config/app.config'
+import service from '@Services/app.service'
 export default {
   components: {
     headerWrapper,
@@ -38,6 +40,26 @@ export default {
     }
   },
   created () {
+    this.fetchData()
+  },
+  methods: {
+    ...mapActions([
+      'SET_APP_STORE'
+    ]),
+    async fetchData () {
+      if (this.$route.name === 'Login') return
+      let resourceName = config.api.app.resource
+      try {
+        let res = await service.getResource({resourceName, queryString: []})
+        // this.setAppData(res.data)
+      } catch (error) {
+        // this.LOGOUT()
+        // this.NOTIFY('error', 'เกิดข้อผิดพลาด')
+      }
+    },
+    setAppData (data) {
+      // this.SET_APP_STORE(data)
+    }
   },
   watch: {
     '$route' (to, from) {
