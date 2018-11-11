@@ -7,21 +7,21 @@ import config from '@Config/app.config'
 import Helper from '@Libraries/common.helpers'
 export default {
   computed: {
-    PRODUCTTYPE () {
-      return config.variable.productType
-    },
-    PRODUCTDEPARTMENT () {
-      return config.variable.productDepartment
-    },
-    EQUIPMENT () {
-      return config.variable.equipment
-    },
-    COLORTYPE () {
-      return config.variable.colorType
-    },
-    ACCESSORY () {
-      return config.variable.accessory
-    }
+    // PRODUCTTYPE () {
+    //   return config.variable.productType
+    // },
+    // PRODUCTDEPARTMENT () {
+    //   return config.variable.productDepartment
+    // },
+    // EQUIPMENT () {
+    //   return config.variable.equipment
+    // },
+    // COLORTYPE () {
+    //   return config.variable.colorType
+    // },
+    // ACCESSORY () {
+    //   return config.variable.accessory
+    // }
   },
   filters: {},
   methods: {

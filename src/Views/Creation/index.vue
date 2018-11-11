@@ -1,5 +1,5 @@
 <template>
-  <section class="">
+  <section class="" v-if="server !== null">
     <div class="column col-12 col-xs-12">
       <div class="card bg-gray">
         <div class="card-body">
@@ -11,13 +11,13 @@
                 <my-input
                   :config="{
                     type: 'text',
-                    key: 'jobId',
+                    key: 'jobCode',
                     placeholder: 'เลขที่',
                     rules: 'required',
                     validator: $validator
                   }"
-                  :value="local.inputs.header.jobId"
-                  @input="val => {local.inputs.header.jobId = val}"
+                  :value="local.inputs.header.jobCode"
+                  @input="val => {local.inputs.header.jobCode = val}"
                 ></my-input>
               </div>
             </div>
@@ -32,17 +32,17 @@
                     rules: 'required',
                     validator: $validator
                   }"
-                  :value="local.inputs.header.cusName"
-                  @input="val => {local.inputs.header.cusName = val}"
+                  :value="local.inputs.header.customer.name"
+                  @input="val => {local.inputs.header.customer.name = val}"
                 ></my-input>
+                <input type="hidden" name="cusId" v-model="local.inputs.header.customer.id">
               </div>
             </div>
             <div class="column col-6 col-sm-12">
               <div class="form-group">
                 <label class="form-label" for="input-example-1">วันเริ่มเปิดจ็อบ</label>
-                <my-input
+                <my-date-picker
                   :config="{
-                    type: 'text',
                     key: 'dateStart',
                     placeholder: 'วันเริ่มเปิดจ็อบ',
                     rules: 'required',
@@ -50,7 +50,7 @@
                   }"
                   :value="local.inputs.header.createDate"
                   @input="val => {local.inputs.header.createDate = val}"
-                ></my-input>
+                ></my-date-picker>
               </div>
             </div>
             <div class="column col-6 col-sm-12"></div>
@@ -90,6 +90,8 @@
                           rules: 'required',
                           validator: $validator
                         }"
+                        :value="product.amount"
+                        @input="val => {product.amount = val}"
                       ></my-input>
                       <!-- <input class="form-input" type="text" id="input-example-1" placeholder="จำนวน"> -->
                     </td>
@@ -121,7 +123,7 @@
                       <!-- <input class="form-input" type="text" id="input-example-1" placeholder="ระบุหมายเหตุ"> -->
                     </td>
                     <td>
-                      <i class="fa fa-ellipsis-h h4 p-2 c-hand" aria-hidden="true" @click="inputProductDetail(index)"></i>
+                      <i v-if="product.name" class="fa fa-ellipsis-h h4 p-2 c-hand" aria-hidden="true" @click="inputProductDetail(index)"></i>
                     </td>
                   </tr>
                 </tbody>
@@ -139,9 +141,8 @@
                 <div class="form-group">
                   <div class="form-group">
                       <label class="form-label" for="input-example-1">กำหนดส่ง</label>
-                      <my-input
+                      <my-date-picker
                         :config="{
-                          type: 'text',
                           key: 'dateEnd',
                           placeholder: 'กำหนดส่ง',
                           rules: 'required',
@@ -149,7 +150,7 @@
                         }"
                         :value="local.inputs.products[local.productSelected].dateEnd"
                         @input="val => {local.inputs.products[local.productSelected].dateEnd = val}"
-                      ></my-input>
+                      ></my-date-picker>
                     </div>
                 </div>
                 <div class="form-group">
@@ -186,11 +187,11 @@
                       <label class="form-label" for="input-example-4">วัสดุ</label>
                     </div>
                     <div class="col-12 col-sm-12  panel p-2">
-                      <label class="form-checkbox form-inline c-hand"
+                      <label class="form-radio"
                       :key="index"
                       v-for="(item, index) in EQUIPMENT"
                       >
-                        <input type="checkbox" :value="item.key"
+                        <input type="radio" :value="item.key"
                         v-model="local.inputs.products[local.productSelected].equipment">
                         <i class="form-icon"></i> {{item.name}}
                       </label>
@@ -216,7 +217,7 @@
                       :key="index"
                       v-for="(item, index) in COLORTYPE"
                       >
-                        <input type="checkbox" :value="item.key"
+                        <input type="radio" :value="item.key"
                         v-model="local.inputs.products[local.productSelected].colorType">
                         <i class="form-icon"></i> {{item.name}}
                       </label>
@@ -238,7 +239,7 @@
                       <label class="form-label" for="input-example-4">อุปกรณ์เสริม</label>
                     </div>
                     <div class="col-12 col-sm-12  panel p-2">
-                      <label class="form-radio"
+                      <label class="form-checkbox form-inline c-hand"
                       :key="index"
                       v-for="(item, index) in ACCESSORY"
                       >
@@ -269,8 +270,12 @@
 import PageTitle from '@Components/PageTitle'
 import MyModal from '@Components/Modal'
 import MyInput from '@Components/Form/myInput'
+import MyDatePicker from '@Components/Form/myDatePicker'
 import MyButton from '@Components/Form/myButton'
 import Helper from '@Libraries/common.helpers'
+import config from '@Config/app.config'
+import service from '@Services/app.service'
+
 export default {
   props: {
     // mode: {
@@ -282,6 +287,7 @@ export default {
     PageTitle,
     MyModal,
     MyInput,
+    MyDatePicker,
     MyButton
   },
   name: 'CreationPage',
@@ -290,8 +296,11 @@ export default {
       local: {
         inputs: {
           header: {
-            jobId: null,
-            cusName: null,
+            jobCode: null,
+            customer: {
+              id: null,
+              name: null
+            },
             createDate: null
           },
           products: []
@@ -310,12 +319,29 @@ export default {
           options: {}
         },
         productSelected: null
-      }
+      },
+      server: null
     }
   },
   computed: {
+    PRODUCTTYPE () {
+      return this.server.config.productType
+    },
+    PRODUCTDEPARTMENT () {
+      return this.server.config.productDepartment
+    },
+    EQUIPMENT () {
+      return this.server.config.equipment
+    },
+    COLORTYPE () {
+      return this.server.config.colorType
+    },
+    ACCESSORY () {
+      return this.server.config.accessory
+    }
   },
   created () {
+    this.fetchData()
     this.editTable('add')
   },
   beforeMount () {},
@@ -325,6 +351,12 @@ export default {
   beforeDestroy () {},
   destroyed () {},
   methods: {
+    async fetchData () {
+      let resourceName = config.api.job.index
+      let res = await service.getResource({ resourceName, queryString: [] })
+      this.server = {}
+      this.server.config = res.data.result.config
+    },
     inputProductDetail (productIndex) {
       this.local.productSelected = productIndex
     },
@@ -336,8 +368,13 @@ export default {
         this.local.inputs.products.push(product)
       }
     },
-    submitHandle (btnTarget, tf) {
-      if (tf) {
+    async submitHandle (btnTarget, isConfirm) {
+      let isValid = await this.$validator.validateAll()
+      if (isConfirm && isValid) {
+        let resourceName = config.api.job.index
+        let data = { input: this.local.inputs }
+        await service.postResource({ resourceName, data })
+        // console.log(res)
         this.$notify('TEST', 'success')
       }
     }
@@ -355,5 +392,4 @@ export default {
 label{
   width: fit-content;
 }
-
 </style>

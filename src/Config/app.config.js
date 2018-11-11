@@ -6,6 +6,9 @@ const api = {
     'resource': '/app/resource'
   },
   'login': '/login',
+  'job': {
+    'index': '/job'
+  },
   'user': {
     'index': '/user'
   }

@@ -31,3 +31,6 @@ a:focus{
 .column{
   padding: .4rem!important;
 }
+.form-input[readonly] {
+  background-color: #fff!important;
+}

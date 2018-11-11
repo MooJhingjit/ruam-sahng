@@ -32,7 +32,7 @@
               :class="getItemClass(obj, task)"
               :key="index" v-for="(task, index) in obj.tasks">
                 <template v-if="task.key === 'itemName'">
-                  <div class="text-bold">{{obj.header.jobId}}</div>
+                  <div class="text-bold">{{obj.header.jobCode}}</div>
                   <div class="text-bold">{{obj.header.cusName}}</div>
                   <div class="text-bold">task name</div>
                   <div>{{task.dateStart}}</div>
@@ -89,7 +89,7 @@ export default {
         jobs: [
           {
             header: {
-              jobId: 'JOB C61-08-108',
+              jobCode: 'JOB C61-08-108',
               cusName: 'Summit network',
               productName: 'product name',
               status: 'success'
@@ -110,7 +110,7 @@ export default {
           },
           {
             header: {
-              jobId: 'JOB C61-08-108',
+              jobCode: 'JOB C61-08-108',
               cusName: 'Summit network',
               productName: 'product name',
               status: 'late'
@@ -131,7 +131,7 @@ export default {
           },
           {
             header: {
-              jobId: 'JOB C61-08-108',
+              jobCode: 'JOB C61-08-108',
               cusName: 'Summit network',
               productName: 'product name',
               status: 'inprocess'
@@ -152,7 +152,7 @@ export default {
           },
           {
             header: {
-              jobId: 'JOB C61-08-108',
+              jobCode: 'JOB C61-08-108',
               cusName: 'Summit network',
               productName: 'product name',
               status: 'inprocess'
@@ -173,7 +173,7 @@ export default {
           },
           {
             header: {
-              jobId: 'JOB C61-08-108',
+              jobCode: 'JOB C61-08-108',
               cusName: 'Summit network',
               productName: 'product name',
               status: 'success'
@@ -194,7 +194,7 @@ export default {
           },
           {
             header: {
-              jobId: 'JOB C61-08-108',
+              jobCode: 'JOB C61-08-108',
               cusName: 'Summit network',
               productName: 'product name',
               status: 'inprocess'
@@ -215,7 +215,7 @@ export default {
           },
           {
             header: {
-              jobId: 'JOB C61-08-108',
+              jobCode: 'JOB C61-08-108',
               cusName: 'Summit network',
               productName: 'product name',
               status: 'inprocess'
