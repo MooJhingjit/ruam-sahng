@@ -7,8 +7,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Status',
-      component: () => import('@Views/Status')
+      name: 'Product',
+      component: () => import('@Views/Product')
+    },
+    {
+      path: '/product',
+      name: 'Product',
+      component: () => import('@Views/Product')
+    },
+    {
+      path: '/product/:key',
+      name: 'ProductUpdate',
+      component: () => import('@Views/Product/update')
     },
     {
       path: '/creation',

@@ -4,7 +4,7 @@
           <section class="menu-lists navbar-section column col-xs-12 col-8">
             <ul class="tab tab-block text-gray">
               <li class="tab-item">
-                <router-link :to="{ name: 'Status' } "><i class="fa fa-tasks"></i> สถานะงาน</router-link>
+                <router-link :to="{ name: 'Product' } "><i class="fa fa-tasks"></i> สินค้า</router-link>
               </li>
               <li class="tab-item">
                 <router-link :to="{ name: 'Creation' } "><i class="fa fa-plus-circle" aria-hidden="true"></i> สร้างงาน</router-link>
@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import config from '@Config/app.config'
-import Helper from '@Libraries/common.helpers'
+// import config from '@Config/app.config'
+// import Helper from '@Libraries/common.helpers'
 export default {
   props: {
     // mode: {
@@ -81,7 +81,7 @@ header{
       border-bottom: none;
       // color: #ababab; // $secondary-white-color
       .router-link-exact-active{
-        font-size: 1.2em;
+        // font-size: 1.2em;
         font-weight: bold;
         color: #50596d;
       }

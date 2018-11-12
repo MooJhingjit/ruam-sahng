@@ -50,7 +50,7 @@ export default {
       if (this.$route.name === 'Login') return
       let resourceName = config.api.app.resource
       try {
-        let res = await service.getResource({resourceName, queryString: []})
+        await service.getResource({ resourceName, queryString: [] })
         // this.setAppData(res.data)
       } catch (error) {
         // this.LOGOUT()

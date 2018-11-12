@@ -73,7 +73,7 @@ export default {
       }
     },
     REDIRECT_TOHOMEPAGE () {
-      this.GO_TOPAGE('Status')
+      this.GO_TOPAGE('Product')
     },
     LOGOUT () {
       Helper.REMOVE_STORAGEITEM(config.variable.tokenStorage)
