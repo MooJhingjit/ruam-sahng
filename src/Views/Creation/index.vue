@@ -129,38 +129,43 @@
                 </tbody>
               </table>
               <div class="text-right">
-                <i class="fa fa-minus-circle h4 p-2 c-hand" aria-hidden="true" v-if="local.inputs.length > 1" @click="editTable('minus')"></i>
+                <i class="fa fa-minus-circle h4 p-2 c-hand" aria-hidden="true" v-if="local.inputs.products.length > 1" @click="editTable('minus')"></i>
                 <i class="fa fa-plus-circle h4 p-2 c-hand" aria-hidden="true" @click="editTable('add')"></i>
               </div>
             </div>
-            <template v-if="local.productSelected !== null">
+            <template v-if="productSelected !== null">
               <div class="column col-12">
-                <h5>รายละเอียดการผลิต: <span class="label label-primary">{{local.inputs.products[local.productSelected].name}}</span></h5>
+                <h5>รายละเอียดการผลิต: <span class="label label-primary">{{local.inputs.products[productSelected].name}}</span></h5>
               </div>
               <div class="column col-6 col-sm-12">
                 <div class="form-group">
                   <div class="form-group">
                       <label class="form-label" for="input-example-1">กำหนดส่ง</label>
                       <my-date-picker
+                        :key="`dateEnd_${productSelected}`"
                         :config="{
                           key: 'dateEnd',
                           placeholder: 'กำหนดส่ง',
                           rules: 'required',
                           validator: $validator
                         }"
-                        :value="local.inputs.products[local.productSelected].dateEnd"
-                        @input="val => {local.inputs.products[local.productSelected].dateEnd = val}"
+                        :value="local.inputs.products[productSelected].dateEnd"
+                        @input="val => {local.inputs.products[productSelected].dateEnd = val}"
                       ></my-date-picker>
                     </div>
                 </div>
                 <div class="form-group">
                   <div class="col-12 col-sm-12">
-                    <label class="form-label" for="input-example-4">ประเภทตู้</label>
+                    <label class="form-label" for="input-example-4">
+                      ประเภทตู้
+                      <span class="text-error"  v-if="errors.has('productType')">กรุณาตรวจสอบข้อมูลข้างต้น</span></label>
                   </div>
                   <div class="col-12 col-sm-12  panel p-2">
-                    <label :key="index" class="form-radio" v-for="(item, index) in PRODUCTTYPE">
+                    <label :key="index" class="form-radio" v-for="(item, index) in productType">
                       <input type="radio" name="productType"
-                      v-model="local.inputs.products[local.productSelected].type" :value="item.key">
+                      v-validate="'required'"
+                      @change="selectProductType()"
+                      v-model="local.inputs.products[productSelected].type" :value="item.key">
                       <i class="form-icon"></i> {{item.name}}
                     </label>
                   </div>
@@ -172,10 +177,10 @@
                   <div class="col-12 col-sm-12 panel p-2">
                     <label class="form-checkbox form-inline c-hand"
                     :key="index"
-                    v-for="(item, index) in PRODUCTDEPARTMENT"
+                    v-for="(item, index) in productDepartment"
                     >
                       <input type="checkbox" :value="item.key"
-                      v-model="local.inputs.products[local.productSelected].departmentSelected">
+                      v-model="local.inputs.products[productSelected].departmentSelected">
                       <i class="form-icon"></i> {{item.name}}
                     </label>
                   </div>
@@ -189,13 +194,14 @@
                     <div class="col-12 col-sm-12  panel p-2">
                       <label class="form-radio"
                       :key="index"
-                      v-for="(item, index) in EQUIPMENT"
+                      v-for="(item, index) in equipment"
                       >
                         <input type="radio" :value="item.key"
-                        v-model="local.inputs.products[local.productSelected].equipment">
+                        v-model="local.inputs.products[productSelected].equipment">
                         <i class="form-icon"></i> {{item.name}}
                       </label>
                       <my-input
+                      v-if="local.inputs.products[productSelected].equipment === 2"
                       :config="{
                         type: 'text',
                         key: 'surface',
@@ -203,8 +209,8 @@
                         rules: 'required',
                         validator: $validator
                       }"
-                      :value="local.inputs.products[local.productSelected].options.surface"
-                      @input="val => {local.inputs.products[local.productSelected].options.surface = val}"
+                      :value="local.inputs.products[productSelected].options.surface"
+                      @input="val => {local.inputs.products[productSelected].options.surface = val}"
                       ></my-input>
                     </div>
                   </div>
@@ -215,13 +221,14 @@
                     <div class="col-12 col-sm-12  panel p-2">
                       <label class="form-radio"
                       :key="index"
-                      v-for="(item, index) in COLORTYPE"
+                      v-for="(item, index) in colortype"
                       >
                         <input type="radio" :value="item.key"
-                        v-model="local.inputs.products[local.productSelected].colorType">
+                        v-model="local.inputs.products[productSelected].colorType">
                         <i class="form-icon"></i> {{item.name}}
                       </label>
                       <my-input
+                      v-if="local.inputs.products[productSelected].colorType === 2"
                       :config="{
                         type: 'text',
                         key: 'colorCode',
@@ -229,8 +236,8 @@
                         rules: 'required',
                         validator: $validator
                       }"
-                      :value="local.inputs.products[local.productSelected].options.colorName"
-                      @input="val => {local.inputs.products[local.productSelected].options.colorName = val}"
+                      :value="local.inputs.products[productSelected].options.colorName"
+                      @input="val => {local.inputs.products[productSelected].options.colorName = val}"
                       ></my-input>
                     </div>
                   </div>
@@ -241,10 +248,10 @@
                     <div class="col-12 col-sm-12  panel p-2">
                       <label class="form-checkbox form-inline c-hand"
                       :key="index"
-                      v-for="(item, index) in ACCESSORY"
+                      v-for="(item, index) in accessory"
                       >
                         <input type="checkbox" :value="item.key"
-                        v-model="local.inputs.products[local.productSelected].accessory">
+                        v-model="local.inputs.products[productSelected].accessory">
                         <i class="form-icon"></i> {{item.name}}
                       </label>
                     </div>
@@ -324,20 +331,23 @@ export default {
     }
   },
   computed: {
-    PRODUCTTYPE () {
+    productType () {
       return this.server.config.productType
     },
-    PRODUCTDEPARTMENT () {
+    productDepartment () {
       return this.server.config.productDepartment
     },
-    EQUIPMENT () {
+    equipment () {
       return this.server.config.equipment
     },
-    COLORTYPE () {
+    colortype () {
       return this.server.config.colorType
     },
-    ACCESSORY () {
+    accessory () {
       return this.server.config.accessory
+    },
+    productSelected () {
+      return this.local.productSelected
     }
   },
   created () {
@@ -368,6 +378,18 @@ export default {
         this.local.inputs.products.push(product)
       }
     },
+    selectProductType () {
+      let type = this.local.inputs.products[this.productSelected].type
+      let departmentSelected = this.productDepartment.map((item) => {
+        return item.key
+      })
+      if (type === 1) { // ตู้เปล่่า
+        departmentSelected = departmentSelected.filter((item) => {
+          return (item !== 9 && item !== 10)
+        })
+      }
+      this.local.inputs.products[this.productSelected].departmentSelected = departmentSelected
+    },
     async submitHandle (btnTarget, isConfirm) {
       let isValid = await this.$validator.validateAll()
       if (isConfirm && isValid) {
@@ -375,6 +397,7 @@ export default {
         let data = { input: this.local.inputs }
         await service.postResource({ resourceName, data })
         // console.log(res)
+        // this.GO_TOPAGE('ProductUpdate', {key: '1234'})
         this.$notify('TEST', 'success')
       }
     }
