@@ -9,6 +9,9 @@ const api = {
   'job': {
     'index': '/job'
   },
+  'product': {
+    'index': '/product'
+  },
   'user': {
     'index': '/user'
   }
