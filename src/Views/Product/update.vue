@@ -4,10 +4,10 @@
       <page-title>
         <template slot="left-slot">
           <div v-if="local.isAdmin" class="p-2 bg-primary">
-            {{server.job.code}} {{server.product.name}}
+            {{server.job.code}} / {{server.product.name}}
           </div>
           <div v-else class="p-2 bg-warning">
-            <span class="p-2">QC:</span>{{server.job.code}} {{server.product.name}}
+            <span class="p-2">QC:</span>{{server.job.code}} / {{server.product.name}}
           </div>
         </template>
         <div class="has-icon-left" slot="right-slot"></div>
@@ -41,7 +41,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr :class="{'disable text-light': item.status === 'disable'}" :key="index" v-for="(item, index) in server.tasks">
+                  <tr :class="{'disable text-light': item.isDisable}" :key="index" v-for="(item, index) in server.tasks">
                     <td class="">
                       {{item.department}}
                       <i class="text-dark fa fa-arrows-alt c-hand" aria-hidden="true"
@@ -64,11 +64,21 @@
                       </template>
                     </td>
                     <td class="text-center">
-                      <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" v-if="item.status === 'done'"></i>
-                      <i class="fa fa-circle-o h5" aria-hidden="true" v-else-if="item.status === 'padding'  && local.isAdmin"></i>
-                      <label class="form-checkbox form-inline c-hand" v-else-if="item.status === 'padding' && !local.isAdmin">
-                        <input type="checkbox"><i class="form-icon"></i> ตรวจสอบ
-                      </label>
+                      <template v-if="local.isAdmin">
+                        <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" v-if="item.status === 'done'"></i>
+                        <i class="fa fa-circle-o h5" aria-hidden="true" v-else-if="item.status === 'wait'"></i>
+                      </template>
+                      <template v-else>
+                        <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" v-if="item.status === 'done'"></i>
+                        <label class="form-checkbox form-inline c-hand" v-else-if="item.status === 'ip'">
+                          <input type="checkbox"><i class="form-icon"></i> ตรวจสอบ
+                        </label>
+                        <!-- <label class="form-checkbox form-inline c-hand" v-else-if="item.status === 'wait'">
+                          <input type="checkbox" disabled><i class="form-icon"></i> ตรวจสอบ
+                        </label> -->
+                        <i class="fa fa-circle-o h5" aria-hidden="true" v-else-if="item.status === 'wait'"></i>
+                      </template>
+                      
                     </td>
                   </tr>
                 </tbody>
@@ -170,8 +180,12 @@ export default {
   methods: {
     async fetchData () {
       let resourceName = `${config.api.product.index}/${this.$route.params.key}`
-      let res = await service.getResource({ resourceName, queryString: [] })
-      this.server = res.data.result
+      try {
+        let res = await service.getResource({ resourceName, queryString: [] })
+        this.server = res.data.result
+      } catch (error) {
+        this.GO_TOPAGE('Product')
+      }
     }
   }
 }

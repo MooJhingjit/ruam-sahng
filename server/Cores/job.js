@@ -9,6 +9,16 @@ const create = () => {
   return {config: config.appConfig}
 }
 
+const get = async (jobId) => {
+  // console.log(`jobId => ${jobId}`)
+  try {
+    let job = await Job.findById(jobId)
+    return job
+  } catch (error) {
+    return {}
+  }
+}
+
 const store = async (inputs) => {
   // console.log(input)
   let header = inputs.header
@@ -32,5 +42,6 @@ const store = async (inputs) => {
   }
 }
 
+module.exports.get = get
 module.exports.create = create
 module.exports.store = store

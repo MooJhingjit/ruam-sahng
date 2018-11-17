@@ -132,7 +132,7 @@ export default {
       // this.currentState.status = 'itemView'
     },
     goToDetail () {
-      this.GO_TOPAGE('ProductUpdate', { key: 1234 })
+      this.GO_TOPAGE('ProductUpdate', { key: '5befc4de0e6f6e1a232490fb' })
     }
   }
 }

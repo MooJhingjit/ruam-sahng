@@ -1,6 +1,16 @@
 const config = require('../Config/app.js')
 const mongoose = require('mongoose');
 const Task = require('../Models/task');
+
+const getByProduct = async (productId) => {
+  try {
+    let tasks = await Task.find({ productId })
+    return tasks
+  } catch (error) {
+    return {}
+  }
+}
+
 const store = async (newProduct, product) => {
   let dateStart = new Date()
   let status = 'ip'
@@ -14,7 +24,7 @@ const store = async (newProduct, product) => {
         const newTask = new Task({
           _id: new  mongoose.Types.ObjectId(),
           productId: newProduct._id,
-          departmentId: task.key,
+          department: task.name,
           dateStart,
           dateEnd: null,
           node: null,
@@ -31,3 +41,4 @@ const store = async (newProduct, product) => {
 }
 
 module.exports.store = store
+module.exports.getByProduct = getByProduct
