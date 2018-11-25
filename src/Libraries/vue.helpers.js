@@ -2,7 +2,7 @@
 // import Helper from '@Libraries/common.helpers'
 // import service from '@Services/app-service'
 import config from '@Config/app.config'
-// import moment from 'moment'
+import moment from 'moment'
 // import nodeSnackbar from 'node-snackbar'
 import Helper from '@Libraries/common.helpers'
 export default {
@@ -79,7 +79,11 @@ export default {
       Helper.REMOVE_STORAGEITEM(config.variable.tokenStorage)
       Helper.REMOVE_STORAGEITEM(config.variable.authStorage)
       this.GO_TOPAGE('Login')
-    }
+    },
+    GET_DATE (date = '', format = 'DD/MM/YYYY') {
+      if (date === '' || date === null) return
+      return moment(date).format(format)
+    },
     // LOGOUT () {
     //   Helper.REMOVE_STORAGEITEM('isAuth')
     //   Helper.REMOVE_STORAGEITEM('app_token')

@@ -5,5 +5,5 @@ const productController = require('../Controllers/product.js')
 
 router.get('/product', auth.isAuthorized, productController.index)
 router.get('/product/:key', auth.isAuthorized, productController.edit)
-// router.post('/product', auth.isAuthorized, productController.store)
+router.put('/product/:key', auth.isAuthorized, productController.update)
 module.exports = router

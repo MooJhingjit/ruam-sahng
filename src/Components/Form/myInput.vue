@@ -8,6 +8,7 @@
     :name="config.key"
     :placeholder="config.placeholder"
     v-model="myValue"
+    :disabled="config.isDisable"
     autocomplete="off"
     >
     <p class="form-input-hint" v-if="errors.has(config.key)">กรุณาตรวจสอบข้อมูลข้างต้น</p>
@@ -21,6 +22,7 @@
     :name="config.key"
     :placeholder="config.placeholder"
     v-model="myValue"
+    :disabled="config.isDisable"
     autocomplete="off"
     >
 </template>

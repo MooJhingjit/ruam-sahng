@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const Product = require('../Models/product');
 const TaskCore = require('./task.js');
 const JobCore = require('./job.js');
+const CustomerCore = require('./customer.js');
 const store = async (jobObj, products) => {
   if (products.length) {
     await Promise.all(
@@ -38,81 +39,36 @@ const store = async (jobObj, products) => {
 }
 
 const edit = async (productId) => {
-  let result1 = {}
+  let result = {}
   try {
-    result1.product = await Product.findById(productId)
-    // result1.job = await JobCore.get(result1.product.jobId)
-    result1.job = {
-      code: 'C61-08-108',
-      cus: {
-        name: 'Summit network'
-      },
-      createDate: '10/11/2018',
-    }
-    result1.tasks = await TaskCore.getByProduct(productId)
-    return result1
-    // console.log(result1)
+    result.product = await Product.findById(productId)
+    result.job = await JobCore.get(result.product.jobId)
+    result.customer = await CustomerCore.get(result.job.cusId)
+    result.tasks = await TaskCore.getByProduct(productId)
+    return result
   } catch (error) {
     console.log(error)
     return false
   }
-  let result = {
-    job: {
-      code: 'C61-08-108',
-      cus: {
-        name: 'Summit network'
-      },
-      createDate: '10/11/2018',
-    },
-    product: {
-      name: 'product name',
-      amount: null,
-      thickness: null,
-      note: null,
-      dateEnd: '10/12/2018',
-      type: null,
-      departmentSelected: null,
-      equipment: null,
-      colorType: null,
-      accessory: null,
-      surface: null,
-      colorName: null
-    },
-    tasks: [
-      {
-        department: 'สเปคงาน', dateStart: '20/09/2018', dateEnd: '20/09/2018', note: 'ทดสอบ', status: 'done'
-      },
-      {
-        department: 'แบบ', dateStart: '', dateEnd: '', note: '', status: 'padding'
-      },
-      {
-        department: 'ตัด', dateStart: '', dateEnd: '', note: '', status: 'padding'
-      },
-      {
-        department: 'พันท์', dateStart: '', dateEnd: '', note: '', status: 'padding'
-      },
-      {
-        department: 'พับ', dateStart: '', dateEnd: '', note: '', status: 'padding'
-      },
-      {
-        department: 'เชื่อมประกอบ', dateStart: '', dateEnd: '', note: '', status: 'disable'
-      },
-      {
-        department: 'พ่นสี', dateStart: '', dateEnd: '', note: '', status: 'padding'
-      },
-      {
-        department: 'ประกอบสำเร็จรูป', dateStart: '', dateEnd: '', note: '', status: 'padding'
-      },
-      {
-        department: 'อุปกรณ์', dateStart: '', dateEnd: '', note: '', status: 'padding'
-      },
-      {
-        department: 'วายริ่ง', dateStart: '', dateEnd: '', note: '', status: 'padding'
-      }
-    ]
+}
+
+const update = async (productId, product) => {
+  let result = {}
+  try {
+    // result.product = await Product.findById(productId)
+    // result.job = await JobCore.get(result.product.jobId)
+    // result.customer = await CustomerCore.get(result.job.cusId)
+    let tasks = await TaskCore.update(productId, product.tasks)
+    // if (tasks.isCompleted) {
+    // result.product = await Product.update(productId)
+    // }
+    return result
+  } catch (error) {
+    console.log(error)
+    return false
   }
-  return result
 }
 
 module.exports.store = store
 module.exports.edit = edit
+module.exports.update = update

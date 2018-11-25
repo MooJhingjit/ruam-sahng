@@ -17,9 +17,9 @@
       <div class="card bg-gray">
         <div class="card-body">
           <div class="columns">
-            <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">ลูกค้า: {{server.job.cus.name}}</span></div>
-            <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">วันที่เริ่มผลิต: {{server.job.createDate}}</span></div>
-            <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">กำหนดเสร็จ: {{server.product.dateEnd}}</span></div>
+            <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">ลูกค้า: {{server.customer.name}}</span></div>
+            <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">วันที่เริ่มผลิต: {{GET_DATE(server.job.createdAt)}}</span></div>
+            <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">กำหนดเสร็จ: {{GET_DATE(server.product.dateEnd)}}</span></div>
             <!-- <div class="column text-right">
               <div class="btn-group btn-group-block result-view">
                 <button @click="changeViewType('table')" :class="['btn btn-sm', {'active': server.viewType === 'table'}]"><i class="fas fa-table"></i></button>
@@ -48,37 +48,54 @@
                       v-if="item.status === 'done'"
                       @click="showDetail()"></i>
                     </td>
-                    <td class="text-center">{{item.dateStart}}</td>
-                    <td class="text-center">{{item.dateEnd}}</td>
+                    <td class="text-center">{{GET_DATE(item.dateStart)}}</td>
+                    <td class="text-center">{{GET_DATE(item.dateEnd)}}</td>
                     <td class="text-center">
                       <template v-if="local.isAdmin">
                         {{item.note}}
                       </template>
                       <template v-else>
-                        <template v-if="item.status === 'done'">
+                        <template v-if="item.status === 'done' || item.isDisable">
                           {{item.note}}
                         </template>
-                        <template v-else-if="item.status === 'padding'">
-                          <input type="text" class="form-input" placeholder="ระบุหมายเหตุ">
+                        <template v-else-if="item.status === 'ip'">
+                          <my-input
+                            :config="{
+                              type: 'text',
+                              key: `note${index}`,
+                              placeholder: 'ระบุหมายเหตุ',
+                              rules: '',
+                              validator: $validator,
+                              isDisable: item.isDisable
+                            }"
+                            :value="item.note"
+                            @input="val => {item.note = val}"
+                          ></my-input>
+                          <!-- <input type="text" class="form-input" placeholder="ระบุหมายเหตุ"> -->
                         </template>
                       </template>
                     </td>
                     <td class="text-center">
                       <template v-if="local.isAdmin">
                         <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" v-if="item.status === 'done'"></i>
-                        <i class="fa fa-circle-o h5" aria-hidden="true" v-else-if="item.status === 'wait'"></i>
+                        <i class="fa fa-circle-o h5" aria-hidden="true" v-else-if="item.status === 'ip'"></i>
+                        <i class="fa fa fa-clock-o h5" aria-hidden="true" v-else-if="item.status === 'wait'"></i>
                       </template>
                       <template v-else>
-                        <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" v-if="item.status === 'done'"></i>
+                        <i class="fa fa-times h5" aria-hidden="true" v-if="item.isDisable"></i>
+                        <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" v-else-if="item.status === 'done'"></i>
                         <label class="form-checkbox form-inline c-hand" v-else-if="item.status === 'ip'">
-                          <input type="checkbox"><i class="form-icon"></i> ตรวจสอบ
+                          <input type="checkbox"
+                          :disabled="item.isDisable"
+                          :value="item._id"
+                          v-model="item.done"
+                          ><i class="form-icon"></i> ตรวจสอบ
                         </label>
                         <!-- <label class="form-checkbox form-inline c-hand" v-else-if="item.status === 'wait'">
                           <input type="checkbox" disabled><i class="form-icon"></i> ตรวจสอบ
                         </label> -->
-                        <i class="fa fa-circle-o h5" aria-hidden="true" v-else-if="item.status === 'wait'"></i>
+                        <i class="fa fa fa-clock-o h5" aria-hidden="true" v-else-if="item.status === 'wait'"></i>
                       </template>
-                      
                     </td>
                   </tr>
                 </tbody>
@@ -141,6 +158,7 @@
 </template>
 
 <script>
+
 import PageTitle from '@Components/PageTitle'
 import MyModal from '@Components/Modal'
 import MyInput from '@Components/Form/myInput'
@@ -185,6 +203,18 @@ export default {
         this.server = res.data.result
       } catch (error) {
         this.GO_TOPAGE('Product')
+      }
+    },
+    async submitHandle (actionType, tf) {
+      if (!tf) return
+      let data = this.server
+      let resourceName = `${config.api.product.index}/${this.$route.params.key}`
+      switch (actionType) {
+        case 'update':
+          await service.putResource({ resourceName, data })
+          this.fetchData()
+          this.$notify('ทำรายการเสร็จสิ้น', 'success')
+        break
       }
     }
   }
