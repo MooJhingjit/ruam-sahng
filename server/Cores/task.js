@@ -52,34 +52,29 @@ const update = async (productId, tasks) => {
       today = new Date()
       let currentTask = task.order
       let dateStart = null // start working
-      // console.log(task.order)
-      // console.log(index + ' ' + task.department)
-      // console.log(currentTask + ' <==> ' + nextTask)
       if (nextTask.length && nextTask.indexOf(currentTask) !== -1) {
         dateStart = today
         let taskIndex = nextTask.indexOf(currentTask)
         nextTask.splice(taskIndex, 1)
-        // nextTask = null
       }
       if (task.done) {
         dateStart = today
-        status = 'done'
+        task.status = 'done'
         nextTask.push(findNextTask(currentTask, tasks))
         if (currentTask === 8 || currentTask === 9) {
           nextTask.push( geWiringtDate(currentTask, tasks))
         }
       } else {
         today = (task.status === 'done') ? task.dateEnd : ''
-        status = (dateStart !== null) ? 'ip' : task.status
+        task.status = (dateStart !== null) ? 'ip' : task.status
       }
-      // waiting for 8 or 9 is completed
-      // console.log(nextTask)
       try {
+        // console.log(task)
         await Task.findOneAndUpdate({_id: task._id}, {
           dateStart: (dateStart !== null) ? dateStart : task.dateStart,
           dateEnd: today,
           note: task.note,
-          status
+          status: task.status
         })
       } catch (error) {
         console.log(error)
@@ -87,29 +82,24 @@ const update = async (productId, tasks) => {
       }
     })
   )
-  return true
+  // console.log(tasks)
+  return tasks
 }
 
 const findNextTask = (currentTask, allTask) => {
-  // console.log(allTask)
-  // filter disable tasks
   let disableTasks = allTask.filter((item) => {
     return item.isDisable
   }).map((task) => {
     return task.order
   })
-  // console.log(disableTasks)
   let nextTask = config.appConfig.productDepartment.filter( (task) => {
     return (task.key === currentTask)
   })
   if ((disableTasks.indexOf(nextTask[0].nextTask) !== -1)) {
     do {
-      console.log(nextTask[0].nextTask)
       nextTask[0].nextTask = parseInt(nextTask[0].nextTask) + parseInt(1) 
-      console.log(nextTask[0].nextTask)
     } while (disableTasks.indexOf(nextTask[0].nextTask) !== -1) 
   }
-  // console.log(nextTask[0].nextTask)
   return nextTask[0].nextTask
 }
 

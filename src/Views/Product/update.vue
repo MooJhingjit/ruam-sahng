@@ -132,7 +132,7 @@
         </div>
         <div class="card-footer">
           <div class="columns" v-if="!local.isAdmin">
-            <div class="column col-12 center text-center">
+            <div class="column col-12 center text-center" v-if="server.product.status !== 'done'">
               <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึกการเปลี่ยนแปลง'}" @submit="(tf) => submitHandle('update', tf)"></my-button>
             </div>
           </div>
@@ -184,7 +184,7 @@ export default {
       server: null,
       local: {
         viewType: 'table',
-        isAdmin: false
+        isAdmin: true
       }
     }
   },

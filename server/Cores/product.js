@@ -26,6 +26,7 @@ const store = async (jobObj, products) => {
             accessory: product.accessory,
             surface: (product.options.surface)? product.options.surface : null,
             colorName: (product.options.colorName)? product.options.colorName :  null,
+            status: 'ip'
           });
           let newProductObj = await newProduct.save()
           await TaskCore.store(newProductObj, product)
@@ -55,13 +56,19 @@ const edit = async (productId) => {
 const update = async (productId, product) => {
   let result = {}
   try {
-    // result.product = await Product.findById(productId)
-    // result.job = await JobCore.get(result.product.jobId)
-    // result.customer = await CustomerCore.get(result.job.cusId)
     let tasks = await TaskCore.update(productId, product.tasks)
-    // if (tasks.isCompleted) {
-    // result.product = await Product.update(productId)
-    // }
+    // check product completed
+    let productCompleted = true
+    tasks.map((task, index) => {
+      if (!task.isDisable && task.status !== 'done') {
+        productCompleted = false
+      }
+    })
+    if (productCompleted) {
+      await Product.findOneAndUpdate({_id: productId}, {
+        status: 'done'
+      })
+    }
     return result
   } catch (error) {
     console.log(error)

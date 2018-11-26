@@ -14,7 +14,8 @@ const product = mongoose.Schema({
   colorType: {type: Number, required: true},
   accessory: {type: Array, required: false},
   surface: {type: String, required: false},
-  colorName: {type: String, required: false}
+  colorName: {type: String, required: false},
+  status: {type: String, required: true}
 },
 {
     timestamps: true
