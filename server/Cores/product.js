@@ -6,6 +6,34 @@ const Product = require('../Models/product');
 const TaskCore = require('./task.js');
 const JobCore = require('./job.js');
 const CustomerCore = require('./customer.js');
+
+const show = async (query) => {
+  let condition = null
+  if (query.mainSearch) {
+    condition = {}
+    condition.name = { '$regex' : query.mainSearch, '$options' : 'i' }
+  }
+  let products = await Product.find(condition).sort({createdAt: 'desc'}).limit(20)
+  let result = []
+  if (products.length) {
+    await Promise.all(
+      products.map( async (product) => {
+        let item = {}
+        item.product = product
+        try {
+          item.job = await JobCore.get(product.jobId)
+          item.customer = await CustomerCore.get(item.job.cusId)
+          result.push(item)
+        } catch (error) {
+          console.log(error)
+          return false
+        }
+      })
+    )
+  }
+  return result
+}
+
 const store = async (jobObj, products) => {
   if (products.length) {
     await Promise.all(
@@ -76,6 +104,7 @@ const update = async (productId, product) => {
   }
 }
 
+module.exports.show = show
 module.exports.store = store
 module.exports.edit = edit
 module.exports.update = update

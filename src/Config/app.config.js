@@ -20,6 +20,10 @@ const api = {
 const variable = {
   tokenStorage: 'ruamsahng_token',
   authStorage: 'ruamsahng_auth',
+  jobStatus: {
+    ip: 'กำลังดำเนินงาน',
+    done: 'รอส่ง'
+  },
   productType: [
     {
       key: 1,

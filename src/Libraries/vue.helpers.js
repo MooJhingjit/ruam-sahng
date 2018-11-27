@@ -19,9 +19,9 @@ export default {
     // COLORTYPE () {
     //   return config.variable.colorType
     // },
-    // ACCESSORY () {
-    //   return config.variable.accessory
-    // }
+    JOBSTATUS () {
+      return config.variable.jobStatus
+    }
   },
   filters: {},
   methods: {
@@ -47,15 +47,15 @@ export default {
       }
       return hasAuth
     },
-    // BUILDPARAM (params = []) {
-    //   let queryString = ''
-    //   if (Object.keys(params).length) {
-    //     Object.keys(params).forEach(function (key) {
-    //       queryString += key + '=' + params[key] + '&'
-    //     })
-    //     return queryString.slice(0, -1)
-    //   }
-    // },
+    BUILDPARAM (params = []) {
+      let queryString = ''
+      if (Object.keys(params).length) {
+        Object.keys(params).forEach(function (key) {
+          queryString += key + '=' + params[key] + '&'
+        })
+        return queryString.slice(0, -1)
+      }
+    },
     NOTIFY (type, msg = null, options = {}) {
       switch (type) {
         case 'success':

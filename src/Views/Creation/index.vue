@@ -398,7 +398,7 @@ export default {
         await service.postResource({ resourceName, data })
         // console.log(res)
         // this.GO_TOPAGE('ProductUpdate', {key: '1234'})
-        this.$notify('TEST', 'success')
+        this.$notify('ทำรายการเสร็จสิ้น', 'success')
       }
     }
   }
