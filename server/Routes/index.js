@@ -10,7 +10,8 @@ app.use('/api',
     require('./auth'),
     require('./app'),
     require('./job'),
-    require('./product')
+    require('./product'),
+    require('./schedule')
   ]
 );
 

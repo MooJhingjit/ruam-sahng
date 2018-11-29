@@ -184,7 +184,7 @@ export default {
       server: null,
       local: {
         viewType: 'table',
-        isAdmin: true
+        isAdmin: false
       }
     }
   },

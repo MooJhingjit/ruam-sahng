@@ -12,6 +12,9 @@ const api = {
   'product': {
     'index': '/product'
   },
+  'schedule': {
+    'index': '/schedule'
+  },
   'user': {
     'index': '/user'
   }

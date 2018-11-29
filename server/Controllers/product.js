@@ -1,7 +1,7 @@
 
 const ProductCore = require('../Cores/product.js')
 const index = async (req, res, next) => {
-  let result = await ProductCore.show(req.query)
+  let result = await ProductCore.get({type: 'table', mainSearch: req.query.mainSearch})
   if (!result) {
     res.status(401).json({msg: 'error'})
     return

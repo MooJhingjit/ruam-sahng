@@ -62,14 +62,21 @@ const update = async (productId, tasks) => {
         task.status = 'done'
         nextTask.push(findNextTask(currentTask, tasks))
         if (currentTask === 8 || currentTask === 9) {
-          nextTask.push( geWiringtDate(currentTask, tasks))
+          nextTask.push( geWiringDate(currentTask, tasks))
         }
       } else {
         today = (task.status === 'done') ? task.dateEnd : ''
         task.status = (dateStart !== null) ? 'ip' : task.status
       }
+      // let res = { // for debug
+      // currentTask,
+      //   dateStart: (dateStart !== null) ? dateStart : task.dateStart,
+      //   dateEnd: today,
+      //   note: task.note,
+      //   status: task.status
+      // }
+      // console.log(res)
       try {
-        // console.log(task)
         await Task.findOneAndUpdate({_id: task._id}, {
           dateStart: (dateStart !== null) ? dateStart : task.dateStart,
           dateEnd: today,
@@ -103,7 +110,7 @@ const findNextTask = (currentTask, allTask) => {
   return nextTask[0].nextTask
 }
 
-const geWiringtDate = (currentTask, tasks) => {
+const geWiringDate = (currentTask, tasks) => {
   let otherTask = ''
   if (currentTask === 8) {
     otherTask = tasks[9 - 1]

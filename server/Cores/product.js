@@ -7,13 +7,12 @@ const TaskCore = require('./task.js');
 const JobCore = require('./job.js');
 const CustomerCore = require('./customer.js');
 
-const show = async (query) => {
-  let condition = null
-  if (query.mainSearch) {
-    condition = {}
+const get = async (obj) => {
+  let condition = {}
+  if (obj.mainSearch) {
     condition.name = { '$regex' : query.mainSearch, '$options' : 'i' }
   }
-  let products = await Product.find(condition).sort({createdAt: 'desc'}).limit(20)
+  let products = await Product.find(condition).sort({createdAt: 'desc'})
   let result = []
   if (products.length) {
     await Promise.all(
@@ -23,6 +22,7 @@ const show = async (query) => {
         try {
           item.job = await JobCore.get(product.jobId)
           item.customer = await CustomerCore.get(item.job.cusId)
+          item.tasks = await TaskCore.getByProduct(product._id)
           result.push(item)
         } catch (error) {
           console.log(error)
@@ -104,7 +104,7 @@ const update = async (productId, product) => {
   }
 }
 
-module.exports.show = show
+module.exports.get = get
 module.exports.store = store
 module.exports.edit = edit
 module.exports.update = update

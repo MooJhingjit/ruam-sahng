@@ -84,6 +84,14 @@ export default {
       if (date === '' || date === null) return
       return moment(date).format(format)
     },
+    IS_LATE (dateEnd) {
+      // console.log(dateEnd)
+      let today = moment()
+      dateEnd = moment(dateEnd)
+      let dataDiff = dateEnd.diff(today, 'days')
+      // console.log(dataDiff)
+      return (dataDiff <= 0)
+    }
     // LOGOUT () {
     //   Helper.REMOVE_STORAGEITEM('isAuth')
     //   Helper.REMOVE_STORAGEITEM('app_token')
