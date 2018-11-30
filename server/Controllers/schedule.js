@@ -2,7 +2,7 @@ const ProductCore = require('../Cores/product.js')
 
 const index = async (req, res, next) => {
   let products = await ProductCore.get({type: 'schedule'})
-  console.log(products)
+  // console.log(products)
   if (!products) {
     res.status(401).json({msg: 'error'})
     return
@@ -10,7 +10,7 @@ const index = async (req, res, next) => {
   let result = []
   if (products.length) {
     products.map((item) => {
-      console.log(item.product.createdAt)
+      // console.log(item.product.createdAt)
       let tasks = item.tasks.map((taskItem) => {
         return {
           key: '',

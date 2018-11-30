@@ -148,6 +148,7 @@ export default {
   name: 'UserEditPage',
   data () {
     return {
+      server: {},
       local: {
         name: '',
         userName: '',
@@ -164,8 +165,16 @@ export default {
     // propertyComputed() {
     // }
   },
-  created () {},
+  created () {
+    this.fetchData()
+  },
   methods: {
+    async fetchData () {
+      let resourceName = config.api.user.index
+      let res = await service.getResource({ resourceName, queryString: [] })
+      this.server = res.data
+      console.log(this.server)
+    },
     async submitHandle (action) {
       switch(action) {
         case 'closePassPanel':
