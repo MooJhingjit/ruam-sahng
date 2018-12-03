@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import config from '@Config/app.config'
 import service from '@Services/app.service'
 import MyInput from '@Components/Form/myInput'
@@ -81,6 +82,9 @@ export default {
   created () {
   },
   methods: {
+    ...mapActions([
+      'SET_APP_STORE'
+    ]),
     async doLogin (tf) {
       let isPass = await this.$validator.validate()
       if (isPass) {
@@ -92,12 +96,15 @@ export default {
         try {
           let res = await service.postResource({ data, resourceName })
           this.setData(res.data)
+          
         } catch (error) {
           this.NOTIFY('error', 'ข้อมูลไม่ถูกต้อง โปรดตรวจสอบ')
         }
       }
     },
     setData (data) {
+      // console.log(data.appData)
+      this.SET_APP_STORE({data: data.appData})
       Helper.SET_STORAGEITEM(config.variable.tokenStorage, data.token)
       Helper.SET_STORAGEITEM(config.variable.authStorage, 1)
       this.REDIRECT_TOHOMEPAGE()

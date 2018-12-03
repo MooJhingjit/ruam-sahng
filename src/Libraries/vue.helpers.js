@@ -1,4 +1,4 @@
-// import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 // import Helper from '@Libraries/common.helpers'
 // import service from '@Services/app-service'
 import config from '@Config/app.config'
@@ -7,9 +7,12 @@ import moment from 'moment'
 import Helper from '@Libraries/common.helpers'
 export default {
   computed: {
-    // PRODUCTTYPE () {
-    //   return config.variable.productType
-    // },
+    ...mapGetters([
+      'GET_USERDATA_STORE'
+    ]),
+    USER () {
+      return this.GET_USERDATA_STORE
+    },
     // PRODUCTDEPARTMENT () {
     //   return config.variable.productDepartment
     // },
@@ -19,12 +22,21 @@ export default {
     // COLORTYPE () {
     //   return config.variable.colorType
     // },
+    ISADMIN () {
+      return (this.USER.department === 'admin')
+    },
     JOBSTATUS () {
       return config.variable.jobStatus
+    },
+    TASKSTATUS () {
+      return config.variable.taskStatus
     }
   },
   filters: {},
   methods: {
+    ...mapActions([
+      'SET_APP_STORE'
+    ]),
     // GET_DATEDIFF (dateStart, dateEnd) { // this for buefy
     //   var startDate = moment(dateStart, 'YYYY/MM/DD')
     //   var endDate = moment(dateEnd, 'YYYY/MM/DD')
@@ -78,6 +90,7 @@ export default {
     LOGOUT () {
       Helper.REMOVE_STORAGEITEM(config.variable.tokenStorage)
       Helper.REMOVE_STORAGEITEM(config.variable.authStorage)
+      this.SET_APP_STORE({data: {}})
       this.GO_TOPAGE('Login')
     },
     GET_DATE (date = '', format = 'DD/MM/YYYY') {
@@ -91,6 +104,9 @@ export default {
       let dataDiff = dateEnd.diff(today, 'days')
       // console.log(dataDiff)
       return (dataDiff <= 0)
+    },
+    ISROLE (taskId) {
+      return this.USER.role.indexOf(taskId) >= 0;
     }
     // LOGOUT () {
     //   Helper.REMOVE_STORAGEITEM('isAuth')

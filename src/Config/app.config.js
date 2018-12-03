@@ -10,7 +10,8 @@ const api = {
     'index': '/job'
   },
   'product': {
-    'index': '/product'
+    'index': '/product',
+    'status': '/product/update-status'
   },
   'schedule': {
     'index': '/schedule'
@@ -25,7 +26,13 @@ const variable = {
   authStorage: 'ruamsahng_auth',
   jobStatus: {
     ip: 'กำลังดำเนินงาน',
+    review: 'รอตรวจสอบ',
     done: 'รอส่ง'
+  },
+  taskStatus: {
+    ip: 'กำลังดำเนินงาน',
+    wait: 'รอ',
+    done: 'เสร็จสิ้น'
   },
   productType: [
     {

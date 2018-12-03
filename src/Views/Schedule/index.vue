@@ -2,10 +2,12 @@
   <section class="p-2">
     <div class="columns">
       <div class="column text-left">
-        <h5 class="text-bold text-primary"><i class="fa fa-sign-out c-hand text-gray" aria-hidden="true" @click="GO_TOPAGE('Status')"></i> ตารางงาน</h5>
+        <h5 class="text-bold text-primary"><i class="fa fa-sign-out c-hand text-gray" aria-hidden="true" @click="GO_TOPAGE('Product')"></i> ตารางงาน 1/5</h5>
       </div>
       <div class="column text-right">
-        <h5 class="text-bold text-primary">1/5</h5>
+        <span class="label"><i class="fa fa fa-clock-o h5" aria-hidden="true"></i> {{TASKSTATUS['wait']}}</span>
+        <span class="label"><i class="fa fa-circle-o h5" aria-hidden="true"></i> {{TASKSTATUS['ip']}}</span>
+        <span class="label"><i class="fa fa-check-circle-o h5 text-success"></i> {{TASKSTATUS['done']}}</span>
       </div>
     </div>
     <div class="columns">
@@ -261,8 +263,8 @@ export default {
       return [
         'text-center',
         { 'item-name': task.key === 'itemName' },
-        { 'bg-success': task.key === 'itemName' && obj.header.status === 'done' },
-        { 'bg-error': (task.key === 'itemName' && this.IS_LATE(task.dateEnd) && obj.header.status !== 'done') },
+        { 'bg-success': task.key === 'itemName' && obj.header.status === 'review' },
+        { 'bg-error': (task.key === 'itemName' && this.IS_LATE(task.dateEnd) && obj.header.status !== 'review') },
         { 'bg-gray': task.isDisable},
         { '': (task.status === 'wait' && !task.isDisable)}
       ]

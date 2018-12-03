@@ -19,6 +19,7 @@ const options = {
     cancel: 'ยกเลิก'
   }
 }
+// export const bus = new Vue()
 Vue.use(Alertifyjs, options)
 Vue.use(VeeValidate)
 Vue.config.productionTip = false

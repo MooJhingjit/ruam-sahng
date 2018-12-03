@@ -16,7 +16,8 @@ const actions = {
   //   commit('SET_AUTH', obj)
   // },
   SET_APP_STORE: ({ commit }, obj) => {
-    commit('SET_APPDATA', obj)
+    // console.log('do')
+    commit('SET_APPDATA', obj.data)
   }
 }
 

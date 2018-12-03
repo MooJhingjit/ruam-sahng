@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const User = require('../Models/user')
+const AppCore = require('../Cores/app')
 const jwt = require('jsonwebtoken')
 // const signup = (req, res) => {
 //   bcrypt.hash(req.body.data.password, 10, function(err, hash){
@@ -30,11 +31,11 @@ const jwt = require('jsonwebtoken')
 //   })
 // }
 
-const login = (req, res) => {
+const login = async (req, res) => {
   User.findOne({username: req.body.data.username})
   .exec()
   .then(function(user) {
-     bcrypt.compare(req.body.data.password, user.password, function(err, result){
+     bcrypt.compare(req.body.data.password, user.password, async function(err, result){
         if(err) {
            return res.status(401).json({
               failed: 'Unauthorized Access'
@@ -49,7 +50,8 @@ const login = (req, res) => {
           {
             expiresIn: '12h'
           })
-          return res.status(200).json({token: JWTToken})
+          let appData = await AppCore.index({userId: user._id}) //result contain userId
+          return res.status(200).json({token: JWTToken, appData})
         }
         return res.status(401).json({
            failed: 'Unauthorized Access'

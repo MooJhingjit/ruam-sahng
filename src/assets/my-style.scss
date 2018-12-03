@@ -34,3 +34,10 @@ a:focus{
 .form-input[readonly] {
   background-color: #fff!important;
 }
+
+.vdp-datepicker__calendar  {
+  .cell.today{
+    background: #66718a !important;
+    color: #fff!important;
+  }
+}

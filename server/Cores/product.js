@@ -49,8 +49,8 @@ const store = async (jobObj, products) => {
             dateEnd: product.dateEnd,
             type: product.type,
             departmentSelected: product.departmentSelected,
-            equipment: product.equipment,
-            colorType: product.colorType,
+            equipment: (Array.isArray(product.equipment)) ? null : product.equipment,
+            colorType: (Array.isArray(product.colorType)) ? null : product.colorType,
             accessory: product.accessory,
             surface: (product.options.surface)? product.options.surface : null,
             colorName: (product.options.colorName)? product.options.colorName :  null,
@@ -94,10 +94,32 @@ const update = async (productId, product) => {
     })
     if (productCompleted) {
       await Product.findOneAndUpdate({_id: productId}, {
-        status: 'done'
+        status: 'review'
       })
     }
     return result
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
+const updateStatus = async (productId, status) => {
+  let result = {}
+  try {
+    await Product.findOneAndUpdate({_id: productId}, { status })
+    return result
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
+const remove = async (productId) => {
+  try {
+    await Product.findByIdAndRemove({_id: productId})
+    await TaskCore.remove(productId)
+    return true
   } catch (error) {
     console.log(error)
     return false
@@ -108,3 +130,6 @@ module.exports.get = get
 module.exports.store = store
 module.exports.edit = edit
 module.exports.update = update
+module.exports.remove = remove
+module.exports.updateStatus = updateStatus
+

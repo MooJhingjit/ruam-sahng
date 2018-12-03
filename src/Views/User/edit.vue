@@ -1,10 +1,10 @@
 <template>
-  <section class="">
+  <section class="" v-if="server !== null">
     <div class="column col-12 col-xs-12">
       <page-title>
         <template slot="left-slot">
           <div class="p-2 bg-primary">
-            ข้อมูลผู้ใช้ ปกครอง จริงจิตร
+            ข้อมูลผู้ใช้ {{local.name}}
           </div>
         </template>
         <div class="has-icon-left" slot="right-slot"></div>
@@ -14,108 +14,155 @@
       <div class="card bg-gray">
         <div class="card-body">
           <div class="columns">
-            <div class="column col-4 col-mx-auto">
-              <div class="form-group">
-                <label class="form-label" for="input-example-1">ชื่อ-นามสกุล</label>
-                <my-input
-                  :config="{
-                    type: 'text',
-                    key: 'userName',
-                    placeholder: 'ชื่อ-นามสกุล',
-                    rules: 'required',
-                    validator: $validator
-                  }"
-                  :value="local.name"
-                  @input="value => { local.name = value }"
-                ></my-input>
-              </div>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column col-4 col-mx-auto">
-              <div class="form-group">
-                <label class="form-label" for="input-example-1">ชื่อเข้าใช้งาน(เข้าสู่ระบบ)</label>
-                <my-input
-                  :config="{
-                    type: 'text',
-                    key: 'userUsername',
-                    placeholder: 'ชื่อเข้าใช้งาน',
-                    rules: 'required',
-                    validator: $validator
-                  }"
-                  :value="local.userName"
-                  @input="value => { local.userName = value }"
-                ></my-input>
-              </div>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column col-4 col-mx-auto">
-               <div class="card p-2">
-                <my-button 
-                v-if="!local.pass.doOpenPanel"
-                :config="{
-                  icon: 'fa fa-check-circle',
-                  btnClass: 'btn', doConfirm: false,
-                  text: 'เปลี่ยนรหัสผ่าน'
-                }"
-                @submit="(tf) => submitHandle('openPassPanel', tf)"
-                ></my-button>
-                <my-button
-                v-else
-                :config="{
-                  icon: 'fa fa-times-circle',
-                  btnClass: 'btn', doConfirm: false, text: 'ปิด'
-                }"
-                @submit="(tf) => submitHandle('closePassPanel', tf)"
-                ></my-button>
-                <div class="form-group" v-if="local.pass.doOpenPanel">
-                  <label class="form-label" for="input-example-1"></label>
-                  <my-input
-                    :config="{
-                      type: 'password',
-                      key: 'userOldPass',
-                      placeholder: 'รหัสผ่านเก่า',
-                      rules: 'required',
-                      validator: $validator
-                    }"
-                    :value="local.pass.old"
-                    @input="value => {local.pass.old = value}"
-                  ></my-input><br/>
-                  <my-input
-                    :config="{
-                      type: 'password',
-                      key: 'userNewPass',
-                      placeholder: 'รหัสผ่านใหม่',
-                      rules: 'required',
-                      validator: $validator
-                    }"
-                    :value="local.pass.new"
-                    @input="value => {local.pass.new = value}"
-                  ></my-input><br/>
-                  <my-input
-                    :config="{
-                      type: 'password',
-                      key: 'userNewPassConfirmation',
-                      placeholder: 'รหัสผ่านใหม่',
-                      rules: 'required',
-                      validator: $validator
-                    }"
-                    :value="local.pass.confirm"
-                    @input="value => {local.pass.confirm = value}"
-                  ></my-input><br/>
-                  <label class="text-success">กดปุ่มบันทึกเพื่อบันทึกข้อมูล</label>
-                  <!-- <p class="p-1 text-success">กดปุ่มบันทึกเพื่อบันทึกข้อมูล</p> -->
+            <div class="column col-6">
+              <div class="columns">
+                <div class="column col-12 col-mx-auto">
+                  <div class="form-group">
+                    <label class="form-label" for="input-example-1">ชื่อ-นามสกุล</label>
+                    <my-input
+                      :config="{
+                        type: 'text',
+                        key: 'name',
+                        placeholder: 'ชื่อ-นามสกุล',
+                        rules: 'required',
+                        validator: $validator
+                      }"
+                      :value="local.name"
+                      @input="val => {local.name = val}"
+                    ></my-input>
+                  </div>
                 </div>
-               </div>
+              </div>
+              <div class="columns">
+                <div class="column col-12 col-mx-auto">
+                  <div class="form-group">
+                    <label class="form-label" for="input-example-1">ชื่อเข้าใช้งาน(เข้าสู่ระบบ)</label>
+                    <my-input
+                      :config="{
+                        type: 'text',
+                        key: 'userName',
+                        placeholder: 'ชื่อเข้าใช้งาน',
+                        rules: 'required',
+                        validator: $validator
+                      }"
+                      :value="local.userName"
+                      @input="value => { local.userName = value }"
+                    ></my-input>
+                  </div>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column col-12 col-mx-auto">
+                  <div class="form-group">
+                    <label class="form-label" for="input-example-1">แผนก</label>
+                    <my-option
+                      :config="{
+                        type: 'text',
+                        key: 'department',
+                        rules: 'required',
+                        validator: $validator,
+                        selection: server.department
+                      }"
+                      :value="local.department"
+                      @input="value => { local.department = value }"
+                    ></my-option>
+                  </div>
+                </div>
+              </div>
+              <div class="columns" v-if="local.department === 'qc'">
+                <div class="column col-12 col-mx-auto">
+                  <div class="form-group">
+                    <label class="form-label" for="input-example-1">ประเภท QC</label>
+                    <my-option
+                      :config="{
+                        type: 'text',
+                        key: 'qcSection',
+                        rules: 'required',
+                        validator: $validator,
+                        selection: server.qcSection
+                      }"
+                      :value="local.qcSection"
+                      @input="value => { local.qcSection = value }"
+                    ></my-option>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column col-6">
+              <div class="columns">
+                <div class="column col-12 col-mx-auto">
+                  <label class="form-label" for="input-example-1">รหัสผ่าน</label>
+                  <div class="card p-2">
+                    <my-button
+                    v-if="!local.pass.doOpenPanel"
+                    :config="{
+                      icon: 'fa fa-hand-pointer-o',
+                      btnClass: 'btn', doConfirm: false,
+                      text: 'เปลี่ยนรหัสผ่าน'
+                    }"
+                    @submit="(tf) => submitHandle('openPassPanel', tf)"
+                    ></my-button>
+                    <my-button
+                    v-else
+                    :config="{
+                      icon: 'fa fa-times-circle',
+                      btnClass: 'btn', doConfirm: false, text: 'ปิด'
+                    }"
+                    @submit="(tf) => submitHandle('closePassPanel', tf)"
+                    ></my-button>
+                    <div class="form-group" v-if="local.pass.doOpenPanel">
+                      <label class="form-label" for="input-example-1">รหัสผ่านเก่า</label>
+                      <my-input
+                        :config="{
+                          type: 'password',
+                          key: 'oldPass',
+                          placeholder: 'รหัสผ่านเก่า',
+                          rules: 'required',
+                          validator: $validator
+                        }"
+                        :value="local.pass.old"
+                        @input="value => {local.pass.old = value}"
+                      ></my-input>
+                      <label class="form-label" for="input-example-1">รหัสผ่านใหม่</label>
+                      <my-input
+                        :config="{
+                          type: 'password',
+                          key: 'newPass',
+                          placeholder: 'รหัสผ่านใหม่',
+                          rules: 'required',
+                          validator: $validator
+                        }"
+                        :value="local.pass.new"
+                        @input="value => {local.pass.new = value}"
+                      ></my-input>
+                      <label class="form-label" for="input-example-1">ยืนยันรหัสผ่านใหม่</label>
+                      <my-input
+                        :config="{
+                          type: 'password',
+                          key: 'confirmPass',
+                          placeholder: 'รหัสผ่านใหม่',
+                          rules: 'required',
+                          validator: $validator
+                        }"
+                        :value="local.pass.confirm"
+                        @input="value => {local.pass.confirm = value}"
+                      ></my-input>
+                      <br/>
+                      <label class="text-error" v-if="local.pass.isMatch === false">ข้อมูลรหัสผ่านไม่ตรงกัน กรุณาตรวจสอบ</label>
+                      <!-- <label class="text-success" v-if="local.pass.isMatch === true">ข้อมูลรหัสผ่านตรงกัน</label> -->
+                      <!-- <p class="p-1 text-success">กดปุ่มบันทึกเพื่อบันทึกข้อมูล</p> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div class="card-footer">
           <div class="columns">
             <div class="column col-12 center text-center">
-              <my-button 
-              :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึก'}" 
+              <my-button
+              :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึก'}"
               @submit="(tf) => submitHandle('update', tf)">
               </my-button>
             </div>
@@ -126,12 +173,12 @@
   </section>
 </template>
 
-
 <script>
 import config from '@Config/app.config'
 import service from '@Services/app.service'
 import PageTitle from '@Components/PageTitle'
 import MyInput from '@Components/Form/myInput'
+import MyOption from '@Components/Form/myOption'
 import MyButton from '@Components/Form/myButton'
 export default {
   props: {
@@ -143,27 +190,35 @@ export default {
   components: {
     PageTitle,
     MyInput,
+    MyOption,
     MyButton
   },
   name: 'UserEditPage',
   data () {
     return {
-      server: {},
+      server: null,
       local: {
-        name: '',
-        userName: '',
+        name: null,
+        userName: null,
+        department: null,
+        qcSection: null,
         pass: {
-          old: '',
-          new: '',
-          confirm: '',
-          doOpenPanel: false
+          old: null,
+          new: null,
+          confirm: null,
+          doOpenPanel: false,
+          isMatch: null
         }
       }
     }
   },
   computed: {
-    // propertyComputed() {
-    // }
+    newPassword () {
+      return this.local.pass.new
+    },
+    confirmPassword () {
+      return this.local.pass.confirm
+    }
   },
   created () {
     this.fetchData()
@@ -172,38 +227,69 @@ export default {
     async fetchData () {
       let resourceName = config.api.user.index
       let res = await service.getResource({ resourceName, queryString: [] })
-      this.server = res.data
-      console.log(this.server)
+      this.server = res.data.result
+      this.local.name = this.server.user.name
+      this.local.userName = this.server.user.username
+      this.local.department = this.server.user.department
+      this.local.qcSection = this.server.user.qcSection
     },
-    async submitHandle (action) {
-      switch(action) {
+    async submitHandle (action, tf = false) {
+      switch (action) {
         case 'closePassPanel':
-            this.local.pass.doOpenPanel = false
-            return
-            break;
+          this.local.pass.doOpenPanel = false
+          this.local.pass.old = null
+          this.local.pass.new = null
+          this.local.pass.confirm = null
+          return
         case 'openPassPanel':
-            this.local.pass.doOpenPanel = true
-            return
-            break;
+          this.local.pass.doOpenPanel = true
+          return
+          // break
         case 'update':
+          if (!tf) return
           // console.log(this.local)
           let isValid = await this.$validator.validateAll()
           if (isValid) {
-            // let resourceName = config.api.user.index
+            let resourceName = `${config.api.user.index}/${this.USER._id}`
             let data = {
               name: this.local.name,
               username: this.local.userName,
-              password: this.local.pass.new
+              department: this.local.department,
+              oldPass: this.local.pass.old,
+              newPass: this.local.pass.new
             }
-            console.log(data)
-            // let res = await service.putResource({data, resourceName})
-            // if (res.status === 200) {
-            //   this.NOTIFY('error')
-            // }
-            // this.NOTIFY('success')
+            if (this.local.department === 'qc') {
+              data.qcSection = this.local.qcSection
+            }
+            if (this.local.pass.isMatch === false) return
+            try {
+              await service.putResource({ data, resourceName })
+              this.$notify('ทำรายการเสร็จสิ้น', 'success')
+            } catch (error) {
+              this.$notify('ข้อมูลไม่ถูกต้อง โปรดตรวจสอบ', 'error')
+            }
           }
           break
       }
+    },
+    passUpdate () {
+      if (this.newPassword && this.confirmPassword) {
+        if (this.newPassword !== this.confirmPassword) {
+          this.local.pass.isMatch = false
+        } else {
+          this.local.pass.isMatch = true
+        }
+      } else {
+        this.local.pass.isMatch = null
+      }
+    }
+  },
+  watch: {
+    newPassword () {
+      this.passUpdate()
+    },
+    confirmPassword () {
+      this.passUpdate()
     }
   }
 }

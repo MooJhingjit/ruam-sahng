@@ -5,11 +5,11 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [
-    {
-      path: '/',
-      name: 'Product',
-      component: () => import('@Views/Product')
-    },
+    // {
+    //   path: '/',
+    //   name: 'Product',
+    //   component: () => import('@Views/Product')
+    // },
     {
       path: '/product',
       name: 'Product',

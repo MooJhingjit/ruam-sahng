@@ -18,6 +18,7 @@
 </template>
 
 <script>
+// import {bus} from './main'
 import { mapActions, mapGetters } from 'vuex'
 import headerWrapper from '@Layouts/Header'
 import footerWrapper from '@Layouts/Footer'
@@ -40,6 +41,7 @@ export default {
     }
   },
   created () {
+    // bus.$on('fetchResource', this.fetchData)
     this.fetchData()
   },
   methods: {
@@ -50,15 +52,15 @@ export default {
       if (this.$route.name === 'Login') return
       let resourceName = config.api.app.resource
       try {
-        await service.getResource({ resourceName, queryString: [] })
-        // this.setAppData(res.data)
+        let res = await service.getResource({ resourceName, queryString: [] })
+        this.setAppData(res.data)
       } catch (error) {
         // this.LOGOUT()
         // this.NOTIFY('error', 'เกิดข้อผิดพลาด')
       }
     },
     setAppData (data) {
-      // this.SET_APP_STORE(data)
+      this.SET_APP_STORE(data)
     }
   },
   watch: {

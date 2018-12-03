@@ -1,21 +1,15 @@
+
 <template>
-  <div>
-    <datepicker
-      :id="`input_${config.key}`"
-      v-validate="config.rules"
-      :input-class="getInputClass()"
-      :name="config.key"
-      readonly="false"
-      placeholder="วันเริ่มเปิดจ็อบ"
-      v-model="myValue"
-    >
-    </datepicker>
+  <div class="form-group">
+    <select :name="config.key" class="form-select" v-model="myValue"  v-validate="config.rules">
+      <option>--โปรดเลือก--</option>
+      <option :value="item.key" :key="index" v-for="(item, index) in config.selection">{{item.name}}</option>
+    </select>
     <p class="form-input-hint text-error" v-if="errors.has(config.key)">กรุณาตรวจสอบข้อมูลข้างต้น</p>
   </div>
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker'
 export default {
   props: {
     config: {
@@ -23,14 +17,12 @@ export default {
       required: true
     },
     value: {
-      type: Date,
+      type: String,
       required: false
     }
   },
-  components: {
-    Datepicker
-  },
-  name: 'MyDatePicker',
+  components: {},
+  name: 'MyInput',
   data () {
     return {
       myValue: ''
@@ -61,6 +53,7 @@ export default {
       this.$emit('input', this.myValue)
     }
   }
+   
 }
 </script>
 
@@ -68,6 +61,4 @@ export default {
 p {
   margin-bottom: 0px !important;
 }
-
-
 </style>

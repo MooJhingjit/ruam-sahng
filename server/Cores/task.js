@@ -76,6 +76,7 @@ const update = async (productId, tasks) => {
       //   status: task.status
       // }
       // console.log(res)
+      console.log(nextTask)
       try {
         await Task.findOneAndUpdate({_id: task._id}, {
           dateStart: (dateStart !== null) ? dateStart : task.dateStart,
@@ -125,6 +126,17 @@ const geWiringDate = (currentTask, tasks) => {
   return ''
 }
 
+const remove = async (productId) => {
+  try {
+    await Task.find({productId: productId}).remove()
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
 module.exports.store = store
 module.exports.getByProduct = getByProduct
+module.exports.remove = remove
 module.exports.update = update

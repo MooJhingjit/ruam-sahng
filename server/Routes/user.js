@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
-// const auth = require('../Middlewares/auth')
+const auth = require('../Middlewares/auth')
 const userController = require('../Controllers/user.js')
 
 
-router.get('/user', userController.get)
+router.get('/user', auth.isAuthorized, userController.index)
+router.put('/user/:key', auth.isAuthorized, userController.update)
 router.post('/signup', userController.signup)
 router.post('/signin', userController.signin)
 

@@ -45,7 +45,7 @@
                     <td class="">{{item.customer.name}}</td>
                     <td class="">{{GET_DATE(item.job.createdAt)}}</td>
                     <td>{{GET_DATE(item.product.dateEnd)}}</td>
-                    <td class=""><span class="label">{{JOBSTATUS[item.product.status]}}</span></td>
+                    <td class=""><span :class="getStatusClass(item.product.status)">{{JOBSTATUS[item.product.status]}}</span></td>
                     <td class="">
                       <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail(item.product._id)"></my-button>
                     </td>
@@ -185,6 +185,13 @@ export default {
     },
     goToDetail (productId) {
       this.GO_TOPAGE('ProductUpdate', { key: productId })
+    },
+    getStatusClass (status) {
+      return [
+        {'': status === 'ip'},
+        {'label label-warning mr-1': status === 'review'},
+        {'label label-success mr-1': status === 'done'}
+      ]
     }
   }
 }

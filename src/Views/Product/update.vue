@@ -3,8 +3,8 @@
     <div class="column col-12 col-xs-12">
       <page-title>
         <template slot="left-slot">
-          <div v-if="local.isAdmin" class="p-2 bg-primary">
-            {{server.job.code}} / {{server.product.name}}
+          <div v-if="ISADMIN" class="p-2 bg-primary">
+            {{server.job.code}} / {{server.product.name}} / {{JOBSTATUS[server.product.status]}}
           </div>
           <div v-else class="p-2 bg-warning">
             <span class="p-2">QC:</span>{{server.job.code}} / {{server.product.name}}
@@ -44,14 +44,14 @@
                   <tr :class="{'disable text-light': item.isDisable}" :key="index" v-for="(item, index) in server.tasks">
                     <td class="">
                       {{item.department}}
-                      <i class="text-dark fa fa-arrows-alt c-hand" aria-hidden="true"
+                      <!-- <i class="text-dark fa fa-arrows-alt c-hand" aria-hidden="true"
                       v-if="item.status === 'done'"
-                      @click="showDetail()"></i>
+                      @click="showDetail()"></i> -->
                     </td>
                     <td class="text-center">{{GET_DATE(item.dateStart)}}</td>
                     <td class="text-center">{{GET_DATE(item.dateEnd)}}</td>
                     <td class="text-center">
-                      <template v-if="local.isAdmin">
+                      <template v-if="ISADMIN">
                         {{item.note}}
                       </template>
                       <template v-else>
@@ -76,17 +76,17 @@
                       </template>
                     </td>
                     <td class="text-center">
-                      <template v-if="local.isAdmin">
-                        <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" v-if="item.status === 'done'"></i>
-                        <i class="fa fa-circle-o h5" aria-hidden="true" v-else-if="item.status === 'ip'"></i>
-                        <i class="fa fa fa-clock-o h5" aria-hidden="true" v-else-if="item.status === 'wait'"></i>
+                      <template v-if="ISADMIN">
+                        <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" :title="TASKSTATUS[item.status]" v-if="item.status === 'done'"></i>
+                        <i class="fa fa-circle-o h5" aria-hidden="true" :title="TASKSTATUS[item.status]" v-else-if="item.status === 'ip'"></i>
+                        <i class="fa fa fa-clock-o h5" aria-hidden="true" :title="TASKSTATUS[item.status]" v-else-if="item.status === 'wait'"></i>
                       </template>
                       <template v-else>
                         <i class="fa fa-times h5" aria-hidden="true" v-if="item.isDisable"></i>
                         <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" v-else-if="item.status === 'done'"></i>
                         <label class="form-checkbox form-inline c-hand" v-else-if="item.status === 'ip'">
                           <input type="checkbox"
-                          :disabled="item.isDisable"
+                          :disabled="item.isDisable || !ISROLE(item.order)"
                           :value="item._id"
                           v-model="item.done"
                           ><i class="form-icon"></i> ตรวจสอบ
@@ -131,17 +131,24 @@
           </div>
         </div>
         <div class="card-footer">
-          <div class="columns" v-if="!local.isAdmin">
-            <div class="column col-12 center text-center" v-if="server.product.status !== 'done'">
+          <div class="columns">
+            <div class="column text-right">
+              <span class="label"><i class="fa fa fa-clock-o h5" aria-hidden="true"></i> {{TASKSTATUS['wait']}}</span>
+              <span class="label"><i class="fa fa-circle-o h5" aria-hidden="true"></i> {{TASKSTATUS['ip']}}</span>
+              <span class="label"><i class="fa fa-check-circle-o h5 text-success"></i> {{TASKSTATUS['done']}}</span>
+            </div>
+          </div>
+          <div class="columns" v-if="!ISADMIN">
+            <div class="column col-12 center text-center" v-if="server.product.status !== 'review' && server.product.status !== 'done'">
               <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึกการเปลี่ยนแปลง'}" @submit="(tf) => submitHandle('update', tf)"></my-button>
             </div>
           </div>
           <div class="columns" v-else>
-            <div class="column text-center">
-              <my-button :config="{icon: 'fa fa-minus-circle', btnClass: 'btn btn-error', doConfirm: true, text: 'ยกเลิก'}" @submit="(tf) => submitHandle('cancel', tf)"></my-button>
+            <div class="column text-center"  v-if="server.product.status !== 'done'">
+              <my-button :config="{icon: 'fa fa-minus-circle', btnClass: 'btn btn-error', doConfirm: true, text: 'ลบงาน'}" @submit="(tf) => submitHandle('delete', tf)"></my-button>
             </div>
-            <div class="column text-center">
-              <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'เสร็จสิ้น'}" @submit="(tf) => submitHandle('done', tf)"></my-button>
+            <div class="column text-center" v-if="server.product.status === 'review'">
+              <my-button  :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'เสร็จสิ้น'}" @submit="(tf) => submitHandle('done', tf)"></my-button>
             </div>
             <div class="column text-center">
               <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: true, text: 'พิมพ์งาน'}" @submit="(tf) => submitHandle('print', tf)"></my-button>
@@ -183,8 +190,8 @@ export default {
     return {
       server: null,
       local: {
-        viewType: 'table',
-        isAdmin: false
+        viewType: 'table'
+        // isAdmin: false
       }
     }
   },
@@ -207,14 +214,32 @@ export default {
     },
     async submitHandle (actionType, tf) {
       if (!tf) return
-      let data = this.server
+      let data = {}
       let resourceName = `${config.api.product.index}/${this.$route.params.key}`
       switch (actionType) {
         case 'update':
+          data = this.server
           await service.putResource({ resourceName, data })
           this.fetchData()
           this.$notify('ทำรายการเสร็จสิ้น', 'success')
-        break
+          break
+        case 'done':
+        case 'delete':
+          data = { status: actionType }
+          resourceName = `${config.api.product.status}/${this.$route.params.key}`
+          await service.putResource({ resourceName, data })
+          if (actionType === 'done') {
+            this.fetchData()
+          } else {
+            this.GO_TOPAGE('Product')
+          }
+          this.$notify('ทำรายการเสร็จสิ้น', 'success')
+          break
+        // case 'delete':
+        //   await service.deleteResource({ resourceName, data })
+        //   this.fetchData()
+        //   this.$notify('ทำรายการเสร็จสิ้น', 'success')
+        //   break
       }
     }
   }
