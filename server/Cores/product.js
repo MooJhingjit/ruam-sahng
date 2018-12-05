@@ -12,26 +12,42 @@ const get = async (obj) => {
   if (obj.mainSearch) {
     condition.name = { '$regex' : query.mainSearch, '$options' : 'i' }
   }
-  let products = await Product.find(condition).sort({createdAt: 'desc'})
-  let result = []
-  if (products.length) {
+  if (!obj.perPage) {
+    obj.perPage = 0
+  }
+  // console.log(obj)
+  let products = await Product.find(condition).sort({createdAt: 'desc'}).limit(obj.perPage).skip(obj.from)
+  let result = {}
+  if (obj.type == 'table' || obj.type == 'schedule') {
+    result.total = await Product.count()
+    result.data = await tranfromData(products)
+    
+  }
+  
+  return result
+}
+
+const tranfromData = async (data) => {
+  let newData = []
+  if (data.length) {
     await Promise.all(
-      products.map( async (product) => {
+      data.map( async (product) => {
         let item = {}
         item.product = product
         try {
           item.job = await JobCore.get(product.jobId)
           item.customer = await CustomerCore.get(item.job.cusId)
           item.tasks = await TaskCore.getByProduct(product._id)
-          result.push(item)
+          newData.push(item)
         } catch (error) {
           console.log(error)
           return false
         }
       })
     )
+    // console.log(newData)
+    return newData
   }
-  return result
 }
 
 const store = async (jobObj, products) => {

@@ -10,8 +10,8 @@ const api = {
     'index': '/job'
   },
   'product': {
-    'index': '/product',
-    'status': '/product/update-status'
+    'index': '/products',
+    'status': '/products/update-status'
   },
   'schedule': {
     'index': '/schedule'

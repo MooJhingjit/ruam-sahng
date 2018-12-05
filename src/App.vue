@@ -55,7 +55,7 @@ export default {
         let res = await service.getResource({ resourceName, queryString: [] })
         this.setAppData(res.data)
       } catch (error) {
-        // this.LOGOUT()
+        this.LOGOUT()
         // this.NOTIFY('error', 'เกิดข้อผิดพลาด')
       }
     },

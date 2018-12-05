@@ -2,7 +2,7 @@
 <template>
   <div class="form-group">
     <select :name="config.key" class="form-select" v-model="myValue"  v-validate="config.rules">
-      <option>--โปรดเลือก--</option>
+      <option v-if="config.hasTextDefault">--โปรดเลือก--</option>
       <option :value="item.key" :key="index" v-for="(item, index) in config.selection">{{item.name}}</option>
     </select>
     <p class="form-input-hint text-error" v-if="errors.has(config.key)">กรุณาตรวจสอบข้อมูลข้างต้น</p>
@@ -17,7 +17,7 @@ export default {
       required: true
     },
     value: {
-      type: String,
+      type: [String, Number],
       required: false
     }
   },

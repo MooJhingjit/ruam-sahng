@@ -9,6 +9,8 @@ import 'alertifyjs/build/alertify.min.js'
 import 'alertifyjs/build/css/alertify.min.css'
 import 'alertifyjs/build/css/themes/default.min.css'
 import Alertifyjs from 'vue2-alertifyjs'
+import Vuetable from 'vuetable-2'
+Vue.use(Vuetable)
 const options = {
   glossary: {
     // dialogs default title
@@ -20,8 +22,11 @@ const options = {
   }
 }
 // export const bus = new Vue()
+
 Vue.use(Alertifyjs, options)
-Vue.use(VeeValidate)
+// Vue.use(VueTable)
+// Vue.use(VeeValidate)
+Vue.use(VeeValidate, {fieldsBagName: 'formFields'})
 Vue.config.productionTip = false
 Vue.mixin(helper)
 new Vue({

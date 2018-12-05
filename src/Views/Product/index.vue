@@ -28,70 +28,73 @@
         <div class="card-body">
           <div class="columns">
             <div class="column col-12">
-              <table class="table table-striped table-hover text-center">
-                <thead>
-                  <tr>
-                    <th>รหัสสินค้า / รายการผลิต</th>
-                    <th>ลูกค้า</th>
-                    <th>วันที่เริ่มผลิต</th>
-                    <th>กำหนดส่ง</th>
-                    <th>สถานะ</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr :key="index" v-for="(item, index) in local.products">
-                    <td class="">{{item.job.code}} <br> {{item.product.name}}</td>
-                    <td class="">{{item.customer.name}}</td>
-                    <td class="">{{GET_DATE(item.job.createdAt)}}</td>
-                    <td>{{GET_DATE(item.product.dateEnd)}}</td>
-                    <td class=""><span :class="getStatusClass(item.product.status)">{{JOBSTATUS[item.product.status]}}</span></td>
-                    <td class="">
-                      <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail(item.product._id)"></my-button>
-                    </td>
-                  </tr>
-                  <!-- <tr>
-                    <td class="">JOB C61-08-358 <br> xxxxxx</td>
-                    <td class="">Summit network02</td>
-                    <td class="">20/09/2018</td>
-                    <td></td>
-                    <td class=""><span class="label">กำลังดำเนินงาน</span></td>
-                    <td class="">
-                      <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail()"></my-button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="">JOB C61-08-566 <br> xxxxxx</td>
-                    <td class="">Summit network03</td>
-                    <td class="">20/09/2018</td>
-                    <td></td>
-                    <td class=""><span class="label">กำลังดำเนินงาน</span></td>
-                    <td class="">
-                      <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail()"></my-button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="">JOB C61-08-178 <br> xxxxxx</td>
-                    <td class="">Summit network04</td>
-                    <td class="">20/09/2018</td>
-                    <td></td>
-                    <td class=""><span class="label">กำลังดำเนินงาน</span></td>
-                    <td class="">
-                      <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail()"></my-button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="">JOB C61-08-179 <br> xxxxxx</td>
-                    <td class="">Summit network05</td>
-                    <td class="">20/09/2018</td>
-                    <td class="">20/09/2018</td>
-                    <td class=""><span class="label label-success">รอส่ง</span></td>
-                    <td class="">
-                      <my-button :config="{icon: 'fa fa-chevron-circle-right', btnClass: 'btn btn-primary', doConfirm: false, text: 'รายละเอียด'}" @submit="goToDetail()"></my-button>
-                    </td>
-                  </tr> -->
-                </tbody>
-              </table>
+              <vuetable ref="vuetable"
+                :css="{tableClass: 'table table-striped table-hover text-center'}"
+                :http-options="httpOptions"
+                :fields="local.fields"
+                @vuetable:pagination-data="onPaginationData"
+                pagination-path=""
+                :per-page="perPage"
+              >
+                <template slot="status" scope="props">
+                  <span :class="getStatusClass(props.rowData.product.status)">{{JOBSTATUS[props.rowData.product.status]}}</span>
+                </template>
+                <template slot="actions" scope="props">
+                  <my-button :config="{
+                    icon: 'fa fa-chevron-circle-right',
+                    btnClass: 'btn btn-primary',
+                    doConfirm: false,
+                    text: 'รายละเอียด'
+                  }" @submit="goToDetail(props.rowData)"></my-button>
+                </template>
+              </vuetable>
+              <div class="columns">
+                <div class="column col-6">
+                  <vuetable-pagination ref="pagination"
+                    :css="{
+                      wrapperClass: 'pagination',
+                      activeClass: 'btn btn-primary active',
+                      disabledClass: 'disabled',
+                      pageClass: 'btn page-item',
+                      linkClass: 'page-item',
+                      paginationClass: 'ui bottom attached segment grid',
+                      paginationInfoClass: 'left floated left aligned six wide column',
+                      dropdownClass: 'ui search dropdown',
+                      icons: {
+                        first: 'angle double left icon',
+                        prev: 'left chevron icon',
+                        next: 'right chevron icon',
+                        last: 'angle double right icon',
+                      }
+                    }"
+                    @vuetable-pagination:change-page="onChangePage"
+                  ></vuetable-pagination>
+                </div>
+                <div class="column col-6">
+                  <div class="columns">
+                    <div class="column col-8">
+                    </div>
+                    <div class="column col-4">
+                      <my-option
+                        :config="{
+                          type: 'text',
+                          key: 'perPage',
+                          rules: 'required',
+                          validator: $validator,
+                          hasTextDefault: false,
+                          selection: [
+                            {key: 10, name: '10'},
+                            {key: 50, name: '50'},
+                            {key: 100, name: '100'}
+                          ]
+                        }"
+                        :value="perPage"
+                        @input="value => { perPage = parseInt(value) }"
+                      ></my-option>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -101,90 +104,83 @@
 </template>
 
 <script>
+import commonHelper from '@Libraries/common.helpers'
 import PageTitle from '@Components/PageTitle'
 import MyButton from '@Components/Form/myButton'
 import MyInput from '@Components/Form/myInput'
+import MyOption from '@Components/Form/myOption'
 import config from '@Config/app.config'
 import service from '@Services/app.service'
+import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
+import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
+import VuetablePaginationMixin  from 'vuetable-2/src/components/VuetablePaginationMixin.vue'
+// import VuetablePaginationBootstrap from 'vuetable/src/components/VuetablePaginationBootstrap.vue'
 export default {
   props: {
-    // mode: {
-    //   type: String,
-    //   required: true
-    // }
   },
   components: {
+    Vuetable,
+    VuetablePagination,
+    VuetablePaginationMixin,
     PageTitle,
     MyButton,
-    MyInput
+    MyInput,
+    MyOption
   },
   name: 'Product',
   data () {
     return {
+      perPage: 10,
       local: {
+        fields: [
+          {
+            name: 'job.code',
+            title: 'รหัสสินค้า / รายการผลิต'
+          },
+          {
+            name: 'customer.name',
+            title: 'ลูกค้า'
+          },
+          {
+            name: 'job.createdAt',
+            title: 'วันที่เริ่มผลิต',
+            callback: 'GET_DATE'
+          },
+          {
+            name: 'product.dateEnd',
+            title: 'กำหนดส่ง',
+            callback: 'GET_DATE'
+          },
+          {
+            name: '__slot:status',
+            title: 'สถานะ'
+          },
+          {
+            name: '__slot:actions',
+            title: ''
+          }
+        ],
         inputSearch: '',
-        products: [
-          // {
-          //   product: {
-          //       'departmentSelected': [1, 2, 3, 4, 5, 6, 7, 8],
-          //       'accessory': [1],
-          //       '_id': '5bfd5e7b245e59034b9911d6',
-          //       'jobId': '5bfd5e7b245e59034b9911d5',
-          //       'name': 'product01',
-          //       'amount': 1,
-          //       'thickness': '1.5',
-          //       'note': 'งานด่วน',
-          //       'dateEnd': '2018-11-30T15:10:00.000Z',
-          //       'type': '1',
-          //       'equipment': 1,
-          //       'colorType': 1,
-          //       'surface': null,
-          //       'colorName': null,
-          //       'status': 'ip',
-          //       'createdAt': '2018-11-27T15:10:51.477Z',
-          //       'updatedAt': '2018-11-27T15:10:51.477Z'
-          //   },
-          //   job: {
-          //       '_id': '5bfd5e7b245e59034b9911d5',
-          //       'cusId': '5be856b43e5c350c700ad0fa',
-          //       'code': 'JOB01',
-          //       'createdAt': '2018-11-27T15:10:51.462Z',
-          //       'updatedAt': '2018-11-27T15:10:51.462Z'
-          //   },
-          //   customer: {
-          //       '_id': '5be856b43e5c350c700ad0fa',
-          //       'name': 'pokkrong',
-          //       'createdAt': '2018-11-11T16:20:04.736Z',
-          //       'updatedAt': '2018-11-11T16:20:04.736Z'
-          //   }
-          // }
-        ]
+        products: []
       }
     }
   },
   computed: {
+    httpOptions () {
+      let queryString = ''
+      return {
+        baseURL: commonHelper.GET_FULLAPI(config.api.product.index, queryString),
+        headers: {
+          'Authorization': commonHelper.GET_STORAGEITEM(config.variable.tokenStorage).replace(/['"]+/g, '')
+        }
+      }
+    }
   },
   created () {
-    this.fetchData()
   },
   methods: {
-    async fetchData () {
-      let resourceName = `${config.api.product.index}`
-      let queryString = this.BUILDPARAM({mainSearch: this.local.inputSearch})
-      try {
-        let res = await service.getResource({ resourceName, queryString})
-        this.local.products = res.data.result
-      } catch (error) {
-        // this.GO_TOPAGE('Product')
-      }
-    },
-    search () {
-      this.fetchData()
-      // this.currentState.component = ItemSelectedComponent
-      // this.currentState.status = 'itemView'
-    },
-    goToDetail (productId) {
-      this.GO_TOPAGE('ProductUpdate', { key: productId })
+    goToDetail (rowData) {
+      this.GO_TOPAGE('ProductUpdate', { key: rowData.product._id })
     },
     getStatusClass (status) {
       return [
@@ -192,10 +188,29 @@ export default {
         {'label label-warning mr-1': status === 'review'},
         {'label label-success mr-1': status === 'done'}
       ]
+    },
+    onPaginationData (paginationData) {
+      this.$refs.pagination.setPaginationData(paginationData)
+    },
+    onChangePage (page) {
+      this.$refs.vuetable.changePage(page)
+    },
+    getStatus (value) {
+      return this.JOBSTATUS[value]
+    }
+  },
+  watch: {
+    'perPage': function(val, oldVal) {
+      console.log('changed ' + val)
+      this.$refs.vuetable.refresh()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.pagination {
+  padding: 0;
+  margin: 0;
+}
 </style>
