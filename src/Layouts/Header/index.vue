@@ -1,16 +1,26 @@
 <template>
-    <section class="container centered  bg-gray">
+    <section class="container centered  bg-gray" v-if="local.notification !== null">
         <header class="columns">
           <section class="menu-lists navbar-section column col-xs-12 col-8">
             <ul class="tab tab-block text-gray">
               <li class="tab-item">
-                <router-link :to="{ name: 'Product' } "><i class="fa fa-tasks"></i> สินค้า</router-link>
+                <router-link :to="{ name: 'Product' } " ><i class="fa fa-tasks"></i> สินค้า
+                <!-- {{local.notification.productReview}} -->
+                <span
+                  :title="`รอตรวจสอบ ${local.notification.productReview} รายการ`"
+                  class="badge text-success"
+                  v-if="local.notification.productReview !== 0"
+                  :data-badge="local.notification.productReview"></span>
+                </router-link>
               </li>
-              <li class="tab-item">
+              <li class="tab-item" v-if="ISADMIN">
                 <router-link :to="{ name: 'Creation' } "><i class="fa fa-plus-circle" aria-hidden="true"></i> สร้างงาน</router-link>
               </li>
               <li class="tab-item">
                 <router-link :to="{ name: 'Schedule' } "><i class="fa fa-table" aria-hidden="true"></i> ตารางงาน</router-link>
+              </li>
+              <li class="tab-item" v-if="ISADMIN">
+                <router-link :to="{ name: 'User' } "><i class="fa fa-user" aria-hidden="true"></i> ผู้ใช้งาน</router-link>
               </li>
             </ul>
           </section>
@@ -22,7 +32,7 @@
                     <figure class="avatar" data-initial="P"></figure>
                   </div> -->
                   <div class="tile-content">
-                    <span class="tile-title text-bold c-hand" @click="GO_TOPAGE('UserEdit', {key: 1234})">Username</span>
+                    <span class="tile-title text-bold c-hand text-nowrap" @click="GO_TOPAGE('UserEdit', {key: USER._id})">{{USER.username}}</span>
                     <i class="fa fa-power-off text-error c-hand" aria-hidden="true" @click="logout()"></i>
                     <!-- <button class="btn btn-action btn-sm"></button> -->
                     <!-- <p class="tile-subtitle">Earth's Mightiest Heroes joined forces to take on threats that were too big for any one hero to tackle...</p> -->
@@ -36,8 +46,9 @@
 </template>
 
 <script>
-// import config from '@Config/app.config'
-// import Helper from '@Libraries/common.helpers'
+import { bus } from '@/main'
+import config from '@Config/app.config'
+import service from '@Services/app.service'
 export default {
   props: {
     // mode: {
@@ -49,24 +60,37 @@ export default {
   name: 'PageName',
   data () {
     return {
-      property: 'Blank'
+      local: {
+        notification: null
+      }
     }
   },
   computed: {
     // propertyComputed() {
     // }
   },
-  created () {},
-  beforeMount () {},
-  mounted () {},
-  beforeUpdate () {},
-  updated () {},
-  beforeDestroy () {},
-  destroyed () {},
+  created () {
+    bus.$on('reloadNotification', this.fetchData)
+    this.fetchData()
+  },
   methods: {
+    async fetchData () {
+      // console.log('reloadNotification')
+      let resourceName = `${config.api.app.notification}`
+      try {
+        let res = await service.getResource({ resourceName, queryString: [] })
+        // console.log(res.data.data)
+        this.local.notification = res.data.data
+      } catch (error) {
+        // this.GO_TOPAGE('Product')
+      }
+    },
     logout () {
       this.LOGOUT()
     }
+  },
+  beforeDestroy () {
+    bus.$off('reloadNotification', this.fetchData)
   }
 }
 </script>
@@ -85,6 +109,10 @@ header{
         font-weight: bold;
         color: #50596d;
       }
+    }
+    .badge {
+      right: -25px;
+      top: -10px;
     }
   }
   .profile{

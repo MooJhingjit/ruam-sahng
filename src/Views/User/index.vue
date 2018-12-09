@@ -5,30 +5,11 @@
         <template slot="left-slot"></template>
         <div class="has-icon-left" slot="right-slot">
           <div class="input-group">
-            <my-option
-              :config="{
-                type: 'text',
-                key: 'searchType',
-                rules: '',
-                validator: $validator,
-                hasTextDefault: false,
-                selection: [
-                  {key: 'productName', name: 'รายการผลิต'},
-                  {key: 'jobCode', name: 'รหัสสินค้า'},
-                  {key: 'cusName', name: 'ลูกค้า'},
-                  {key: 'dateStart', name: 'วันที่เริ่มผลิต'},
-                  {key: 'dateEnd', name: 'กำหนดส่ง'},
-                  {key: 'status', name: 'สถานะ'}
-                ]
-              }"
-              :value="this.local.searchType"
-              @input="value => setSearchType(value)"
-            ></my-option>
             <my-input
               :config="{
                 type: 'text',
                 key: 'keyword',
-                placeholder: '',
+                placeholder: 'ค้นหาชื่อ',
                 rules: null
               }"
               @input="val => {inputSearch = val}"
@@ -57,12 +38,6 @@
                 :append-params="params"
                 :sort-order="local.sortOrder"
               >
-                <template slot="productName" scope="props">
-                  {{props.rowData.job.code}} / {{props.rowData.product.name}}
-                 </template>
-                <template slot="status" scope="props">
-                  <span :class="getStatusClass(props.rowData.product.status)">{{JOBSTATUS[props.rowData.product.status]}}</span>
-                </template>
                 <template slot="actions" scope="props">
                   <my-button :config="{
                     icon: 'fa fa-chevron-circle-right',
@@ -94,31 +69,6 @@
                     @vuetable-pagination:change-page="onChangePage"
                   ></vuetable-pagination>
                 </div>
-                <!-- <div class="column col-6">
-                  <div class="columns">
-                    <div class="column col-8">
-                      <vuetable-pagination-info-mixin ref="paginationInfoMixin"></vuetable-pagination-info-mixin>
-                    </div>
-                    <div class="column col-4">
-                      <my-option
-                        :config="{
-                          type: 'text',
-                          key: 'perPage',
-                          rules: 'required',
-                          validator: $validator,
-                          hasTextDefault: false,
-                          selection: [
-                            {key: 10, name: '10'},
-                            {key: 50, name: '50'},
-                            {key: 100, name: '100'}
-                          ]
-                        }"
-                        :value="perPage"
-                        @input="value => setPerPage(value)"
-                      ></my-option>
-                    </div>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
@@ -157,31 +107,24 @@ export default {
       perPage: 10,
       inputSearch: '',
       local: {
-        searchType: 'productName',
         fields: [
           {
-            name: '__slot:productName',
-            title: 'รหัสสินค้า / รายการผลิต'
+            name: 'username',
+            title: 'ชื่อเข้าใช้'
           },
           {
-            name: 'customer.name',
-            title: 'ลูกค้า'
+            name: 'name',
+            title: 'ชื่อ'
           },
           {
-            name: 'job.createdAt',
+            name: 'department',
+            title: 'แผนก'
+          },
+          {
+            name: 'createdAt',
             sortField: 'createdAt',
-            title: 'วันที่เริ่มผลิต',
+            title: 'วันที่ลงทะเบียน',
             callback: 'GET_DATE'
-          },
-          {
-            name: 'product.dateEnd',
-            sortField: 'dateEnd',
-            title: 'กำหนดส่ง',
-            callback: 'GET_DATE'
-          },
-          {
-            name: '__slot:status',
-            title: 'สถานะ'
           },
           {
             name: '__slot:actions',
@@ -191,10 +134,6 @@ export default {
         sortOrder: [
           {
             field: 'createdAt',
-            direction: 'desc'
-          },
-          {
-            field: 'dateEnd',
             direction: 'desc'
           }
         ],
@@ -206,7 +145,7 @@ export default {
     httpOptions () {
       let queryString = ''
       return {
-        baseURL: commonHelper.GET_FULLAPI(config.api.product.index, queryString),
+        baseURL: commonHelper.GET_FULLAPI(config.api.user.index, queryString),
         headers: {
           'Authorization': commonHelper.GET_STORAGEITEM(config.variable.tokenStorage).replace(/['"]+/g, '')
         }
@@ -223,15 +162,7 @@ export default {
   },
   methods: {
     goToDetail (rowData) {
-      this.GO_TOPAGE('ProductUpdate', { key: rowData.product._id })
-    },
-    getStatusClass (status) {
-      return [
-        {'': status === 'ip'},
-        {'label label-warning mr-1': status === 'review'},
-        {'label label-success mr-1': status === 'done'},
-        {'label label-secondary mr-1': status === 'send'}
-      ]
+      this.GO_TOPAGE('UserEdit', { key: rowData._id })
     },
     onPaginationData (paginationData) {
       this.$refs.pagination.setPaginationData(paginationData)
@@ -239,19 +170,9 @@ export default {
     onChangePage (page) {
       this.$refs.vuetable.changePage(page)
     },
-    getStatus (value) {
-      return this.JOBSTATUS[value]
-    },
     search () {
       this.$refs.vuetable.refresh()
-    },
-    setSearchType (val) {
-      this.local.searchType = val
     }
-    // setPerPage (val) {
-      // this.perPage = parseInt(val)
-      // this.$refs.vuetable.refresh()
-    // }
   },
   watch: {
   }

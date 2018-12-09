@@ -43,6 +43,7 @@ module.exports.appConfig = {
     { key: 'cutting', name: 'ตัด', role: [8, 10]},
     { key: 'design', name: 'แบบ', role: [1, 2]},
     { key: 'manufacture', name: 'การผลิต', role: [3, 4, 5, 6, 7]},
-    { key: 'wiring', name: 'วายริ่ง', role: [9, 10]}
+    { key: 'wiring', name: 'วายริ่ง', role: [9, 10]},
+    { key: 'admin', name: 'admin', role: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
   ]
 }

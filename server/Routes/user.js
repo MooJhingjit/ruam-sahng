@@ -3,9 +3,9 @@ const router = express.Router()
 const auth = require('../Middlewares/auth')
 const userController = require('../Controllers/user.js')
 
-
-router.get('/user', auth.isAuthorized, userController.index)
-router.put('/user/:key', auth.isAuthorized, userController.update)
+router.get('/users', auth.isAuthorized, userController.getDataTable)
+router.get('/users/:key', auth.isAuthorized, userController.edit)
+router.put('/users/:key', auth.isAuthorized, userController.update)
 router.post('/signup', userController.signup)
 router.post('/signin', userController.signin)
 

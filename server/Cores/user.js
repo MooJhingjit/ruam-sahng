@@ -4,7 +4,47 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const config = require('../Config/app.js')
 
-const get = async (userId) => {
+const get = async (obj) => {
+  let condition = {}
+  if (obj.mainSearch) {
+    condition.name = { '$regex' : obj.mainSearch, '$options' : 'i' }
+  }
+  if (!obj.perPage) {
+    obj.perPage = 0
+  }
+  let sort = {}
+  if (obj.sort) {
+    let sortArr = obj.sort.split(',')
+    sortArr.forEach(sortItem => {
+      let str = sortItem.split('|')
+      sort[str[0]] = str[1]
+    })
+  } else {
+    sort.createdAt = 'desc'
+  }
+  let users = await User.find(condition).sort(sort).limit(obj.perPage).skip(obj.from)
+  // console.log(users)
+  let result = {}
+  if (obj.type == 'table') {
+    result.total = await User.find(condition).count()
+    result.data = await getFullData(users)
+  }
+  
+  return result
+}
+
+const getFullData = async (data) => {
+  let newData = []
+  if (data.length) {
+        for (let i = 0; i < data.length; i++){
+          let user = data[i]
+          newData.push(user)
+        }
+    return newData
+  }
+}
+
+const getById = async (userId) => {
   let user = await User.findOne({_id: userId})
   return {
     _id: user._id,
@@ -107,7 +147,8 @@ const signin = async (email, password) => {
 
 }
 
+module.exports.get = get
 module.exports.signup = signup
 module.exports.signin = signin
-module.exports.get = get
+module.exports.getById = getById
 module.exports.update = update

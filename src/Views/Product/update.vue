@@ -4,7 +4,7 @@
       <page-title>
         <template slot="left-slot">
           <div v-if="ISADMIN" class="p-2 bg-primary">
-            {{server.job.code}} / {{server.product.name}} / {{JOBSTATUS[server.product.status]}}
+            {{server.job.code}} / {{server.product.name}}
           </div>
           <div v-else class="p-2 bg-warning">
             <span class="p-2">QC:</span>{{server.job.code}} / {{server.product.name}}
@@ -20,6 +20,7 @@
             <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">ลูกค้า: {{server.customer.name}}</span></div>
             <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">วันที่เริ่มผลิต: {{GET_DATE(server.job.createdAt)}}</span></div>
             <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">กำหนดเสร็จ: {{GET_DATE(server.product.dateEnd)}}</span></div>
+            <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">สถานะ: {{JOBSTATUS[server.product.status]}}</span></div>
             <!-- <div class="column text-right">
               <div class="btn-group btn-group-block result-view">
                 <button @click="changeViewType('table')" :class="['btn btn-sm', {'active': server.viewType === 'table'}]"><i class="fas fa-table"></i></button>
@@ -27,6 +28,11 @@
               </div>
             </div> -->
           </div>
+          <!-- <div class="columns panel" v-if="local.isShowDetail">
+            <div class="column flex-item-center col-xs-12">
+              
+            </div>
+          </div> -->
           <!-- <div class="divider"></div> -->
           <div class="columns">
             <div class="column" v-if="local.viewType === 'table'">
@@ -56,7 +62,7 @@
                       </template>
                       <template v-else>
                         <template v-if="item.status === 'done' || item.isDisable">
-                          {{item.note}}
+                          <div v-html="item.note">{{item.note}}</div>
                         </template>
                         <template v-else-if="item.status === 'ip'">
                           <my-input
@@ -150,28 +156,128 @@
             <div class="column text-center" v-if="server.product.status === 'review'">
               <my-button  :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'เสร็จสิ้น'}" @submit="(tf) => submitHandle('done', tf)"></my-button>
             </div>
-            <div class="column text-center">
-              <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: true, text: 'พิมพ์งาน'}" @submit="(tf) => submitHandle('print', tf)"></my-button>
+            <div class="column text-center" v-if="server.product.status === 'done'">
+              <my-button  :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'ส่งงาน'}" @submit="(tf) => submitHandle('send', tf)"></my-button>
             </div>
             <div class="column text-center">
-              <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: true, text: 'รายงาน'}" @submit="(tf) => submitHandle('report', tf)"></my-button>
+              <my-button :config="{icon: 'fa fa-info-circle', btnClass: 'btn btn-secondary', doConfirm: false, text: 'รายละเอียดงาน'}" @submit="(tf) => submitHandle('detail', tf)"></my-button>
+            </div>
+            <div class="column text-center">
+              <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: false, text: 'รายงาน'}" @submit="(tf) => submitHandle('report', tf)"></my-button>
             </div>
           </div>
         </div>
-        <my-modal ref="myModal"></my-modal>
+        <my-modal ref="myModal">
+          <!-- <div slot="title">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item">
+                {{server.customer.name}}
+              </li>
+              <li class="breadcrumb-item">
+                {{server.job.code}}
+              </li>
+              <li class="breadcrumb-item">
+                {{server.product.name}}
+              </li>
+            </ul>
+          </div> -->
+          <div slot="content">
+            <div class="container">
+              <div class="columns">
+                <div class="column col-4 col-sm-6">
+                  <div class="tile tile-centered">
+                    <div class="tile-content">
+                      <div class="tile-title text-bold">ชื่อลูกค้า</div>
+                      <div class="tile-subtitle">{{server.customer.name}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="column col-4 col-sm-6">
+                  <div class="tile tile-centered">
+                    <div class="tile-content">
+                      <div class="tile-title text-bold">เลขที่</div>
+                      <div class="tile-subtitle">{{server.job.code}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="column col-4 col-sm-6">
+                  <div class="tile tile-centered">
+                    <div class="tile-content">
+                      <div class="tile-title text-bold">วันเริ่มเปิดจ็อบ</div>
+                      <div class="tile-subtitle">{{GET_DATE(server.job.createdAt)}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="column col-4 col-sm-6">
+                  <div class="tile tile-centered">
+                    <div class="tile-content">
+                      <div class="tile-title text-bold">กำหนดส่ง</div>
+                      <div class="tile-subtitle">{{GET_DATE(product.dateEnd)}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="column col-4 col-sm-6">
+                  <div class="tile tile-centered">
+                    <div class="tile-content">
+                      <div class="tile-title text-bold">สถานะ</div>
+                      <div class="tile-subtitle">{{JOBSTATUS[product.status]}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="column col-12 panel">
+                  <div class="tile tile-centered">
+                    <div class="tile-content">
+                      <div class="tile-title text-bold">รายละเอียดการผลิต</div>
+                      <div class="tile-subtitle">
+                        <div>รายการผลิต: {{product.name}}</div>
+                        <div>ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</div>
+                        <div>จำนวน: {{product.amount}}</div>
+                        <div>หนา: {{product.thickness}}</div>
+                        <div>
+                          วัสดุ: {{getDataFromConfig(product.equipment, 'equipment')}}
+                          <template v-if="product.surface">( {{product.surface}} )</template>
+                        </div>
+                        <div>
+                          สี: {{getDataFromConfig(product.colorType, 'colorType')}}
+                          <template v-if="product.colorName">( {{product.colorName}} )</template>
+                        </div>
+                        <div>อุปกรณ์เสริม: {{getDataFromConfig(product.accessory, 'accessory')}}</div>
+                        <div>หมายเหตุ: {{product.note}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="column col-12 panel">
+                  <div class="tile tile-centered">
+                    <div class="tile-content">
+                      <div class="tile-title text-bold">หมายเหตุการทำงาน</div>
+                      <div class="tile-subtitle">
+                        <div :key="index" v-for="(item, index) in server.tasks">
+                          {{item.department}}: {{item.note}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </my-modal>
       </div>
     </div>
+    <report-template class="report-template" ref="reportTemplate" :dataObj="server" ></report-template>
   </section>
 </template>
 
 <script>
-
+import { bus } from '@/main'
 import PageTitle from '@Components/PageTitle'
 import MyModal from '@Components/Modal'
 import MyInput from '@Components/Form/myInput'
 import MyButton from '@Components/Form/myButton'
 import config from '@Config/app.config'
 import service from '@Services/app.service'
+import reportTemplate from './report'
 export default {
   props: {
     // mode: {
@@ -183,21 +289,24 @@ export default {
     PageTitle,
     MyModal,
     MyButton,
-    MyInput
+    MyInput,
+    reportTemplate
   },
   name: 'ProductEdit',
   data () {
     return {
       server: null,
       local: {
-        viewType: 'table'
+        viewType: 'table',
+        detailObj: []
         // isAdmin: false
       }
     }
   },
   computed: {
-    // propertyComputed() {
-    // }
+    product () {
+      return this.server.product
+    }
   },
   created () {
     this.fetchData()
@@ -208,6 +317,7 @@ export default {
       try {
         let res = await service.getResource({ resourceName, queryString: [] })
         this.server = res.data.result
+        // this.setDetailObj()
       } catch (error) {
         this.GO_TOPAGE('Product')
       }
@@ -219,32 +329,73 @@ export default {
       switch (actionType) {
         case 'update':
           data = this.server
-          await service.putResource({ resourceName, data })
+          let result = await service.putResource({ resourceName, data })
+          if (result.data.result.isReview) { // if true === product status = review
+            this.UPDATE_NOTIFICATION()
+          }
           this.fetchData()
           this.$notify('ทำรายการเสร็จสิ้น', 'success')
           break
         case 'done':
+        case 'send':
         case 'delete':
           data = { status: actionType }
           resourceName = `${config.api.product.status}/${this.$route.params.key}`
           await service.putResource({ resourceName, data })
           if (actionType === 'done') {
             this.fetchData()
+            this.UPDATE_NOTIFICATION()
           } else {
             this.GO_TOPAGE('Product')
           }
+          this.updateProduct()
           this.$notify('ทำรายการเสร็จสิ้น', 'success')
           break
-        // case 'delete':
-        //   await service.deleteResource({ resourceName, data })
-        //   this.fetchData()
-        //   this.$notify('ทำรายการเสร็จสิ้น', 'success')
-        //   break
+        case 'detail':
+          this.$refs.myModal.show()
+          break
+        case 'report':
+          this.$refs.reportTemplate.printReceipt()
+          break
       }
+    },
+    updateProduct () {
+      let emitObj = {
+        key: 'UPDATE_PRODUCT',
+        data: {
+          // message: 'created'
+        }
+      }
+      bus.$emit('emitSocket', emitObj)
+    },
+    getDataFromConfig (key, configKey) {
+      if (!key) return
+      let config = this.server.config[configKey]
+      let obj = []
+      let str = ''
+      if (configKey === 'accessory') {
+        config.map((item) => {
+          if (key.indexOf(item.key) >= 0) {
+            str += `${item.name}, `
+          }
+        })
+        return str.slice(0, -2)
+      } else {
+        obj = config.filter((item) => {
+          return item.key && item.key.toString() === key.toString()
+        })
+        if (obj.length > 0) {
+          return obj[0].name
+        }
+      }
+      return ''
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.report-template {
+  display: none
+}
 </style>

@@ -21,8 +21,7 @@ const options = {
     cancel: 'ยกเลิก'
   }
 }
-// export const bus = new Vue()
-
+export const bus = new Vue()
 Vue.use(Alertifyjs, options)
 // Vue.use(VueTable)
 // Vue.use(VeeValidate)

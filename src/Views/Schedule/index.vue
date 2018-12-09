@@ -2,12 +2,26 @@
   <section class="p-2">
     <div class="columns">
       <div class="column text-left">
-        <h5 class="text-bold text-primary"><i class="fa fa-sign-out c-hand text-gray" aria-hidden="true" @click="GO_TOPAGE('Product')"></i> ตารางงาน 1/5</h5>
+        <h5 class="text-bold text-primary">
+          <template>
+            <i class="fa fa-pause text-gray c-hand" v-if="!local.isPause" aria-hidden="true" @click="switchStatus(true)"></i>
+            <i class="fa fa-play text-gray c-hand" v-else aria-hidden="true" @click="switchStatus(false)"></i>
+          </template>
+          <!-- <i class="fa fa-sign-out text-gray c-hand" aria-hidden="true" @click="GO_TOPAGE('Product')"></i> -->
+          {{local.currentPage}} / {{pageCount}} จาก {{totalProducts}} งาน
+        </h5>
+      </div>
+      <div class="column text-center">
+       <h5> </h5>
       </div>
       <div class="column text-right">
+        
+        <!-- <span class=""><h6></h6></span>&nbsp; -->
         <span class="label"><i class="fa fa fa-clock-o h5" aria-hidden="true"></i> {{TASKSTATUS['wait']}}</span>
         <span class="label"><i class="fa fa-circle-o h5" aria-hidden="true"></i> {{TASKSTATUS['ip']}}</span>
         <span class="label"><i class="fa fa-check-circle-o h5 text-success"></i> {{TASKSTATUS['done']}}</span>
+        &nbsp;
+        <i class="fa fa-sign-out text-gray c-hand" aria-hidden="true" @click="GO_TOPAGE('Product')"></i>
       </div>
     </div>
     <div class="columns">
@@ -15,21 +29,21 @@
         <table class="table">
           <thead>
             <tr>
-              <th class="h5 text-bold text-center text-primary" width="220"></th>
-              <th class="h5 text-bold text-center text-primary" width="70">สเปคงาน</th>
-              <th class="h5 text-bold text-center text-primary" width="70">แบบ</th>
-              <th class="h5 text-bold text-center text-primary" width="70">ตัด</th>
-              <th class="h5 text-bold text-center text-primary" width="70">พันท์</th>
-              <th class="h5 text-bold text-center text-primary" width="70">พับ</th>
-              <th class="h5 text-bold text-center text-primary" width="70">เชื่อม</th>
-              <th class="h5 text-bold text-center text-primary" width="70">พ่นสี</th>
-              <th class="h5 text-bold text-center text-primary" width="70">ประกอบ</th>
-              <th class="h5 text-bold text-center text-primary" width="70">อุปกรณ์</th>
-              <th class="h5 text-bold text-center text-primary" width="70">วายริ่ง</th>
+              <th class="h5 text-bold text-center text-primary" width=""></th>
+              <th class="h5 text-bold text-center text-primary" width="110">สเปคงาน</th>
+              <th class="h5 text-bold text-center text-primary" width="110">แบบ</th>
+              <th class="h5 text-bold text-center text-primary" width="110">ตัด</th>
+              <th class="h5 text-bold text-center text-primary" width="110">พันท์</th>
+              <th class="h5 text-bold text-center text-primary" width="110">พับ</th>
+              <th class="h5 text-bold text-center text-primary" width="110">เชื่อม</th>
+              <th class="h5 text-bold text-center text-primary" width="110">พ่นสี</th>
+              <th class="h5 text-bold text-center text-primary" width="110">ประกอบ</th>
+              <th class="h5 text-bold text-center text-primary" width="110">อุปกรณ์</th>
+              <th class="h5 text-bold text-center text-primary" width="110">วายริ่ง</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="" :key="productIndex" v-for="(obj, productIndex) in local.products">
+            <tr class="" :key="obj._id" v-for="(obj) in products">
               <td
               :class="getItemClass(obj, task)"
               :key="index" v-for="(task, index) in obj.tasks">
@@ -76,8 +90,10 @@
 </template>
 
 <script>
+import { bus } from '@/main'
 import config from '@Config/app.config'
 import service from '@Services/app.service'
+import Helper from '@Libraries/common.helpers'
 export default {
   props: {
     // mode: {
@@ -90,174 +106,94 @@ export default {
   data () {
     return {
       local: {
-        products: [
-          // {
-          //   header: {
-          //     jobCode: 'JOB C61-08-108',
-          //     cusName: 'Summit network',
-          //     productName: 'product name',
-          //     status: 'success'
-          //   },
-          //   tasks: [
-          //     { key: 'itemName', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' }
-          //   ]
-          // },
-          // {
-          //   header: {
-          //     jobCode: 'JOB C61-08-108',
-          //     cusName: 'Summit network',
-          //     productName: 'product name',
-          //     status: 'late'
-          //   },
-          //   tasks: [
-          //     { key: 'itemName', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'disable' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'ip' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' }
-          //   ]
-          // },
-          // {
-          //   header: {
-          //     jobCode: 'JOB C61-08-108',
-          //     cusName: 'Summit network',
-          //     productName: 'product name',
-          //     status: 'ip'
-          //   },
-          //   tasks: [
-          //     { key: 'itemName', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'disable' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' }
-          //   ]
-          // },
-          // {
-          //   header: {
-          //     jobCode: 'JOB C61-08-108',
-          //     cusName: 'Summit network',
-          //     productName: 'product name',
-          //     status: 'ip'
-          //   },
-          //   tasks: [
-          //     { key: 'itemName', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'disable' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'ip' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' }
-          //   ]
-          // },
-          // {
-          //   header: {
-          //     jobCode: 'JOB C61-08-108',
-          //     cusName: 'Summit network',
-          //     productName: 'product name',
-          //     status: 'success'
-          //   },
-          //   tasks: [
-          //     { key: 'itemName', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' }
-          //   ]
-          // },
-          // {
-          //   header: {
-          //     jobCode: 'JOB C61-08-108',
-          //     cusName: 'Summit network',
-          //     productName: 'product name',
-          //     status: 'ip'
-          //   },
-          //   tasks: [
-          //     { key: 'itemName', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'ip' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'ip' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' }
-          //   ]
-          // },
-          // {
-          //   header: {
-          //     jobCode: 'JOB C61-08-108',
-          //     cusName: 'Summit network',
-          //     productName: 'product name',
-          //     status: 'ip'
-          //   },
-          //   tasks: [
-          //     { key: 'itemName', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'done' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'ip' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'ip' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'disable' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'disable' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' },
-          //     { key: 'xxxxxxxx', dateStart: '19/10/2018', dateEnd: '19/10/2018', status: 'padding' }
-          //   ]
-          // }
-        ]
+        products: [],
+        currentProductObj: [],
+        rows: 0,
+        time: 0,
+        currentPage: 1,
+        timer: null,
+        pageCount: 0,
+        isPause: false
+        // start: 0,
+        // end: 0
+      },
+      tmp: {
+        productStore: [],
       }
     }
   },
   computed: {
-    // propertyComputed() {
-    // }
+    products () {
+      return this.local.products
+    },
+    totalProducts () {
+      return this.local.currentProductObj.length
+    },
+    pageCount () {
+      return Math.ceil(this.totalProducts / this.local.rows)
+    }
   },
   created () {
-    this.fetchData()
+    bus.$on('reloadSchedule', this.fetchData)
+    this.fetchData(true)
   },
   methods: {
-    async fetchData () {
+    async fetchData (runSchedule = false) {
+      // console.log(self.local.pageCount)
       let resourceName = `${config.api.schedule.index}`
       try {
         let res = await service.getResource({ resourceName, queryString: [] })
-        this.local.products = res.data.result
+        // console.log(res.data.result)
+        this.local.rows = res.data.config.rows
+        this.local.time = parseInt(res.data.config.time)
+        this.tmp.productStore = Helper.COPY_OBJECT(res.data.result)
+        // console.log(this.tmp.productStore)
+        if (runSchedule) {
+          this.runSchedule()
+        }
       } catch (error) {
         // this.GO_TOPAGE('Product')
       }
+    },
+    runSchedule () {
+      let self = this
+      this.recheckProductLists()
+      // this.local.pageCount = this.pageCount
+      this.local.products = this.local.currentProductObj.slice(0, this.local.rows)
+      this.local.timer = setInterval( function() {
+        if (!self.local.isPause) {
+          self.local.currentPage = parseInt(self.local.currentPage) + 1
+          // console.log(self.pageCount)
+          if (self.pageCount < self.local.currentPage) {
+            self.local.currentPage = 1
+          }
+          if (self.local.currentPage === 1) {
+            self.recheckProductLists()
+            self.local.start = 0
+          } else if (self.local.currentPage === 2) {
+            self.local.start = self.local.rows
+          } else {
+            self.local.start = self.local.end
+          }
+          self.local.end = self.local.start + self.local.rows
+          // console.log('start ' + self.local.start)
+          // console.log('end ' + self.local.end)
+          self.local.products = self.local.currentProductObj.slice(self.local.start, self.local.end)
+        }
+      }, this.local.time)
+    },
+    recheckProductLists () {
+      // console.log('recheckProductLists')
+      this.local.currentProductObj = Helper.COPY_OBJECT(this.tmp.productStore)
+    },
+    addProductEvent () {
+
+    },
+    removeProductEvent () {
+      
+    },
+    stopRunnigSchedule () {
+      clearInterval(this.local.timer)
     },
     getItemClass (obj, task) {
       return [
@@ -265,17 +201,24 @@ export default {
         { 'item-name': task.key === 'itemName' },
         { 'bg-success': task.key === 'itemName' && obj.header.status === 'review' },
         { 'bg-error': (task.key === 'itemName' && this.IS_LATE(task.dateEnd) && obj.header.status !== 'review') },
-        { 'bg-gray': task.isDisable},
-        { '': (task.status === 'wait' && !task.isDisable)}
+        { 'bg-gray': task.isDisable },
+        { '': (task.status === 'wait' && !task.isDisable) }
       ]
+    },
+    switchStatus (status) {
+      this.local.isPause = status
     }
+  },
+  beforeDestroy () {
+    bus.$off('reloadSchedule', this.fetchData)
+    this.stopRunnigSchedule()
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .fa-sign-out{
-  transform: rotate(180deg);
+  // transform: rotate(180deg);
 }
 .table{
   // tr.disable{

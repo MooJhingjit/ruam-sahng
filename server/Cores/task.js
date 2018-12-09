@@ -14,9 +14,11 @@ const getByProduct = async (productId) => {
 const store = async (newProduct, product) => {
   let dateStart = new Date()
   let status = 'ip'
-  await Promise.all(
-    config.appConfig.productDepartment.map( async (task) => {
+  // await Promise.all(
+    // config.appConfig.productDepartment.map( async (task) => {
       // console.log(task.key)
+    for (let t = 0; t < config.appConfig.productDepartment.length; t++){
+      let task = config.appConfig.productDepartment[t]
       if (task.key > 2) {
         dateStart = null
         status = 'wait'
@@ -38,58 +40,54 @@ const store = async (newProduct, product) => {
         console.log(error)
         return false
       }
-    })
-  )
+    }
+    // })
+  // )
 }
 
 const update = async (productId, tasks) => {
   let today = ''
-  let status = ''
+  // let status = ''
   let nextTask = []
   // console.log(tasks)
-  await Promise.all(
-    tasks.map( async (task, index) => {
-      today = new Date()
-      let currentTask = task.order
-      let dateStart = null // start working
-      if (nextTask.length && nextTask.indexOf(currentTask) !== -1) {
-        dateStart = today
-        let taskIndex = nextTask.indexOf(currentTask)
-        nextTask.splice(taskIndex, 1)
+  // await Promise.all(
+    // tasks.map( async (task, index) => {
+  for (let t = 0; t < tasks.length; t++){
+    let task = tasks[t]
+    today = new Date()
+    let currentTask = task.order
+    let dateStart = null // start working
+    if (nextTask.length && nextTask.indexOf(currentTask) !== -1) {
+      dateStart = today
+      let taskIndex = nextTask.indexOf(currentTask)
+      nextTask.splice(taskIndex, 1)
+    }
+    if (task.done) {
+      dateStart = today
+      task.status = 'done'
+      nextTask.push(findNextTask(currentTask, tasks))
+      if (currentTask === 8 || currentTask === 9) {
+        nextTask.push( geWiringDate(currentTask, tasks))
       }
-      if (task.done) {
-        dateStart = today
-        task.status = 'done'
-        nextTask.push(findNextTask(currentTask, tasks))
-        if (currentTask === 8 || currentTask === 9) {
-          nextTask.push( geWiringDate(currentTask, tasks))
-        }
-      } else {
-        today = (task.status === 'done') ? task.dateEnd : ''
-        task.status = (dateStart !== null) ? 'ip' : task.status
-      }
-      // let res = { // for debug
-      // currentTask,
-      //   dateStart: (dateStart !== null) ? dateStart : task.dateStart,
-      //   dateEnd: today,
-      //   note: task.note,
-      //   status: task.status
-      // }
-      // console.log(res)
-      console.log(nextTask)
-      try {
-        await Task.findOneAndUpdate({_id: task._id}, {
-          dateStart: (dateStart !== null) ? dateStart : task.dateStart,
-          dateEnd: today,
-          note: task.note,
-          status: task.status
-        })
-      } catch (error) {
-        console.log(error)
-        return false
-      }
-    })
-  )
+    } else {
+      today = (task.status === 'done') ? task.dateEnd : ''
+      task.status = (dateStart !== null) ? 'ip' : task.status
+    }
+    // console.log(nextTask)
+    try {
+      await Task.findOneAndUpdate({_id: task._id}, {
+        dateStart: (dateStart !== null) ? dateStart : task.dateStart,
+        dateEnd: today,
+        note: task.note,
+        status: task.status
+      })
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  }
+    // })
+  // )
   // console.log(tasks)
   return tasks
 }

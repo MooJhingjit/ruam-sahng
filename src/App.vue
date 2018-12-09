@@ -18,12 +18,13 @@
 </template>
 
 <script>
-// import {bus} from './main'
+import { bus } from './main'
 import { mapActions, mapGetters } from 'vuex'
 import headerWrapper from '@Layouts/Header'
 import footerWrapper from '@Layouts/Footer'
 import config from '@Config/app.config'
 import service from '@Services/app.service'
+import io from 'socket.io-client'
 export default {
   components: {
     headerWrapper,
@@ -37,12 +38,23 @@ export default {
   },
   data () {
     return {
-      normalPages: true
+      normalPages: true,
+      socket: io(config.api.host)
     }
   },
   created () {
-    // bus.$on('fetchResource', this.fetchData)
+    bus.$on('emitSocket', this.emitSocket)
     this.fetchData()
+    // this.setSocket()
+    // console.log(this.socket)
+  },
+  mounted () {
+    this.socket.on('UPDATE_PRODUCT', (data) => {
+      bus.$emit('reloadSchedule')
+    })
+    this.socket.on('UPDATE_NOTIFICATION', (data) => {
+      bus.$emit('reloadNotification')
+    })
   },
   methods: {
     ...mapActions([
@@ -61,6 +73,9 @@ export default {
     },
     setAppData (data) {
       this.SET_APP_STORE(data)
+    },
+    emitSocket (obj) {
+      this.socket.emit(obj.key, obj.data)
     }
   },
   watch: {

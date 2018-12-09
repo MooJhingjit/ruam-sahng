@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const socket = require('./Libraries/socket.js');
 mongoose.connect('mongodb://localhost/ruam_sahng', { useNewUrlParser: true });
 
 const verifyToken = require('./Middlewares/verifyToken');
@@ -19,6 +20,8 @@ app.get('/checking', function(req, res){
 
 //listen for requests
 const port = process.env.PORT || 3000
-app.listen(port, function(){
+let server = app.listen(port, function(){
     console.log(`now listenting on port ${port}...`);
 })
+socket.socketStartUp(server);
+

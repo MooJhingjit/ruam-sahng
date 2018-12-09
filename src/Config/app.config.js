@@ -1,9 +1,10 @@
 
 const api = {
-  // 'apiEndPoint': 'http://localhost:3000/api',
+  'host': `${window.location.protocol}//${window.location.hostname}:3000`,
   'apiEndPoint': `${window.location.protocol}//${window.location.hostname}:3000/api`, // for production
   'app': {
-    'resource': '/app/resource'
+    'resource': '/app/resource',
+    'notification': '/app/notification'
   },
   'login': '/login',
   'job': {
@@ -17,7 +18,7 @@ const api = {
     'index': '/schedule'
   },
   'user': {
-    'index': '/user'
+    'index': '/users'
   }
 }
 
@@ -27,7 +28,8 @@ const variable = {
   jobStatus: {
     ip: 'กำลังดำเนินงาน',
     review: 'รอตรวจสอบ',
-    done: 'รอส่ง'
+    done: 'รอส่ง',
+    send: 'ส่งงานแล้ว'
   },
   taskStatus: {
     ip: 'กำลังดำเนินงาน',

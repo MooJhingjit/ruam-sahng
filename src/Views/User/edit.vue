@@ -225,7 +225,7 @@ export default {
   },
   methods: {
     async fetchData () {
-      let resourceName = config.api.user.index
+      let resourceName = `${config.api.user.index}/${this.$route.params.key}`
       let res = await service.getResource({ resourceName, queryString: [] })
       this.server = res.data.result
       this.local.name = this.server.user.name
@@ -250,7 +250,7 @@ export default {
           // console.log(this.local)
           let isValid = await this.$validator.validateAll()
           if (isValid) {
-            let resourceName = `${config.api.user.index}/${this.USER._id}`
+            let resourceName = `${config.api.user.index}/${this.$route.params.key}`
             let data = {
               name: this.local.name,
               username: this.local.userName,

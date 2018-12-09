@@ -5,9 +5,11 @@ const getDataTable = async (req, res, next) => {
   let tableConfig = Helper.getTableConfig(req.query.page, req.query.per_page)
   let result = await ProductCore.get({
     type: 'table',
+    searchType: req.query.searchType,
     mainSearch: req.query.mainSearch,
     perPage: tableConfig.perPage,
     from: tableConfig.from,
+    sort: req.query.sort
     // to: tableConfig.to,
   })
   let total = (!result) ? 0 : result.total
@@ -15,14 +17,18 @@ const getDataTable = async (req, res, next) => {
     current_page: tableConfig.currentPage,
     from: tableConfig.from,
     last_page: Math.ceil(total / tableConfig.perPage),
-    next_page_url: 'http://localhost:3000/api/products?/&sort=&page=' + (parseInt(req.query.page) + parseInt(1)) + '&per_page=' + 1,
+    next_page_url: getPageUrl(req, parseInt(tableConfig.currentPage) + parseInt(1)),
     per_page: tableConfig.perPage, // req.query.per_page
-    prev_page_url: 'http://localhost:3000/api/products?/&sort=&page=' + (parseInt(req.query.page) - parseInt(1)) + '&per_page=' + 1,
+    prev_page_url: getPageUrl(req, parseInt(tableConfig.currentPage) - parseInt(1)),
     // to: tableConfig.to,
     total: total,
     data: (!result) ? [] : result.data,
     msg: 'success'}
   )
+}
+
+const getPageUrl = (req, currentPage) => {
+  return `${req.protocol}//${req.headers.host}/api/products?/&sort=&page=${currentPage}`
 }
 
 // const tranfromData = async (data) => {
@@ -70,7 +76,7 @@ const update = async (req, res, next) => {
 const updateStatus = async (req, res, next) => {
   let status = req.body.data.status
   let result = {}
-  if (status === 'done') {
+  if (status === 'done' || status === 'send') {
     result = await ProductCore.updateStatus(req.params.key, status)
   } else if (status === 'delete') {
     result = await ProductCore.remove(req.params.key)

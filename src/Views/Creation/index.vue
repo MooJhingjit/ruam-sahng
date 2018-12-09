@@ -123,7 +123,11 @@
                       <!-- <input class="form-input" type="text" id="input-example-1" placeholder="ระบุหมายเหตุ"> -->
                     </td>
                     <td>
-                      <i v-if="product.name" class="fa fa-ellipsis-h h4 p-2 c-hand" aria-hidden="true" @click="inputProductDetail(index)"></i>
+                      <i 
+                        v-if="product.name"
+                        :class="['fa fa-ellipsis-h h4 p-2 c-hand', {'text-error': local.productRequired.indexOf(index) >= 0}]"
+                        aria-hidden="true"
+                      @click="inputProductDetail(index)"></i>
                     </td>
                   </tr>
                 </tbody>
@@ -274,6 +278,7 @@
 </template>
 
 <script>
+import { bus } from '@/main'
 import PageTitle from '@Components/PageTitle'
 import MyModal from '@Components/Modal'
 import MyInput from '@Components/Form/myInput'
@@ -325,7 +330,8 @@ export default {
           accessory: [],
           options: {}
         },
-        productSelected: null
+        productSelected: null,
+        productRequired: []
       },
       server: null
     }
@@ -351,6 +357,10 @@ export default {
     }
   },
   created () {
+    if (!this.ISADMIN) {
+      this.GO_TOPAGE('Product')
+      return
+    }
     this.fetchData()
     this.editTable('add')
   },
@@ -372,6 +382,7 @@ export default {
     },
     editTable (actionType) {
       if (actionType === 'minus') {
+        this.updateProduct()
         this.local.inputs.products.pop()
       } else {
         let product = Helper.COPY_OBJECT(this.local.productTemplate)
@@ -392,14 +403,35 @@ export default {
     },
     async submitHandle (btnTarget, isConfirm) {
       let isValid = await this.$validator.validateAll()
-      if (isConfirm && isValid) {
+      let isValidData = this.checkProductData()
+      if (isConfirm && isValid && isValidData) {
         let resourceName = config.api.job.index
         let data = { input: this.local.inputs }
         await service.postResource({ resourceName, data })
-        // console.log(res)
-        // this.GO_TOPAGE('ProductUpdate', {key: '1234'})
+        this.updateProduct()
+        this.local.productRequired = []
         this.$notify('ทำรายการเสร็จสิ้น', 'success')
       }
+    },
+    checkProductData () {
+      this.local.productRequired = []
+      let isPass = true
+      this.local.inputs.products.map((item, index) => {
+        if (item.dateEnd === null || item.type === null || item.departmentSelected.length === 0) {
+          isPass = false
+          this.local.productRequired.push(index)
+        }
+      })
+      return isPass
+    },
+    updateProduct () {
+      let emitObj = {
+        key: 'UPDATE_PRODUCT',
+        data: {
+          // message: 'created'
+        }
+      }
+      bus.$emit('emitSocket', emitObj)
     }
   }
 }

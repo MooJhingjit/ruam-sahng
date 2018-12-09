@@ -2,7 +2,7 @@ const ProductCore = require('../Cores/product.js')
 
 const index = async (req, res, next) => {
   let products = await ProductCore.get({type: 'schedule'})
-  console.log(products)
+  // console.log(products)
   if (!products) {
     res.status(401).json({msg: 'error'})
     return
@@ -40,7 +40,11 @@ const index = async (req, res, next) => {
       )
     })
   }
-  res.status(200).json({result, msg: 'success'})
+  let config = {
+    rows: 6,
+    time: 10000
+  }
+  res.status(200).json({result, config, msg: 'success'})
 }
 
 

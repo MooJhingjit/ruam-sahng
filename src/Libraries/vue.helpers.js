@@ -5,6 +5,7 @@ import config from '@Config/app.config'
 import moment from 'moment'
 // import nodeSnackbar from 'node-snackbar'
 import Helper from '@Libraries/common.helpers'
+import { bus } from '@/main'
 export default {
   computed: {
     ...mapGetters([
@@ -90,7 +91,7 @@ export default {
     LOGOUT () {
       Helper.REMOVE_STORAGEITEM(config.variable.tokenStorage)
       Helper.REMOVE_STORAGEITEM(config.variable.authStorage)
-      this.SET_APP_STORE({data: {}})
+      this.SET_APP_STORE({ data: {} })
       this.GO_TOPAGE('Login')
     },
     GET_DATE (date = '', format = 'DD/MM/YYYY') {
@@ -106,7 +107,14 @@ export default {
       return (dataDiff <= 0)
     },
     ISROLE (taskId) {
-      return this.USER.role.indexOf(taskId) >= 0;
+      return this.USER.role.indexOf(taskId) >= 0
+    },
+    UPDATE_NOTIFICATION () {
+      let emitObj = {
+        key: 'UPDATE_NOTIFICATION',
+        data: {}
+      }
+      bus.$emit('emitSocket', emitObj)
     }
     // LOGOUT () {
     //   Helper.REMOVE_STORAGEITEM('isAuth')
