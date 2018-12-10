@@ -6,6 +6,7 @@ const getDataTable = async (req, res, next) => {
   let result = await ProductCore.get({
     type: 'table',
     searchType: req.query.searchType,
+    searchStatusType: req.query.searchStatusType,
     mainSearch: req.query.mainSearch,
     perPage: tableConfig.perPage,
     from: tableConfig.from,

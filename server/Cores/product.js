@@ -33,7 +33,10 @@ const get = async (obj) => {
   if (obj.type == 'schedule') {
     condition.status = { $ne: 'done' }
   }
-  // console.log(condition)
+  if (obj.searchStatusType && obj.searchStatusType  !== 'all') {
+    condition.status = obj.searchStatusType
+  }
+  console.log(condition)
   if (!obj.perPage) {
     obj.perPage = 0
   }
@@ -47,10 +50,7 @@ const get = async (obj) => {
   } else {
     sort.createdAt = 'desc'
   }
-  // sort.dateEnd = '1'
-  // console.log(sort)
   let products = await Product.find(condition).sort(sort).limit(obj.perPage).skip(obj.from)
-  // console.log(products)
   let result = {}
   if (obj.type == 'table' || obj.type == 'schedule') {
     result.total = await Product.find(condition).count()

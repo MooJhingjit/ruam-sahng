@@ -17,17 +17,32 @@
                 validator: $validator,
                 hasTextDefault: false,
                 selection: [
+                  {key: 'all', name: 'สถานะทั้งหมด'},
+                  {key: 'ip', name: 'กำลังดำเนินงาน'},
+                  {key: 'review', name: 'รอตรวจสอบ'},
+                  {key: 'done', name: 'รอส่ง'},
+                  {key: 'send', name: 'ส่งงานแล้ว'}
+                ]
+              }"
+              :value="this.local.searchStatusType"
+              @input="value => {local.searchStatusType = value}"
+            ></my-option>
+            <!-- <my-option
+              :config="{
+                type: 'text',
+                key: 'searchType',
+                rules: '',
+                validator: $validator,
+                hasTextDefault: false,
+                selection: [
                   {key: 'productName', name: 'รายการผลิต'},
                   {key: 'jobCode', name: 'รหัสสินค้า'},
-                  {key: 'cusName', name: 'ลูกค้า'},
-                  {key: 'dateStart', name: 'วันที่เริ่มผลิต'},
-                  {key: 'dateEnd', name: 'กำหนดส่ง'},
-                  {key: 'status', name: 'สถานะ'}
+                  {key: 'cusName', name: 'ลูกค้า'}
                 ]
               }"
               :value="this.local.searchType"
               @input="value => setSearchType(value)"
-            ></my-option>
+            ></my-option> -->
             <my-input
               :config="{
                 type: 'text',
@@ -165,6 +180,7 @@ export default {
       perPage: 10,
       inputSearch: '',
       local: {
+        searchStatusType: 'all',
         searchType: 'productName',
         fields: [
           {
@@ -223,7 +239,8 @@ export default {
     params () {
       return {
         mainSearch: this.inputSearch,
-        searchType: this.local.searchType
+        searchType: this.local.searchType,
+        searchStatusType: this.local.searchStatusType
       }
     }
   },
