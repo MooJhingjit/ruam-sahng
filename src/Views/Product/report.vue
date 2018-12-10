@@ -1,51 +1,40 @@
 <template>
-  <div ref="productReport" class="report">
+  <div ref="productReport" class="report" v-if="local !== null">
+    <h4>รายการผลิต</h4>
     <table class="main-table" width="100%">
     <thead>
-      <tr style="height: 94px;">
-        <td style="height: 94px;">
-        <table width="100%" class="header-table">
-          <tbody>
-            <tr>
-              <td style="width:50%;">logo</td>
-              <td class="text-right" style="width:50%;">ใบสั่งซื้อ</td>
-            </tr>
-            <tr>
-              <td style="width:50%;">บริษัท โชคชนายุทธ จำกัด</td>
-              <td class="text-right" style="width:50%;"></td>
-            </tr>
-            <tr>
-              <td style="width:50%;">เลขที่ 75/152 ซอยร่มเกล้า 1 แขวงแสนแสบ</td>
-              <td class="text-right" style="width:50%;"></td>
-            </tr>
-            <tr>
-              <td style="width:50%;">เขตมีนบุรี กรุงเทพ๚ โทร 02-0003093 FAX 02-0003093</td>
-              <td class="text-right" style="width:50%;"></td>
-            </tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
     <tr>
-    <td class="no-padding border">
+    <td class="no-padding">
         <table width="100%" class="receiver">
         <tbody>
-            <tr>
-            <td style="width: 50%;">เรียน</td>
-            <td class="text-right" style="width: 50%;">วันที่</td>
-            </tr>
-            <tr>
-            <td style="width: 50%;">บริษัท</td>
-            <td class="text-right" style="width: 50%;">โครงการ</td>
-            </tr>
-            <tr>
-            <td style="width: 50%;">FAX</td>
-            <td class="text-right" style="width: 50%;">ประเภท</td>
-            </tr>
-            <tr>
-            <td style="width: 50%;">TEL</td>
-            <td class="text-right" style="width: 50%;"></td>
-            </tr>
+          <tr>
+            <td style="width: 50%;">ชื่อลูกค้า: {{customer.name}}</td>
+            <td style="width: 50%;">รายการผลิต: {{product.name}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%;">เลขที่สินค้า: {{job.code}}</td>
+            <td style="width: 50%;">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%;">วันเริ่มเปิดจ็อบ: {{GET_DATE(job.createdAt)}}</td>
+            <td style="width: 50%;">จำนวน: {{product.amount}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%;">กำหนดส่ง: {{GET_DATE(product.dateEnd)}}</td>
+            <td style="width: 50%;">หนา: {{product.thickness}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%;">สถานะ: {{JOBSTATUS[product.status]}}</td>
+            <td style="width: 50%;">วัสดุ: {{getDataFromConfig(product.equipment, 'equipment')}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;">สี: {{getDataFromConfig(product.colorType, 'colorType')}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;">อุปกรณ์เสริม: {{getDataFromConfig(product.accessory, 'accessory')}}</td>
+          </tr>
         </tbody>
         </table>
     </td>
@@ -54,129 +43,41 @@
   <tbody class="border">
     <tr>
       <td class="no-padding">
-        <table width="100%" border="1" class="item-lists">
+        <div>สถานะการทำงาน</div>
+        <table width="100%" border="1" style="border-collapse: collapse" class="item-lists">
           <thead>
             <tr>
-              <td width="5%">ลำดับ</td>
-              <td width="60%">รายการ</td>
-              <td width="5%">ปริมาณ</td>
-              <td width="5%">หน่วย</td>
-              <td width="10%">ราคา/หน่วย</td>
-              <td width="5%">ส่วนลด</td>
-              <td width="10%">จำนวนเงิน</td>
+              <td style="text-align: center; padding: 5px;" width="15%">แผนก</td>
+              <td style="text-align: center; padding: 5px;" width="15%">วันที่เริ่ม</td>
+              <td style="text-align: center; padding: 5px;" width="15%">วันที่เสร็จ</td>
+              <td style="text-align: center; padding: 5px;" width="30%">หมายเหตุ</td>
+              <td style="text-align: center; padding: 5px;" width="10%">สถานะ</td>
             </tr>
           </thead>
           <tbody>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-            <tr><td>1</td><td>xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td><td class="text-right">xx</td></tr>
-    
-            <tr>
-                <td colspan="2" rowspan="3">หมายเหตุ</td>
-                <td colspan="3">ราคารวม</td>
-                <td colspan="2" class="text-right">-</td>
-                </tr>
-                <tr>
-                <td colspan="3">ภาษีมูลค่าเพิ่ม</td>
-                <td colspan="2" class="text-right">-</td>
-                </tr>
-                <tr>
-                <td colspan="3">จำนวนเงินสุทธิ</td>
-                <td colspan="2" class="text-right">-</td>
+            <tr :key="index" v-for="(task, index) in tasks">
+              <td style="text-align: center; padding: 5px;">{{task.department}}</td>
+              <td style="text-align: center; padding: 5px;">{{GET_DATE(task.dateStart)}}</td>
+              <td style="text-align: center; padding: 5px;">{{GET_DATE(task.dateEnd)}}</td>
+              <td style="padding: 5px;">{{task.note}}</td>
+              <td style="text-align: center; padding: 5px;">{{TASKSTATUS[task.status]}}</td>
             </tr>
           </tbody>
-          <!-- <tfoot>
-            <tr>
-              <td colspan="2" rowspan="3">หมายเหตุ</td>
-              <td colspan="3">ราคารวม</td>
-              <td colspan="2" class="text-right">-</td>
-            </tr>
-            <tr>
-              <td colspan="3">ภาษีมูลค่าเพิ่ม</td>
-              <td colspan="2" class="text-right">-</td>
-            </tr>
-            <tr>
-              <td colspan="3">จำนวนเงินสุทธิ</td>
-              <td colspan="2" class="text-right">-</td>
-            </tr>
-          </tfoot> -->
         </table>
       </td>
     </tr>
     <tr>
       <td class="no-padding border">
-        <table width="100%" class="condition">
+        <table width="100%">
           <tbody>
             <tr>
-              <td class="text-center" style="width: 50%;">เงื่อนไขการชำระเงิน</td>
-              <td class="text-center" style="width: 50%;">ติดต่อส่งของ</td>
-            </tr>
-            <tr>
-              <td class="text-center" style="width: 50%;">เครดิต  30  วัน</td>
-              <td class="text-center" style="width: 50%;">โครงการ ม.มัณฑนา ศรีนครินทร์ ร่มเกล้า</td>
-            </tr>
-            <tr>
-              <td class="text-center" style="width: 50%;">ประมาณการกำหนดส่งของ</td>
-              <td class="text-center" style="width: 50%;">ติดต่อ</td>
+              <td class="" style="width: 50%;">หมายเหตุ: {{product.note}}</td>
             </tr>
           </tbody>
         </table>
       </td>
     </tr>
   </tbody>
-    <tfoot>
-      <tr>
-        <td class="no-padding">
-          <table width="100%" class="signature">
-            <tbody>
-              <tr>
-                <td class="text-center" style="width: 50%;">ผู้สั่งซื้อ..........................................  </td>
-                <td class="text-center" style="width: 50%;">อนุมัติ.....................................</td>
-              </tr>
-              <tr>
-                <td class="text-center" style="width: 50%;">กุลจิตร  ทองเมืองน้อย</td>
-                <td class="text-center" style="width: 50%;">(ทรงวุฒิ    ทองทวี)</td>
-              </tr>
-              <tr>
-                <td class="text-center" style="width: 50%;">087-5070161 (นิ่ม)</td>
-                <td class="text-center" style="width: 50%;"></td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-    </tfoot>
   </table>
   </div>
 </template>
@@ -195,10 +96,22 @@ export default {
   name: 'reportTemplate',
   data () {
     return {
-      local: {}
+      local: null
     }
   },
   computed: {
+    customer () {
+      return this.local.customer
+    },
+    job () {
+      return this.local.job
+    },
+    product () {
+      return this.local.product
+    },
+    tasks () {
+      return this.local.tasks
+    }
   },
   created () {
     this.local = this.dataObj
@@ -209,7 +122,7 @@ export default {
     },
     printReceipt () {
       let html = this.getHtm()
-      var win = window.open('', 'Title', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=850,height=500,top=0,left=0')
+      var win = window.open('', 'Title', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=950,height=600,top=0,left=0')
       let style = document.createElement('style')
       style.type = 'text/css'
       let css = '@media print {@page { margin: 0; }body { margin: 1.5cm 1cm; }}'
@@ -224,6 +137,9 @@ export default {
       win.document.body.innerHTML = html.innerHTML
       // win.focus()
       win.print()
+    },
+    getDataFromConfig (key, configKey) {
+      return this.GET_VALUEFROMCONFIG(key, configKey, this.local.config[configKey])
     }
   },
   watch: {

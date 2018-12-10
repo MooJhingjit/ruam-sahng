@@ -48,11 +48,10 @@
               :class="getItemClass(obj, task)"
               :key="index" v-for="(task, index) in obj.tasks">
                 <template v-if="task.key === 'itemName'">
-                  <div class="text-bold">{{obj.header.jobCode}}</div>
-                  <div class="text-bold">{{obj.header.productName}}</div>
+                  <div class="text-bold">{{obj.header.jobCode}} / {{obj.header.productName}}</div>
+                  <!-- <div class="text-bold"></div> -->
                   <div class="text-bold">{{obj.header.cusName}}</div>
-                  <div>{{GET_DATE(task.dateStart)}}</div>
-                  <div>{{GET_DATE(task.dateEnd)}}</div>
+                  <div>{{GET_DATE(task.dateStart)}} - {{GET_DATE(task.dateEnd)}}</div>
                 </template>
                 <template v-else>
                   <template v-if="task.isDisable">

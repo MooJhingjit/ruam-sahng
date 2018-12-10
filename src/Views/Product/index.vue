@@ -5,6 +5,10 @@
         <template slot="left-slot"></template>
         <div class="has-icon-left" slot="right-slot">
           <div class="input-group">
+            <button class="btn btn-success" @click="GO_TOPAGE('Creation')" v-if="ISADMIN">
+              <i class="fa fa-plus"></i>
+            </button>
+            &nbsp;
             <my-option
               :config="{
                 type: 'text',

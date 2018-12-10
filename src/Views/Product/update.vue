@@ -369,26 +369,27 @@ export default {
       bus.$emit('emitSocket', emitObj)
     },
     getDataFromConfig (key, configKey) {
-      if (!key) return
-      let config = this.server.config[configKey]
-      let obj = []
-      let str = ''
-      if (configKey === 'accessory') {
-        config.map((item) => {
-          if (key.indexOf(item.key) >= 0) {
-            str += `${item.name}, `
-          }
-        })
-        return str.slice(0, -2)
-      } else {
-        obj = config.filter((item) => {
-          return item.key && item.key.toString() === key.toString()
-        })
-        if (obj.length > 0) {
-          return obj[0].name
-        }
-      }
-      return ''
+      return this.GET_VALUEFROMCONFIG(key, configKey, this.server.config[configKey])
+      // if (!key) return
+      // let config = this.server.config[configKey]
+      // let obj = []
+      // let str = ''
+      // if (configKey === 'accessory') {
+      //   config.map((item) => {
+      //     if (key.indexOf(item.key) >= 0) {
+      //       str += `${item.name}, `
+      //     }
+      //   })
+      //   return str.slice(0, -2)
+      // } else {
+      //   obj = config.filter((item) => {
+      //     return item.key && item.key.toString() === key.toString()
+      //   })
+      //   if (obj.length > 0) {
+      //     return obj[0].name
+      //   }
+      // }
+      // return ''
     }
   }
 }

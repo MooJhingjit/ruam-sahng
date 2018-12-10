@@ -13,9 +13,9 @@
                   :data-badge="local.notification.productReview"></span>
                 </router-link>
               </li>
-              <li class="tab-item" v-if="ISADMIN">
+              <!-- <li class="tab-item" v-if="ISADMIN">
                 <router-link :to="{ name: 'Creation' } "><i class="fa fa-plus-circle" aria-hidden="true"></i> สร้างงาน</router-link>
-              </li>
+              </li> -->
               <li class="tab-item">
                 <router-link :to="{ name: 'Schedule' } "><i class="fa fa-table" aria-hidden="true"></i> ตารางงาน</router-link>
               </li>

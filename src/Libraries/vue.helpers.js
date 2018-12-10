@@ -115,6 +115,28 @@ export default {
         data: {}
       }
       bus.$emit('emitSocket', emitObj)
+    },
+    GET_VALUEFROMCONFIG (key, configKey, configValue) {
+      if (!key) return
+      let obj = []
+      let str = ''
+      if (configKey === 'accessory') {
+        
+        configValue.map((item) => {
+          if (key.indexOf(item.key) >= 0) {
+            str += `${item.name}, `
+          }
+        })
+        return str.slice(0, -2)
+      } else {
+        obj = configValue.filter((item) => {
+          return item.key && item.key.toString() === key.toString()
+        })
+        if (obj.length > 0) {
+          return obj[0].name
+        }
+      }
+      return ''
     }
     // LOGOUT () {
     //   Helper.REMOVE_STORAGEITEM('isAuth')
