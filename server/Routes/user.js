@@ -6,6 +6,8 @@ const userController = require('../Controllers/user.js')
 router.get('/users', auth.isAuthorized, userController.getDataTable)
 router.get('/users/:key', auth.isAuthorized, userController.edit)
 router.put('/users/:key', auth.isAuthorized, userController.update)
+router.post('/users', auth.isAuthorized, userController.store)
+router.delete('/users/:key', auth.isAuthorized, userController.delete)
 router.post('/signup', userController.signup)
 router.post('/signin', userController.signin)
 

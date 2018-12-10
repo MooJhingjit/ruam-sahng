@@ -5,6 +5,10 @@
         <template slot="left-slot"></template>
         <div class="has-icon-left" slot="right-slot">
           <div class="input-group">
+            <button class="btn btn-success" @click="add()">
+              <i class="fa fa-plus"></i>
+            </button>
+            &nbsp;
             <my-input
               :config="{
                 type: 'text',
@@ -45,13 +49,23 @@
                     doConfirm: false,
                     text: 'รายละเอียด'
                   }" @submit="goToDetail(props.rowData)"></my-button>
+                  <!-- &nbsp;
+                  <my-button :config="{
+                    icon: 'fa fa-trash',
+                    btnClass: 'btn btn-error',
+                    doConfirm: false,
+                    text: ''
+                  }" @submit="remove(props.rowData)"></my-button> -->
                 </template>
               </vuetable>
               <div class="columns">
-                <div class="column col-12">
+                <div class="column col-6 flex-item-center">
+                  <vuetable-pagination-info ref="paginationInfo"></vuetable-pagination-info>
+                </div>
+                <div class="column col-6">
                   <vuetable-pagination ref="pagination"
                     :css="{
-                      wrapperClass: 'pagination flex-item-center',
+                      wrapperClass: 'pagination flex-item-right',
                       activeClass: 'btn btn-primary active',
                       disabledClass: 'disabled',
                       pageClass: 'btn page-item',
@@ -88,14 +102,14 @@ import config from '@Config/app.config'
 import service from '@Services/app.service'
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
-import VuetablePaginationInfoMixin from 'vuetable-2/src/components/VuetablePaginationInfoMixin'
+import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
 export default {
   props: {
   },
   components: {
     Vuetable,
     VuetablePagination,
-    VuetablePaginationInfoMixin,
+    VuetablePaginationInfo,
     PageTitle,
     MyButton,
     MyInput,
@@ -161,11 +175,15 @@ export default {
   created () {
   },
   methods: {
+    add () {
+      this.GO_TOPAGE('UserEdit', { key: 'new' })
+    },
     goToDetail (rowData) {
       this.GO_TOPAGE('UserEdit', { key: rowData._id })
     },
     onPaginationData (paginationData) {
       this.$refs.pagination.setPaginationData(paginationData)
+      this.$refs.paginationInfo.setPaginationData(paginationData)
     },
     onChangePage (page) {
       this.$refs.vuetable.changePage(page)

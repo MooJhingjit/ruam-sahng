@@ -73,10 +73,13 @@
                 </template>
               </vuetable>
               <div class="columns">
-                <div class="column col-12">
+                <div class="column col-6 flex-item-center">
+                  <vuetable-pagination-info ref="paginationInfo"></vuetable-pagination-info>
+                </div>
+                <div class="column col-6">
                   <vuetable-pagination ref="pagination"
                     :css="{
-                      wrapperClass: 'pagination flex-item-center',
+                      wrapperClass: 'pagination flex-item-right',
                       activeClass: 'btn btn-primary active',
                       disabledClass: 'disabled',
                       pageClass: 'btn page-item',
@@ -94,6 +97,7 @@
                     @vuetable-pagination:change-page="onChangePage"
                   ></vuetable-pagination>
                 </div>
+                
                 <!-- <div class="column col-6">
                   <div class="columns">
                     <div class="column col-8">
@@ -138,14 +142,14 @@ import config from '@Config/app.config'
 import service from '@Services/app.service'
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
-import VuetablePaginationInfoMixin from 'vuetable-2/src/components/VuetablePaginationInfoMixin'
+import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
 export default {
   props: {
   },
   components: {
     Vuetable,
     VuetablePagination,
-    VuetablePaginationInfoMixin,
+    VuetablePaginationInfo,
     PageTitle,
     MyButton,
     MyInput,
@@ -235,6 +239,7 @@ export default {
     },
     onPaginationData (paginationData) {
       this.$refs.pagination.setPaginationData(paginationData)
+      this.$refs.paginationInfo.setPaginationData(paginationData)
     },
     onChangePage (page) {
       this.$refs.vuetable.changePage(page)

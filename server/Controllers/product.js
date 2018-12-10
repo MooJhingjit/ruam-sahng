@@ -2,15 +2,14 @@
 const ProductCore = require('../Cores/product.js')
 const Helper = require('../Libraries/helper.js')
 const getDataTable = async (req, res, next) => {
-  let tableConfig = Helper.getTableConfig(req.query.page, req.query.per_page)
+  let tableConfig = Helper.getTableConfig(req.query.page, 5) // 5 is per page
   let result = await ProductCore.get({
     type: 'table',
     searchType: req.query.searchType,
     mainSearch: req.query.mainSearch,
     perPage: tableConfig.perPage,
     from: tableConfig.from,
-    sort: req.query.sort
-    // to: tableConfig.to,
+    sort: req.query.sort,
   })
   let total = (!result) ? 0 : result.total
   res.status(200).json({
@@ -20,7 +19,7 @@ const getDataTable = async (req, res, next) => {
     next_page_url: getPageUrl(req, parseInt(tableConfig.currentPage) + parseInt(1)),
     per_page: tableConfig.perPage, // req.query.per_page
     prev_page_url: getPageUrl(req, parseInt(tableConfig.currentPage) - parseInt(1)),
-    // to: tableConfig.to,
+    to: tableConfig.to,
     total: total,
     data: (!result) ? [] : result.data,
     msg: 'success'}

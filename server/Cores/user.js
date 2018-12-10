@@ -60,6 +60,24 @@ const getById = async (userId) => {
     })[0]
   }
 }
+
+const store = async (hash, userObj) => {
+  const user = new User({
+    _id: new  mongoose.Types.ObjectId(),
+    username: userObj.username,
+    name: userObj.name,
+    password: hash,
+    department: userObj.department,
+    qcSection: userObj.qcSection
+  });
+  try {
+    user.save()
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
 const update = async (userId, userObj) => {
   let userUpdate = {}
   if (userObj.oldPass !== null && userObj.newPass !== null) { // change password
@@ -94,6 +112,15 @@ const update = async (userId, userObj) => {
       isPass: false,
       type: ''
     }
+  }
+}
+
+const remove = async (userId) => {
+  try {
+    await User.findByIdAndRemove({_id: userId})
+    return true
+  } catch (error) {
+    return false
   }
 }
 
@@ -152,3 +179,6 @@ module.exports.signup = signup
 module.exports.signin = signin
 module.exports.getById = getById
 module.exports.update = update
+module.exports.store = store
+module.exports.remove = remove
+

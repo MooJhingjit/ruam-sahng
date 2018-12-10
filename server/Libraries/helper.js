@@ -4,8 +4,8 @@ const getTableConfig = (currentPage, perPage) => {
   return {
     currentPage: parseInt(currentPage),
     perPage: parseInt(perPage),
-    from: parseInt(from)
-    // to
+    from: parseInt(from),
+    to: parseInt(from) + parseInt(perPage)
   }
 }
 

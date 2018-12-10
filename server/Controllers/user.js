@@ -4,7 +4,7 @@ const config = require('../Config/app.js')
 const Helper = require('../Libraries/helper.js')
 
 const getDataTable = async (req, res, next) => {
-  let tableConfig = Helper.getTableConfig(req.query.page, req.query.per_page)
+  let tableConfig = Helper.getTableConfig(req.query.page, 5) // 10 is per page
   let result = await UserCore.get({
     type: 'table',
     mainSearch: req.query.mainSearch,
@@ -21,7 +21,7 @@ const getDataTable = async (req, res, next) => {
     next_page_url: getPageUrl(req, parseInt(tableConfig.currentPage) + parseInt(1)),
     per_page: tableConfig.perPage, // req.query.per_page
     prev_page_url: getPageUrl(req, parseInt(tableConfig.currentPage) - parseInt(1)),
-    // to: tableConfig.to,
+    to: tableConfig.to,
     total: total,
     data: (!result) ? [] : result.data,
     msg: 'success'}
@@ -32,11 +32,31 @@ const getPageUrl = (req, currentPage) => {
   return `${req.protocol}//${req.headers.host}/api/users?/&sort=&page=${currentPage}`
 }
 
+const store = async (req, res, next) => {
+  bcrypt.hash(req.body.data.newPass, 10, function(err, hash){
+    if(err) {
+       return res.status(500).json({
+          error: err
+       });
+    }
+    else {
+      let result = UserCore.store(hash, req.body.data)
+      if (result) {
+        res.status(200).json({});
+      } else {
+        res.status(422).json({});
+      }
+    }
+  });
+}
+
 const edit = async (req, res, next) => {
   let result = {}
   result.department = config.appConfig.userDepartment
   result.qcSection = config.appConfig.qcSection
-  result.user = await UserCore.getById(req.params.key)
+  if (req.params.key !== 'new') {
+    result.user = await UserCore.getById(req.params.key)
+  }
   res.status(200).json({result, msg: 'success'})
 }
 
@@ -46,6 +66,15 @@ const update = async (req, res, next) => {
     res.status(422).json({data: result, msg: 'error'})
   }
   res.status(200).json({data: result, msg: 'success'})
+}
+
+const remove = async (req, res, next) => {
+  let result = await UserCore.remove(req.params.key)
+  if (result) {
+    return res.status(200).json({});
+  } else {
+    return res.status(422).json({});
+  }
 }
 
 const signin = (req, res, next) => {
@@ -83,8 +112,10 @@ const signup = (req, res, next) => {
 }
 
 module.exports.edit = edit
+module.exports.store = store
 module.exports.update = update
 module.exports.signup = signup
 module.exports.signin = signin
+module.exports.delete = remove
 module.exports.getDataTable = getDataTable
 

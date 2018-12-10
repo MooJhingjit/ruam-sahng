@@ -89,7 +89,7 @@
               </div>
             </div>
             <div class="column col-6">
-              <div class="columns">
+              <div class="columns" v-if="userKey !== 'new'">
                 <div class="column col-12 col-mx-auto">
                   <label class="form-label" for="input-example-1">รหัสผ่าน</label>
                   <div class="card p-2">
@@ -155,15 +155,59 @@
                   </div>
                 </div>
               </div>
+              <div class="columns" v-if="userKey === 'new'">
+                <div class="column col-12 col-mx-auto">
+                  <div class="form-group">
+                    <label class="form-label" for="input-example-1">รหัสผ่าน</label>
+                      <my-input
+                      :config="{
+                        type: 'password',
+                        key: 'newPass',
+                        placeholder: 'รหัสผ่าน',
+                        rules: 'required',
+                        validator: $validator
+                      }"
+                      :value="local.pass.new"
+                      @input="value => {local.pass.new = value}"
+                    ></my-input>
+                  </div>
+                </div>
+              </div>
+
+              <div class="columns" v-if="userKey === 'new'">
+                <div class="column col-12 col-mx-auto">
+                  <div class="form-group">
+                    <label class="form-label" for="input-example-1">ยืนยันรหัสผ่าน</label>
+                      <my-input
+                      :config="{
+                        type: 'password',
+                        key: 'confirmPass',
+                        placeholder: 'รหัสผ่าน',
+                        rules: 'required',
+                        validator: $validator
+                      }"
+                      :value="local.pass.confirm"
+                      @input="value => {local.pass.confirm = value}"
+                    ></my-input>
+                  </div>
+                </div>
+              </div>
+              <label class="text-error" v-if="local.pass.isMatch === false && userKey === 'new'">ข้อมูลรหัสผ่านไม่ตรงกัน กรุณาตรวจสอบ</label>
             </div>
           </div>
         </div>
         <div class="card-footer">
           <div class="columns">
-            <div class="column col-12 center text-center">
+            <div class="column text-center">
               <my-button
               :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึก'}"
               @submit="(tf) => submitHandle('update', tf)">
+              </my-button>
+            </div>
+            <div class="column text-center" v-if="userKey !== 'new'">
+              <my-button
+              :config="{icon: 'fa fa-trash', btnClass: 'btn btn-error', doConfirm: true, text: 'ลบผู้ใช้'}"
+              @submit="(tf) => submitHandle('delete', tf)">
               </my-button>
             </div>
           </div>
@@ -218,6 +262,9 @@ export default {
     },
     confirmPassword () {
       return this.local.pass.confirm
+    },
+    userKey () {
+      return this.$route.params.key
     }
   },
   created () {
@@ -225,13 +272,15 @@ export default {
   },
   methods: {
     async fetchData () {
-      let resourceName = `${config.api.user.index}/${this.$route.params.key}`
+      let resourceName = `${config.api.user.index}/${this.userKey}`
       let res = await service.getResource({ resourceName, queryString: [] })
       this.server = res.data.result
-      this.local.name = this.server.user.name
-      this.local.userName = this.server.user.username
-      this.local.department = this.server.user.department
-      this.local.qcSection = this.server.user.qcSection
+      if (this.userKey !== 'new') {
+        this.local.name = this.server.user.name
+        this.local.userName = this.server.user.username
+        this.local.department = this.server.user.department
+        this.local.qcSection = this.server.user.qcSection
+      }
     },
     async submitHandle (action, tf = false) {
       switch (action) {
@@ -250,7 +299,7 @@ export default {
           // console.log(this.local)
           let isValid = await this.$validator.validateAll()
           if (isValid) {
-            let resourceName = `${config.api.user.index}/${this.$route.params.key}`
+            let resourceName = `${config.api.user.index}/${this.userKey}`
             let data = {
               name: this.local.name,
               username: this.local.userName,
@@ -263,13 +312,30 @@ export default {
             }
             if (this.local.pass.isMatch === false) return
             try {
-              await service.putResource({ data, resourceName })
+              if (this.userKey !== 'new') {
+                await service.putResource({ data, resourceName })
+              } else { // create user
+                resourceName = `${config.api.user.index}`
+                await service.postResource({ data, resourceName })
+              }
               this.$notify('ทำรายการเสร็จสิ้น', 'success')
+              this.GO_TOPAGE('User')
             } catch (error) {
               this.$notify('ข้อมูลไม่ถูกต้อง โปรดตรวจสอบ', 'error')
             }
           }
           break
+        case 'delete':
+        if (!tf) return
+          let resourceName = `${config.api.user.index}/${this.userKey}`
+          try {
+              await service.deleteResource({ resourceName, queryString: [] })
+              this.$notify('ทำรายการเสร็จสิ้น', 'success')
+              this.GO_TOPAGE('User')
+            } catch (error) {
+              this.$notify('ข้อมูลไม่ถูกต้อง โปรดตรวจสอบ', 'error')
+            }
+          return
       }
     },
     passUpdate () {
