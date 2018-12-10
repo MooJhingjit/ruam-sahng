@@ -23,7 +23,7 @@ const store = async (customerObj) => {
     });
     try {
       let res = await customer.save()
-      return res
+      return res._id
     } catch (error) {
       return false
     }
@@ -31,5 +31,12 @@ const store = async (customerObj) => {
   return cus._id // already have this customer
 }
 
+const findByName = async (str) => {
+  let cus = await Customer.find({name: { '$regex' : str, '$options' : 'i' }}, {_id:1})
+  // console.log(cus)
+  return cus
+}
+
 module.exports.get = get
 module.exports.store = store
+module.exports.findByName = findByName

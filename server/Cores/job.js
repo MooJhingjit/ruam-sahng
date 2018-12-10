@@ -28,6 +28,8 @@ const store = async (inputs) => {
     if (!cusId) return false
     header.customer.id = cusId
   }
+
+  // console.log(header.customer.id)
   const newJob = new Job({
     _id: new  mongoose.Types.ObjectId(),
     cusId: header.customer.id,
@@ -42,6 +44,33 @@ const store = async (inputs) => {
   }
 }
 
+const findInArr = async (find, Arr) => {
+  // console.log(Arr)
+  try {
+    let job = await Job.find({ cusId: { "$in" : Arr} })
+    return job
+  } catch (error) {
+    return {}
+  }
+}
+
+const findByCode = async (str) => {
+  let job = await Job.find({code: { '$regex' : str, '$options' : 'i' }}, {_id:1})
+  // console.log(cus)
+  return job
+}
+
+// const findByCustomer = async (cusName) => {
+//   try {
+//     let job = await Job.find({'cusId.name': { '$regex' : cusName, '$options' : 'i' }})
+//     return job
+//   } catch (error) {
+//     return {}
+//   }
+// }
+
 module.exports.get = get
 module.exports.create = create
 module.exports.store = store
+module.exports.findInArr = findInArr
+module.exports.findByCode = findByCode

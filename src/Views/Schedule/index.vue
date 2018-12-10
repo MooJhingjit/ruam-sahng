@@ -30,16 +30,16 @@
           <thead>
             <tr>
               <th class="h5 text-bold text-center text-primary" width=""></th>
-              <th class="h5 text-bold text-center text-primary" width="110">สเปคงาน</th>
-              <th class="h5 text-bold text-center text-primary" width="110">แบบ</th>
-              <th class="h5 text-bold text-center text-primary" width="110">ตัด</th>
-              <th class="h5 text-bold text-center text-primary" width="110">พันท์</th>
-              <th class="h5 text-bold text-center text-primary" width="110">พับ</th>
-              <th class="h5 text-bold text-center text-primary" width="110">เชื่อม</th>
-              <th class="h5 text-bold text-center text-primary" width="110">พ่นสี</th>
-              <th class="h5 text-bold text-center text-primary" width="110">ประกอบ</th>
-              <th class="h5 text-bold text-center text-primary" width="110">อุปกรณ์</th>
-              <th class="h5 text-bold text-center text-primary" width="110">วายริ่ง</th>
+              <th class="h5 text-bold text-center text-primary" width="120">สเปคงาน</th>
+              <th class="h5 text-bold text-center text-primary" width="120">แบบ</th>
+              <th class="h5 text-bold text-center text-primary" width="120">ตัด</th>
+              <th class="h5 text-bold text-center text-primary" width="120">พันท์</th>
+              <th class="h5 text-bold text-center text-primary" width="120">พับ</th>
+              <th class="h5 text-bold text-center text-primary" width="120">เชื่อม</th>
+              <th class="h5 text-bold text-center text-primary" width="120">พ่นสี</th>
+              <th class="h5 text-bold text-center text-primary" width="120">ประกอบ</th>
+              <th class="h5 text-bold text-center text-primary" width="120">อุปกรณ์</th>
+              <th class="h5 text-bold text-center text-primary" width="120">วายริ่ง</th>
             </tr>
           </thead>
           <tbody>

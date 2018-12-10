@@ -27,7 +27,7 @@
               :value="this.local.searchStatusType"
               @input="value => {local.searchStatusType = value}"
             ></my-option>
-            <!-- <my-option
+            <my-option
               :config="{
                 type: 'text',
                 key: 'searchType',
@@ -42,7 +42,7 @@
               }"
               :value="this.local.searchType"
               @input="value => setSearchType(value)"
-            ></my-option> -->
+            ></my-option>
             <my-input
               :config="{
                 type: 'text',

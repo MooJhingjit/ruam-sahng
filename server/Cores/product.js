@@ -10,33 +10,15 @@ const config = require('../Config/app.js')
 moment = require('moment')
 
 const get = async (obj) => {
+  let products = {}
   let condition = {}
-  if (obj.mainSearch) {
-    switch (obj.searchType) {
-      case 'jobCode':
-        // ssss
-        break
-      case 'cusName':
-        // ssss
-        break
-      case 'dateStart':
-        // ssss
-        break
-      case 'dateEnd':
-        // condition.dateEnd = Date('2018-12-26') 
-        break
-      default: // productName
-        condition.name = { '$regex' : obj.mainSearch, '$options' : 'i' }
-        break
-    }
-  }
+
   if (obj.type == 'schedule') {
     condition.status = { $ne: 'done' }
   }
   if (obj.searchStatusType && obj.searchStatusType  !== 'all') {
     condition.status = obj.searchStatusType
   }
-  console.log(condition)
   if (!obj.perPage) {
     obj.perPage = 0
   }
@@ -50,7 +32,49 @@ const get = async (obj) => {
   } else {
     sort.createdAt = 'desc'
   }
-  let products = await Product.find(condition).sort(sort).limit(obj.perPage).skip(obj.from)
+
+  if (obj.mainSearch) {
+    switch (obj.searchType) {
+      case 'jobCode':
+      case 'cusName':
+        let jobs = []
+        if (obj.searchType === 'cusName') {
+          let customers = await CustomerCore.findByName(obj.mainSearch)
+          // if (customers.length) {
+          let cusArr = []
+          customers.map((item) => {
+            cusArr.push(item._id)
+          })
+          // }
+          jobs = await JobCore.findInArr('searchByCusId', cusArr)
+        } else if (obj.searchType === 'jobCode') {
+          jobs = await JobCore.findByCode(obj.mainSearch)
+        }
+        let jobsArr = []
+        jobs.map((item) => {
+          jobsArr.push(item._id)
+        })
+        condition.jobId = { "$in" : jobsArr}
+        products = await Product.find(condition).sort(sort).limit(obj.perPage).skip(obj.from)
+        break
+      // case 'cusName':
+        
+      //     let jobsArr = []
+      //     jobs.map((item) => {
+      //       jobsArr.push(item._id)
+      //     })
+      //     condition.jobId = { "$in" : jobsArr}
+      //     products = await Product.find(condition).sort(sort).limit(obj.perPage).skip(obj.from)
+      //   break
+      default: // productName
+        condition.name = { '$regex' : obj.mainSearch, '$options' : 'i' }
+        products = await Product.find(condition).sort(sort).limit(obj.perPage).skip(obj.from)
+        break
+    }
+  } else {
+    products = await Product.find(condition).sort(sort).limit(obj.perPage).skip(obj.from)
+  }
+  
   let result = {}
   if (obj.type == 'table' || obj.type == 'schedule') {
     result.total = await Product.find(condition).count()
