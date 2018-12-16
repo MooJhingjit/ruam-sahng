@@ -14,7 +14,7 @@ const get = async (obj) => {
   let condition = {}
 
   if (obj.type == 'schedule') {
-    condition.status = { $ne: 'done' }
+    condition.status = { $nin: ['done', 'send'] }
   }
   if (obj.searchStatusType && obj.searchStatusType  !== 'all') {
     condition.status = obj.searchStatusType
@@ -107,7 +107,7 @@ const getFullData = async (data) => {
   }
 }
 
-const store = async (jobObj, products) => {
+const store = async (jobObj, cusId, products) => {
   if (products.length) {
     // await Promise.all(
       // products.map( async (product) => {
@@ -117,6 +117,7 @@ const store = async (jobObj, products) => {
         const newProduct = new Product({
           _id: new  mongoose.Types.ObjectId(),
           jobId: jobObj._id,
+          cusId: cusId,
           name: product.name,
           amount: product.amount,
           thickness: product.thickness,
@@ -191,7 +192,14 @@ const update = async (productId, product) => {
 const updateStatus = async (productId, status) => {
   let result = {}
   try {
-    await Product.findOneAndUpdate({_id: productId}, { status })
+    let objUpdate = {
+      status: status
+    }
+    if (status === 'send') {
+      console.log('do')
+      objUpdate.sendAt = new Date()
+    }
+    await Product.findOneAndUpdate({_id: productId}, objUpdate)
     return result
   } catch (error) {
     console.log(error)
@@ -210,7 +218,24 @@ const remove = async (productId) => {
   }
 }
 
-countProduct = async (productStatus) => {
+const getYearsAvailable = async () => {
+  return Product.aggregate([
+    {$group : {_id : { year: { $year: "$createdAt" } }}},
+    {$sort:{"_id.year":-1}}
+  ]
+ )
+}
+
+const getMonthsAvailable = async (yearSelected) => {
+  return Product.aggregate([
+      {$project:{month: { $month: "$createdAt" }, year: { $year: "$createdAt" }}},
+      {$match : { "year":  { "$in": yearSelected } } },
+      {$group : {_id: {month:  "$month"}}},
+      {$sort:{"_id.month":-1}}
+  ])
+}
+
+const countProduct = async (productStatus) => {
   try {
     let total = await Product.find({status: productStatus}).count()
     // console.log(total)
@@ -221,11 +246,63 @@ countProduct = async (productStatus) => {
   }
 }
 
+const filterByDate = async (years, months) => { // from summary page
+  // let match = {}
+  // match.year = { "$in": years }
+  // match.months = { "$in": years }
+  // match.sendAt = { "$in": years }
+  return Product.aggregate([
+    {
+   $lookup:
+     {
+       from: 'customers',
+       localField: 'cusId',
+       foreignField: '_id',
+       as: 'customer_docs'
+     }
+},
+  {
+    $project:{
+      month: { $month: "$createdAt" },
+      year: { $year: "$createdAt" },
+    //   customer: { $arrayElemAt: [ "$customer_docs", 0 ] },
+      customer: "$customer_docs",
+      sendAt: 1,
+      cusId: 1,
+      inTime:
+      {
+         $cond: { if: { $lte: [ "$sendAt", "$dateEnd" ] }, then: 1, else: 0 }
+      },
+      late:
+      {
+         $cond: { if: { $lte: [ "$sendAt", "$dateEnd" ] }, then: 0, else: 1 }
+      },
+      
+    }
+  },
+  {$match : { "year":  { "$in": years }, "month":  { "$in": months }, "sendAt": { "$exists": true } } },
+  {
+      $group: { 
+        _id: "$cusId", 
+        total: { $sum: 1 },
+        inTime:{ $sum: "$inTime" },
+        late:{ $sum: "$late" },
+        customer:{ $addToSet: "$customer" },
+    }
+      
+  },
+  {$sort:{"_id.month":-1}}
+])
+}
+
 module.exports.get = get
 module.exports.store = store
 module.exports.edit = edit
 module.exports.update = update
 module.exports.remove = remove
+module.exports.filterByDate = filterByDate
 module.exports.updateStatus = updateStatus
 module.exports.countProduct = countProduct
+module.exports.getYearsAvailable = getYearsAvailable
+module.exports.getMonthsAvailable = getMonthsAvailable
 

@@ -1,10 +1,10 @@
 <template>
   <div class="page-title">
     <div class="columns">
-      <div class="d-flex column col-xs-12">
+      <div class="d-flex column col-6 col-md-12 col-xs-12">
         <slot name="left-slot"></slot>
       </div>
-      <div class="column col-6 col-xs-12">
+      <div class="column col-6 col-md-12 col-xs-12">
         <slot name="right-slot"></slot>
       </div>
     </div>

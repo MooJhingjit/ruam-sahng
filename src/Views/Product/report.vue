@@ -1,6 +1,19 @@
 <template>
   <div ref="productReport" class="report" v-if="local !== null">
-    <h4>รายการผลิต</h4>
+    <table width="100%">
+      <tr>
+        <td style="text-align: left" width="30%">
+          <!-- <img src="@/Assets/img/Logo.jpg" width="60" height="60"/> -->
+        </td>
+        <td style="text-align: center;font-weight: bold;" width="30%">
+          <h4 style="margin: 0;">รายงานการผลิต</h4>
+          <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
+        </td>
+        <td style="text-align: right" width="30%">
+            {{TODAY}}
+        </td>
+      </tr>
+    </table>
     <table class="main-table" width="100%">
     <thead>
     <tr>
@@ -12,7 +25,7 @@
             <td style="width: 50%;">รายการผลิต: {{product.name}}</td>
           </tr>
           <tr>
-            <td style="width: 50%;">เลขที่สินค้า: {{job.code}}</td>
+            <td style="width: 50%;">เลขที่จ็อบ: {{job.code}}</td>
             <td style="width: 50%;">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</td>
           </tr>
           <tr>
@@ -21,18 +34,14 @@
           </tr>
           <tr>
             <td style="width: 50%;">กำหนดส่ง: {{GET_DATE(product.dateEnd)}}</td>
-            <td style="width: 50%;">หนา: {{product.thickness}}</td>
+            <td style="width: 50%;">
+            <span>หนา: {{product.thickness}},&nbsp;&nbsp;</span>
+            <span>วัสดุ: {{getDataFromConfig(product.equipment, 'equipment')}},&nbsp;&nbsp;</span>
+            <span>สี: {{getDataFromConfig(product.colorType, 'colorType')}} <template v-if="product.colorName">( {{product.colorName}} )</template></span>
+            </td>
           </tr>
           <tr>
             <td style="width: 50%;">สถานะ: {{JOBSTATUS[product.status]}}</td>
-            <td style="width: 50%;">วัสดุ: {{getDataFromConfig(product.equipment, 'equipment')}}</td>
-          </tr>
-          <tr>
-            <td style="width: 50%;"></td>
-            <td style="width: 50%;">สี: {{getDataFromConfig(product.colorType, 'colorType')}}</td>
-          </tr>
-          <tr>
-            <td style="width: 50%;"></td>
             <td style="width: 50%;">อุปกรณ์เสริม: {{getDataFromConfig(product.accessory, 'accessory')}}</td>
           </tr>
         </tbody>
@@ -43,7 +52,7 @@
   <tbody class="border">
     <tr>
       <td class="no-padding">
-        <div>สถานะการทำงาน</div>
+        <div style="margin-bottom: 10px;">สถานะการทำงาน</div>
         <table width="100%" border="1" style="border-collapse: collapse" class="item-lists">
           <thead>
             <tr>
@@ -56,11 +65,11 @@
           </thead>
           <tbody>
             <tr :key="index" v-for="(task, index) in tasks">
-              <td style="text-align: center; padding: 5px;">{{task.department}}</td>
-              <td style="text-align: center; padding: 5px;">{{GET_DATE(task.dateStart)}}</td>
-              <td style="text-align: center; padding: 5px;">{{GET_DATE(task.dateEnd)}}</td>
-              <td style="padding: 5px;">{{task.note}}</td>
-              <td style="text-align: center; padding: 5px;">{{TASKSTATUS[task.status]}}</td>
+              <td style="font-size: 13px; text-align: center; padding: 5px;">{{task.department}}</td>
+              <td style="font-size: 13px; text-align: center; padding: 5px;">{{GET_DATE(task.dateStart)}}</td>
+              <td style="font-size: 13px; text-align: center; padding: 5px;">{{GET_DATE(task.dateEnd)}}</td>
+              <td style="font-size: 13px; padding: 5px;">{{task.note}}</td>
+              <td style="font-size: 13px; text-align: center; padding: 5px;">{{TASKSTATUS[task.status]}}</td>
             </tr>
           </tbody>
         </table>

@@ -35,6 +35,9 @@ export default {
   },
   filters: {},
   methods: {
+    TODAY (format = 'DD/MM/YYYY') {
+      return moment().format(format)
+    },
     ...mapActions([
       'SET_APP_STORE'
     ]),
@@ -104,7 +107,7 @@ export default {
       dateEnd = moment(dateEnd)
       let dataDiff = dateEnd.diff(today, 'days')
       // console.log(dataDiff)
-      return (dataDiff <= 0)
+      return (dataDiff < 0)
     },
     ISROLE (taskId) {
       return this.USER.role.indexOf(taskId) >= 0

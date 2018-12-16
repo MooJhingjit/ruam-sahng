@@ -44,6 +44,11 @@ export default new Router({
       path: '/users/:key',
       name: 'UserEdit',
       component: () => import('@Views/User/edit')
+    },
+    {
+      path: '/summary',
+      name: 'Summary',
+      component: () => import('@Views/Summary')
     }
   ]
 })

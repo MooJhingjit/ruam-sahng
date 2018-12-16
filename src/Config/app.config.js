@@ -19,6 +19,10 @@ const api = {
   },
   'user': {
     'index': '/users'
+  },
+  'summary': {
+    'index': '/summary',
+    'filter': '/summary-filter'
   }
 }
 

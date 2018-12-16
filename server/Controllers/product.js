@@ -2,7 +2,7 @@
 const ProductCore = require('../Cores/product.js')
 const Helper = require('../Libraries/helper.js')
 const getDataTable = async (req, res, next) => {
-  let tableConfig = Helper.getTableConfig(req.query.page, 5) // 5 is per page
+  let tableConfig = Helper.getTableConfig(req.query.page, 10) // 5 is per page
   let result = await ProductCore.get({
     type: 'table',
     searchType: req.query.searchType,

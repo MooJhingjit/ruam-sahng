@@ -9,6 +9,7 @@ module.exports = {
     resolve: {
       alias: {
         // @ is an alias to /src
+        '@Assets': resolve ('src/Assets'),
         '@Views': resolve ('src/Views'),
         '@Layouts': resolve('src/Layouts'),
         '@Components': resolve ('src/Components'),

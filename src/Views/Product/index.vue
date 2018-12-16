@@ -4,60 +4,68 @@
       <page-title>
         <template slot="left-slot"></template>
         <div class="has-icon-left" slot="right-slot">
-          <div class="input-group">
-            <button class="btn btn-success" @click="GO_TOPAGE('Creation')" v-if="ISADMIN">
-              <i class="fa fa-plus"></i>
-            </button>
-            &nbsp;
-            <my-option
-              :config="{
-                type: 'text',
-                key: 'searchType',
-                rules: '',
-                validator: $validator,
-                hasTextDefault: false,
-                selection: [
-                  {key: 'all', name: 'สถานะทั้งหมด'},
-                  {key: 'ip', name: 'กำลังดำเนินงาน'},
-                  {key: 'review', name: 'รอตรวจสอบ'},
-                  {key: 'done', name: 'รอส่ง'},
-                  {key: 'send', name: 'ส่งงานแล้ว'}
-                ]
-              }"
-              :value="this.local.searchStatusType"
-              @input="value => {local.searchStatusType = value}"
-            ></my-option>
-            <my-option
-              :config="{
-                type: 'text',
-                key: 'searchType',
-                rules: '',
-                validator: $validator,
-                hasTextDefault: false,
-                selection: [
-                  {key: 'productName', name: 'รายการผลิต'},
-                  {key: 'jobCode', name: 'รหัสสินค้า'},
-                  {key: 'cusName', name: 'ลูกค้า'}
-                ]
-              }"
-              :value="this.local.searchType"
-              @input="value => setSearchType(value)"
-            ></my-option>
-            <my-input
-              :config="{
-                type: 'text',
-                key: 'keyword',
-                placeholder: '',
-                rules: null
-              }"
-              @input="val => {inputSearch = val}"
-            ></my-input>
-            <!-- <i class="></i> -->
-            <my-button
-              :config="{icon: null, btnClass: 'btn btn-primary input-group-btn', doConfirm: false, text: `ค้นหา`}"
-              @submit="search()">
-            </my-button>
-          </div>
+            <div class="columns">
+              <div class="column col-1 col-md-1 col-xs-12 text-right">
+                <button class="btn btn-success" @click="GO_TOPAGE('Creation')" v-if="ISADMIN">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div>
+              <div class="column col-3 col-md-3 col-xs-12">
+                 <my-option
+                  :config="{
+                    type: 'text',
+                    key: 'searchType',
+                    rules: '',
+                    validator: $validator,
+                    hasTextDefault: false,
+                    selection: [
+                      {key: 'all', name: 'สถานะทั้งหมด'},
+                      {key: 'ip', name: 'กำลังดำเนินงาน'},
+                      {key: 'review', name: 'รอตรวจสอบ'},
+                      {key: 'done', name: 'รอส่ง'},
+                      {key: 'send', name: 'ส่งงานแล้ว'}
+                    ]
+                  }"
+                  :value="this.local.searchStatusType"
+                  @input="value => {local.searchStatusType = value}"
+                ></my-option>
+              </div>
+              <div class="column col-3 col-md-3 col-xs-12">
+                <my-option
+                  :config="{
+                    type: 'text',
+                    key: 'searchType',
+                    rules: '',
+                    validator: $validator,
+                    hasTextDefault: false,
+                    selection: [
+                      {key: 'productName', name: 'รายการผลิต'},
+                      {key: 'jobCode', name: 'รหัสสินค้า'},
+                      {key: 'cusName', name: 'ลูกค้า'}
+                    ]
+                  }"
+                  :value="this.local.searchType"
+                  @input="value => setSearchType(value)"
+                ></my-option>
+              </div>
+              <div class="column col-5 col-md-5 col-xs-12">
+                <div class="input-group">
+                <my-input
+                  :config="{
+                    type: 'text',
+                    key: 'keyword',
+                    placeholder: '',
+                    rules: null
+                  }"
+                  @input="val => {inputSearch = val}"
+                ></my-input>
+                <my-button
+                  :config="{icon: null, btnClass: 'btn btn-primary input-group-btn', doConfirm: false, text: `ค้นหา`}"
+                  @submit="search()">
+                </my-button>
+                </div>
+              </div>
+            </div>
         </div>
       </page-title>
     </div>

@@ -2,40 +2,43 @@
     <section class="container centered  bg-gray" v-if="local.notification !== null">
         <header class="columns">
           <section class="menu-lists navbar-section column col-xs-12 col-8">
-            <ul class="tab tab-block text-gray">
-              <li class="tab-item">
+             <div class="columns">
+              <div class="column col-3 col-xs-6 text-center">
                 <router-link :to="{ name: 'Product' } " ><i class="fa fa-tasks"></i> สินค้า
-                <!-- {{local.notification.productReview}} -->
                 <span
                   :title="`รอตรวจสอบ ${local.notification.productReview} รายการ`"
                   class="badge text-success"
                   v-if="local.notification.productReview !== 0"
                   :data-badge="local.notification.productReview"></span>
                 </router-link>
-              </li>
-              <!-- <li class="tab-item" v-if="ISADMIN">
-                <router-link :to="{ name: 'Creation' } "><i class="fa fa-plus-circle" aria-hidden="true"></i> สร้างงาน</router-link>
-              </li> -->
+              </div>
+              <div class="column col-3 col-xs-6 text-center"><router-link :to="{ name: 'Schedule' } "><i class="fa fa-table" aria-hidden="true"></i> ตารางงาน</router-link></div>
+              <div class="column col-3 col-xs-6 text-center" v-if="ISADMIN"><router-link :to="{ name: 'User' } "><i class="fa fa-user" aria-hidden="true"></i> ผู้ใช้งาน</router-link></div>
+              <div class="column col-3 col-xs-6 text-center" v-if="ISADMIN"><router-link :to="{ name: 'Summary' } "><i class="fa fa-pie-chart" aria-hidden="true"></i> ภาพรวม</router-link></div>
+            </div>
+            
+            <!-- <ul class="tab tab-block text-gray">
               <li class="tab-item">
-                <router-link :to="{ name: 'Schedule' } "><i class="fa fa-table" aria-hidden="true"></i> ตารางงาน</router-link>
+                
+              </li>
+              <li class="tab-item">
+                
+              </li>
+              <li class="tab-item" >
+                
               </li>
               <li class="tab-item" v-if="ISADMIN">
-                <router-link :to="{ name: 'User' } "><i class="fa fa-user" aria-hidden="true"></i> ผู้ใช้งาน</router-link>
+                
               </li>
-            </ul>
+            </ul> -->
           </section>
           <section class="profile navbar-section column col-xs-12 col-4">
             <div class="columns">
               <div class="column col-12 text-right">
                 <div class="tile">
-                  <!-- <div class="tile-icon">
-                    <figure class="avatar" data-initial="P"></figure>
-                  </div> -->
                   <div class="tile-content">
                     <span class="tile-title text-bold c-hand text-nowrap" @click="GO_TOPAGE('UserEdit', {key: USER._id})">{{USER.username}}</span>
                     <i class="fa fa-power-off text-error c-hand" aria-hidden="true" @click="logout()"></i>
-                    <!-- <button class="btn btn-action btn-sm"></button> -->
-                    <!-- <p class="tile-subtitle">Earth's Mightiest Heroes joined forces to take on threats that were too big for any one hero to tackle...</p> -->
                   </div>
                 </div>
               </div>
@@ -99,6 +102,10 @@ export default {
 @import '~@/Assets/my-style.scss';
 header{
   padding: 10px;
+  .badge {
+    right: 0px;
+    top: -10px;
+  }
   .menu-lists{
     order: 2;
     .tab.tab-block{
@@ -110,10 +117,7 @@ header{
         color: #50596d;
       }
     }
-    .badge {
-      right: -25px;
-      top: -10px;
-    }
+    
   }
   .profile{
     .columns{

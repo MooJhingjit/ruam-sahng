@@ -12,7 +12,8 @@ app.use('/api',
     require('./job'),
     require('./product'),
     require('./schedule'),
-    require('./user')
+    require('./user'),
+    require('./summary')
   ]
 );
 

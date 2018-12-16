@@ -36,7 +36,7 @@
           <!-- <div class="divider"></div> -->
           <div class="columns">
             <div class="column" v-if="local.viewType === 'table'">
-              <table class="table table-striped table-hover">
+              <table class="table table-striped table-hover responsive">
                 <thead>
                   <tr>
                     <th class="text-center text-bold" width="200">แผนก</th>
@@ -48,15 +48,15 @@
                 </thead>
                 <tbody>
                   <tr :class="{'disable text-light': item.isDisable}" :key="index" v-for="(item, index) in server.tasks">
-                    <td class="">
+                    <td data-column="แผนก" class="">
                       {{item.department}}
                       <!-- <i class="text-dark fa fa-arrows-alt c-hand" aria-hidden="true"
                       v-if="item.status === 'done'"
                       @click="showDetail()"></i> -->
                     </td>
-                    <td class="text-center">{{GET_DATE(item.dateStart)}}</td>
-                    <td class="text-center">{{GET_DATE(item.dateEnd)}}</td>
-                    <td class="text-center">
+                    <td data-column="วันที่เริ่ม" class="text-center">{{GET_DATE(item.dateStart)}}</td>
+                    <td data-column="วันที่เสร็จ" class="text-center">{{GET_DATE(item.dateEnd)}}</td>
+                    <td data-column="หมายเหตุ" class="text-center">
                       <template v-if="ISADMIN">
                         {{item.note}}
                       </template>
@@ -81,7 +81,7 @@
                         </template>
                       </template>
                     </td>
-                    <td class="text-center">
+                    <td data-column="การตรวจสอบ" class="text-center">
                       <template v-if="ISADMIN">
                         <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" :title="TASKSTATUS[item.status]" v-if="item.status === 'done'"></i>
                         <i class="fa fa-circle-o h5" aria-hidden="true" :title="TASKSTATUS[item.status]" v-else-if="item.status === 'ip'"></i>
@@ -161,6 +161,9 @@
             </div>
             <div class="column text-center">
               <my-button :config="{icon: 'fa fa-info-circle', btnClass: 'btn btn-secondary', doConfirm: false, text: 'รายละเอียดงาน'}" @submit="(tf) => submitHandle('detail', tf)"></my-button>
+            </div>
+            <div class="column text-center">
+              <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: false, text: 'ใบสั่งผลิต'}" @submit="(tf) => submitHandle('production-report', tf)"></my-button>
             </div>
             <div class="column text-center">
               <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: false, text: 'รายงาน'}" @submit="(tf) => submitHandle('report', tf)"></my-button>
@@ -266,6 +269,8 @@
       </div>
     </div>
     <report-template class="report-template" ref="reportTemplate" :dataObj="server" ></report-template>
+    <production-report-template class="production-report-template" ref="procuctionReportTemplate" :dataObj="server" ></production-report-template>
+    
   </section>
 </template>
 
@@ -278,6 +283,7 @@ import MyButton from '@Components/Form/myButton'
 import config from '@Config/app.config'
 import service from '@Services/app.service'
 import reportTemplate from './report'
+import productionReportTemplate from './productionReport'
 export default {
   props: {
     // mode: {
@@ -290,7 +296,8 @@ export default {
     MyModal,
     MyButton,
     MyInput,
-    reportTemplate
+    reportTemplate,
+    productionReportTemplate
   },
   name: 'ProductEdit',
   data () {
@@ -357,6 +364,9 @@ export default {
         case 'report':
           this.$refs.reportTemplate.printReceipt()
           break
+        case 'production-report':
+          this.$refs.procuctionReportTemplate.printReceipt()
+          break
       }
     },
     updateProduct () {
@@ -396,7 +406,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.report-template {
+.report-template, .production-report-template  {
   display: none
 }
+
 </style>

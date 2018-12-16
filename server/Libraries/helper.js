@@ -1,3 +1,5 @@
+
+
 const getTableConfig = (currentPage, perPage) => {
   currentPage = Math.max(0, currentPage)
   let from = (parseInt(perPage) * (currentPage - 1))
@@ -8,5 +10,4 @@ const getTableConfig = (currentPage, perPage) => {
     to: parseInt(from) + parseInt(perPage)
   }
 }
-
 module.exports.getTableConfig = getTableConfig
