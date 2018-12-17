@@ -61,7 +61,8 @@
                         key: 'department',
                         rules: 'required',
                         validator: $validator,
-                        selection: server.department
+                        selection: server.department,
+                        isDisable: !ISADMIN
                       }"
                       :value="local.department"
                       @input="value => { local.department = value }"
@@ -79,7 +80,8 @@
                         key: 'qcSection',
                         rules: 'required',
                         validator: $validator,
-                        selection: server.qcSection
+                        selection: server.qcSection,
+                        isDisable: !ISADMIN
                       }"
                       :value="local.qcSection"
                       @input="value => { local.qcSection = value }"

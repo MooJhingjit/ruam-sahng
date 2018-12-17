@@ -82,7 +82,7 @@ export default {
     '$route' (to, from) {
       this.normalPages = !(to.name === 'Login' || to.name === 'Schedule')
       if (this.CHECK_AUTH()) {
-        if (to.name === 'Login') {
+        if (to.name === 'Login' || !this.HAS_PRIVILEGE(to.name)) {
           this.REDIRECT_TOHOMEPAGE()
         }
       } else {

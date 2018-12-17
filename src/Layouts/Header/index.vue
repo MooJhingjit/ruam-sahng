@@ -108,16 +108,23 @@ header{
   }
   .menu-lists{
     order: 2;
-    .tab.tab-block{
-      border-bottom: none;
-      // color: #ababab; // $secondary-white-color
-      .router-link-exact-active{
-        // font-size: 1.2em;
-        font-weight: bold;
-        color: #50596d;
-      }
+    // .tab.tab-block{
+    //   border-bottom: none;
+    //   // color: #ababab; // $secondary-white-color
+      
+    // }
+    a {
+      text-decoration: none;
+      color: #afb3bd  ;
     }
-    
+    a:hover{
+      color: #50596d;
+    }
+    .router-link-exact-active{
+        // font-size: 1.2em;
+      font-weight: bold;
+      color: #50596d;
+    }
   }
   .profile{
     .columns{

@@ -1,10 +1,12 @@
 <template>
   <div class="page-title">
     <div class="columns">
-      <div class="d-flex column col-6 col-md-12 col-xs-12">
+      <div v-if="side === 'all' || side === 'left'"
+      class="d-flex column col-6 col-md-12 col-xs-12">
         <slot name="left-slot"></slot>
       </div>
-      <div class="column col-6 col-md-12 col-xs-12">
+      <div v-if="side === 'all' || side === 'right'"
+      :class="['column col-md-12 col-xs-12', {'col-6': side === 'all'}, {'col-12': side === 'right'}]">
         <slot name="right-slot"></slot>
       </div>
     </div>
@@ -14,10 +16,11 @@
 <script>
 export default {
   props: {
-    // mode: {
-    //   type: String,
-    //   required: true
-    // }
+    side: {
+      type: String,
+      required: false,
+      default: 'all'
+    }
   },
   components: {},
   name: 'PageTitle',

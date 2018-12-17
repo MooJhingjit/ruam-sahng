@@ -75,7 +75,11 @@ const variable = {
     { key: 1, name: 'ใส่กระจก' },
     { key: 2, name: 'ใส่ยาง' },
     { key: 3, name: 'อะคริลิค' }
-  ]
+  ],
+  privilege: {
+    admin: '*',
+    user: ['Product', 'ProductUpdate', 'Schedule', 'UserEdit', 'Login']
+  }
 }
 
 export default {

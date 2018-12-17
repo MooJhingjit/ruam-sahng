@@ -1,7 +1,7 @@
 
 <template>
   <div class="form-group">
-    <select :name="config.key" class="form-select" v-model="myValue"  v-validate="config.rules">
+    <select :name="config.key" class="form-select" v-model="myValue" :disabled="config.isDisable" v-validate="config.rules">
       <option v-if="config.hasTextDefault">--โปรดเลือก--</option>
       <option :value="item.key" :key="index" v-for="(item, index) in config.selection">{{item.name}}</option>
     </select>

@@ -39,20 +39,22 @@ export default {
   },
   filters: {},
   methods: {
-    TODAY (format = 'DD/MM/YYYY') {
-      return moment().format(format)
-    },
     ...mapActions([
       'SET_APP_STORE'
     ]),
-    // GET_DATEDIFF (dateStart, dateEnd) { // this for buefy
-    //   var startDate = moment(dateStart, 'YYYY/MM/DD')
-    //   var endDate = moment(dateEnd, 'YYYY/MM/DD')
-    //   return endDate.diff(startDate, 'days')
-    // },
-    // ADDCOMMAS (number, digit = 0) {
-
-    // },
+    TODAY (format = 'DD/MM/YYYY') {
+      return moment().format(format)
+    },
+    HAS_PRIVILEGE (pageName) {
+      let type = 'user'
+      if (this.ISADMIN) {
+        type = 'admin'
+      }
+      let rules = config.variable.privilege[type]
+      if (rules === '*') return true
+      if (rules.indexOf(pageName) >= 0) return true
+      return false
+    },
     GO_TOPAGE (pageName, options = {}) {
       this.$router.push({
         name: pageName,

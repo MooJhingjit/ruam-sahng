@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="column col-12 col-xs-12">
-      <page-title>
+      <page-title :side="'right'">
         <template slot="left-slot"></template>
         <div class="has-icon-left" slot="right-slot">
             <div class="columns">
