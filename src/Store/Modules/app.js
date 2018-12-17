@@ -22,8 +22,8 @@ const actions = {
 }
 
 const getters = {
-  GET_USERDATA_STORE: state => state.app.user
-  // HAS_AUTH_STORE: state => state.app.hasAuth,
+  GET_USERDATA_STORE: state => state.app.user,
+  GET_APPDATA_STORE: state => state.app.appData
 }
 
 export default {

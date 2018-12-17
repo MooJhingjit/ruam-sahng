@@ -10,4 +10,12 @@ const getTableConfig = (currentPage, perPage) => {
     to: parseInt(from) + parseInt(perPage)
   }
 }
+
+const hostName = (req) => {
+  // console.log(req)
+  if (!req.headers) return
+  return `${req.protocol}://${req.headers.host}`
+  // return `${req.headers.host}`
+}
 module.exports.getTableConfig = getTableConfig
+module.exports.hostName = hostName

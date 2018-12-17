@@ -411,6 +411,7 @@ export default {
         this.updateProduct()
         this.local.productRequired = []
         this.$notify('ทำรายการเสร็จสิ้น', 'success')
+        this.GO_TOPAGE('Product')
       }
     },
     checkProductData () {

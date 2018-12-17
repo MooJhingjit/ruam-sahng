@@ -145,7 +145,7 @@
             </div>
           </div>
           <div class="columns" v-if="!ISADMIN">
-            <div class="column col-12 center text-center" v-if="server.product.status !== 'review' && server.product.status !== 'done'">
+            <div class="column col-12 center text-center" v-if="server.product.status !== 'review' && server.product.status !== 'done' && server.product.status !== 'send'">
               <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึกการเปลี่ยนแปลง'}" @submit="(tf) => submitHandle('update', tf)"></my-button>
             </div>
           </div>

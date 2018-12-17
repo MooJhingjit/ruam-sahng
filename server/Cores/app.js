@@ -1,11 +1,14 @@
 
 const UserCore = require('../Cores/user.js')
 const ProductCore = require('../Cores/product.js')
+const Helper = require('../Libraries/helper.js')
 
 const index = async (req) => {
   let user = await UserCore.getById(req.userId)
   let result = {
-    appData: 'appData1',
+    appData: {
+      logo: `${Helper.hostName(req)}/static/images/Logo.jpg`
+    },
     user
   }
   return result

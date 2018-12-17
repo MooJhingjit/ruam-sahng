@@ -5,6 +5,7 @@ const socket = require('./Libraries/socket.js');
 mongoose.connect('mongodb://localhost/ruam_sahng', { useNewUrlParser: true });
 
 const verifyToken = require('./Middlewares/verifyToken');
+app.use('/static', express.static('Public'))
 app.all('*', verifyToken, function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');

@@ -9,10 +9,14 @@ import { bus } from '@/main'
 export default {
   computed: {
     ...mapGetters([
-      'GET_USERDATA_STORE'
+      'GET_USERDATA_STORE',
+      'GET_APPDATA_STORE'
     ]),
     USER () {
       return this.GET_USERDATA_STORE
+    },
+    APPDATA () {
+      return this.GET_APPDATA_STORE
     },
     // PRODUCTDEPARTMENT () {
     //   return config.variable.productDepartment

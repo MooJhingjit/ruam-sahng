@@ -253,35 +253,32 @@ const filterByDate = async (years, months) => { // from summary page
   // match.sendAt = { "$in": years }
   return Product.aggregate([
     {
-   $lookup:
-     {
-       from: 'customers',
-       localField: 'cusId',
-       foreignField: '_id',
-       as: 'customer_docs'
-     }
-},
-  {
-    $project:{
-      month: { $month: "$createdAt" },
-      year: { $year: "$createdAt" },
-    //   customer: { $arrayElemAt: [ "$customer_docs", 0 ] },
-      customer: "$customer_docs",
-      sendAt: 1,
-      cusId: 1,
-      inTime:
-      {
-         $cond: { if: { $lte: [ "$sendAt", "$dateEnd" ] }, then: 1, else: 0 }
-      },
-      late:
-      {
-         $cond: { if: { $lte: [ "$sendAt", "$dateEnd" ] }, then: 0, else: 1 }
-      },
-      
-    }
-  },
-  {$match : { "year":  { "$in": years }, "month":  { "$in": months }, "sendAt": { "$exists": true } } },
-  {
+      $lookup: {
+          from: 'customers',
+          localField: 'cusId',
+          foreignField: '_id',
+          as: 'customer_docs'
+      }
+    },
+    {
+      $project:{
+        month: { $month: "$createdAt" },
+        year: { $year: "$createdAt" },
+        customer: "$customer_docs",
+        sendAt: 1,
+        cusId: 1,
+        inTime:
+        {
+          $cond: { if: { $lte: [ "$sendAt", "$dateEnd" ] }, then: 1, else: 0 }
+        },
+        late:
+        {
+          $cond: { if: { $lte: [ "$sendAt", "$dateEnd" ] }, then: 0, else: 1 }
+        },
+      }
+    },
+    {$match : { "year":  { "$in": years }, "month":  { "$in": months }, "sendAt": { "$exists": true } } },
+    {
       $group: { 
         _id: "$cusId", 
         total: { $sum: 1 },
@@ -291,7 +288,7 @@ const filterByDate = async (years, months) => { // from summary page
     }
       
   },
-  {$sort:{"_id.month":-1}}
+  {$sort:{"total":-1}}
 ])
 }
 

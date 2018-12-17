@@ -4,16 +4,15 @@
     <table width="100%">
         <tr>
           <td style="text-align: left" width="30%">
-            <img src="@/Assets/img/Logo.jpg" width="60" height="60"/>
+            <img :src="APPDATA.logo" width="60" height="60"/>
           </td>
           <td style="text-align: center;font-weight: bold;" width="30%">
-            <h4 style="margin: 0;">ใบสั่งผลิต/ตรวจสอบโรงงาน 2</h4>
+            <h3 style="margin: 0;">ใบสั่งผลิต/ตรวจสอบโรงงาน 2</h3>
             <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
           </td>
           <td style="text-align: right" width="30%">
               {{job.code}}
-              <br/>
-              {{TODAY}}
+              <div style="font-size: 13px;">{{TODAY()}}</div>
           </td>
         </tr>
       </table>
@@ -61,16 +60,15 @@
     <table width="100%">
         <tr>
           <td style="text-align: left">
-            <img src="@/Assets/img/Logo.jpg" width="60" height="60"/>
+            <img :src="APPDATA.logo" width="60" height="60"/>
           </td>
           <td style="text-align: center;font-weight: bold;">
-            <h4 style="margin: 0;">ใบสั่งผลิต/ตรวจสอบโรงงาน 2</h4>
+            <h3 style="margin: 0;">ใบสั่งผลิต/ตรวจสอบโรงงาน 2</h3>
             <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
           </td>
           <td style="text-align: right">
               {{job.code}}
-              <br/>
-              {{TODAY}}
+              <div style="font-size: 13px;">{{TODAY()}}</div>
           </td>
         </tr>
       </table>
@@ -118,16 +116,15 @@
       <table width="100%">
           <tr>
             <td style="text-align: left">
-              <img src="@/Assets/img/Logo.jpg" width="60" height="60" style=""/>
+              <img :src="APPDATA.logo" width="60" height="60" style=""/>
             </td>
             <td style="text-align: center;font-weight: bold;">
-              <h4 style="margin: 0;">ใบสั่งผลิต/ตรวจสอบโรงงาน 2</h4>
+              <h3 style="margin: 0;">ใบสั่งผลิต/ตรวจสอบโรงงาน 2</h3>
               <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
             </td>
             <td style="text-align: right">
                 {{job.code}}
-                <br/>
-                {{TODAY}}
+                <div style="font-size: 13px;">{{TODAY()}}</div>
             </td>
           </tr>
         </table>
