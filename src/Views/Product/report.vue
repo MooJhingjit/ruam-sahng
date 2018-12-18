@@ -45,6 +45,14 @@
             <td style="width: 50%;">สถานะ: {{JOBSTATUS[product.status]}}</td>
             <td style="width: 50%;">อุปกรณ์เสริม: {{getDataFromConfig(product.accessory, 'accessory')}}</td>
           </tr>
+          <tr v-if="product.sendAt">
+            <td style="width: 50%;">วันที่ส่ง: {{GET_DATE(product.sendAt)}}</td>
+            <td style="width: 50%;"></td>
+          </tr>
+          <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;"></td>
+          </tr>
         </tbody>
         </table>
     </td>

@@ -227,6 +227,14 @@
                     </div>
                   </div>
                 </div>
+                <div class="column col-4 col-sm-6" v-if="product.sendAt">
+                  <div class="tile tile-centered">
+                    <div class="tile-content">
+                      <div class="tile-title text-bold">วันที่ส่ง</div>
+                      <div class="tile-subtitle">{{GET_DATE(product.sendAt)}}</div>
+                    </div>
+                  </div>
+                </div>
                 <div class="column col-12 panel">
                   <div class="tile tile-centered">
                     <div class="tile-content">
