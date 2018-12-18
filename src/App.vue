@@ -1,13 +1,13 @@
 <template>
-  <div id="app" v-if="setData">
+  <div id="app">
     <div class="pages" v-if="normalPages && CHECK_AUTH()">
-      <div class="header-wrapper">
+      <div class="header-wrapper" v-if="setData">
         <header-wrapper></header-wrapper>
       </div>
-      <div class="body-wrapper">
+      <div class="body-wrapper" v-if="setData">
         <router-view/>
       </div>
-      <div class="footer-wrapper">
+      <div class="footer-wrapper" v-if="setData">
         <footer-wrapper></footer-wrapper>
       </div>
     </div>
