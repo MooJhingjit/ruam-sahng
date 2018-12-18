@@ -157,7 +157,7 @@
               <my-button  :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'เสร็จสิ้น'}" @submit="(tf) => submitHandle('done', tf)"></my-button>
             </div>
             <div class="column text-center" v-if="server.product.status === 'done'">
-              <my-button  :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'ส่งงาน'}" @submit="(tf) => submitHandle('send', tf)"></my-button>
+              <my-button  :config="{icon: 'fa fa-paper-plane-o', btnClass: 'btn btn-success', doConfirm: true, text: 'ส่งงาน'}" @submit="(tf) => submitHandle('send', tf)"></my-button>
             </div>
             <div class="column text-center">
               <my-button :config="{icon: 'fa fa-info-circle', btnClass: 'btn btn-secondary', doConfirm: false, text: 'รายละเอียดงาน'}" @submit="(tf) => submitHandle('detail', tf)"></my-button>

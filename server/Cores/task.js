@@ -93,19 +93,27 @@ const update = async (productId, tasks) => {
 }
 
 const findNextTask = (currentTask, allTask) => {
+  // console.log('------')
   let disableTasks = allTask.filter((item) => {
     return item.isDisable
   }).map((task) => {
     return task.order
   })
-  let nextTask = config.appConfig.productDepartment.filter( (task) => {
+  // console.log(disableTasks)
+  let productDepartmentConfig = JSON.parse(JSON.stringify(config.appConfig.productDepartment))
+  // console.log(productDepartmentConfig)
+  let nextTask = productDepartmentConfig.filter( (task) => {
     return (task.key === currentTask)
   })
+  // console.log('------')
+  // console.log(nextTask)
   if ((disableTasks.indexOf(nextTask[0].nextTask) !== -1)) {
     do {
       nextTask[0].nextTask = parseInt(nextTask[0].nextTask) + parseInt(1) 
     } while (disableTasks.indexOf(nextTask[0].nextTask) !== -1) 
   }
+  // console.log(nextTask[0].nextTask)
+  // console.log('------')
   return nextTask[0].nextTask
 }
 

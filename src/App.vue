@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <div class="pages" v-if="normalPages && CHECK_AUTH()">
-      <div class="header-wrapper" v-if="setData">
+      <div class="header-wrapper">
         <header-wrapper></header-wrapper>
       </div>
-      <div class="body-wrapper" v-if="setData">
+      <div class="body-wrapper">
         <router-view/>
       </div>
-      <div class="footer-wrapper" v-if="setData">
+      <div class="footer-wrapper">
         <footer-wrapper></footer-wrapper>
       </div>
     </div>
@@ -39,8 +39,7 @@ export default {
   data () {
     return {
       normalPages: true,
-      socket: io(config.api.host),
-      setData: false
+      socket: io(config.api.host)
     }
   },
   created () {
@@ -74,7 +73,6 @@ export default {
     },
     setAppData (data) {
       this.SET_APP_STORE(data)
-      this.setData = true
     },
     emitSocket (obj) {
       this.socket.emit(obj.key, obj.data)

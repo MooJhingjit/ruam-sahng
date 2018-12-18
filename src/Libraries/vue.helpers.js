@@ -28,7 +28,9 @@ export default {
     //   return config.variable.colorType
     // },
     ISADMIN () {
-      return (this.USER.department === 'admin')
+      if (this.USER) {
+        return (this.USER.department === 'admin')
+      }
     },
     JOBSTATUS () {
       return config.variable.jobStatus

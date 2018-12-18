@@ -78,7 +78,10 @@
               <td style="font-size: 13px; text-align: center; padding: 5px;">{{GET_DATE(task.dateStart)}}</td>
               <td style="font-size: 13px; text-align: center; padding: 5px;">{{GET_DATE(task.dateEnd)}}</td>
               <td style="font-size: 13px; padding: 5px;">{{task.note}}</td>
-              <td style="font-size: 13px; text-align: center; padding: 5px;">{{TASKSTATUS[task.status]}}</td>
+              <td style="font-size: 13px; text-align: center; padding: 5px;">
+                <span v-if="!task.isDisable">{{TASKSTATUS[task.status]}}</span>
+                <span v-else>-</span>
+              </td>
             </tr>
           </tbody>
         </table>
