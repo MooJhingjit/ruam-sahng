@@ -14,7 +14,7 @@ const get = async (obj) => {
   let condition = {}
 
   if (obj.type == 'schedule') {
-    condition.status = { $nin: ['done', 'send'] }
+    condition.status = { $nin: ['send'] }
   }
   if (obj.searchStatusType && obj.searchStatusType  !== 'all') {
     condition.status = obj.searchStatusType
@@ -177,7 +177,7 @@ const update = async (productId, product) => {
     })
     if (productCompleted) {
       await Product.findOneAndUpdate({_id: productId}, {
-        status: 'review'
+        status: 'done'
       })
     }
     return {
@@ -261,26 +261,40 @@ const filterByDate = async (years, months) => { // from summary page
       }
     },
     {
+        $project: {
+            jobId: 1,
+            month: { $month: "$createdAt" },
+            year: { $year: "$createdAt" },
+            customer: "$customer_docs",
+            cusId: 1,
+            dateEnd: { $dateToString: { format: "%Y-%m-%d", date: "$dateEnd" } },
+            sendAt: { $dateToString: { format: "%Y-%m-%d", date: "$sendAt" } },
+        }
+    },
+    {
       $project:{
-        month: { $month: "$createdAt" },
-        year: { $year: "$createdAt" },
-        customer: "$customer_docs",
-        sendAt: 1,
+        jobId: 1,
+        month:  1,
+        year:  1,
+        customer: 1,
         cusId: 1,
+        dateEnd: 1,
+        sendAt: 1,
         inTime:
         {
           $cond: { if: { $lte: [ "$sendAt", "$dateEnd" ] }, then: 1, else: 0 }
         },
         late:
         {
-          $cond: { if: { $lte: [ "$sendAt", "$dateEnd" ] }, then: 0, else: 1 }
+          $cond: { if: { $gt: [ "$sendAt", "$dateEnd" ] }, then: 1, else: 0 }
         },
       }
     },
-    {$match : { "year":  { "$in": years }, "month":  { "$in": months }, "sendAt": { "$exists": true } } },
+    {$match : { "year":  { "$in": years }, "month":  { "$in": months }, "sendAt": { "$exists": true }} },
     {
       $group: { 
         _id: "$cusId", 
+        jobs: {$addToSet: "$jobId"},
         total: { $sum: 1 },
         inTime:{ $sum: "$inTime" },
         late:{ $sum: "$late" },

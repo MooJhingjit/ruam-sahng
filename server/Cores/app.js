@@ -15,7 +15,7 @@ const index = async (req) => {
 }
 
 const getNotification = async (req) => {
-  let count = await ProductCore.countProduct('review')
+  let count = await ProductCore.countProduct('done')
   let result = {
     productReview: count
   }

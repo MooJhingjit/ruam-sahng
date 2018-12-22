@@ -42,10 +42,15 @@ const login = async (req, res) => {
            })
         }
         if(result) {
-          const JWTToken = jwt.sign({
-            username: user.username,
-            _id: user._id
-          },
+          let jwtObj = {
+            user: {
+              _id: user._id,
+              name: user.name,
+              username: user.username,
+            }
+          }
+          const JWTToken = jwt.sign(
+          jwtObj.user,
           'RuamSahng',
           {
             expiresIn: '12h'

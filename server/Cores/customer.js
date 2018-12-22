@@ -23,7 +23,7 @@ const store = async (customerObj) => {
     });
     try {
       let res = await customer.save()
-      return res._id
+      return res._id // new customer
     } catch (error) {
       return false
     }

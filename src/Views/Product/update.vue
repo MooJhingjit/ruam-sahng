@@ -144,46 +144,28 @@
               <span class="label"><i class="fa fa-check-circle-o h5 text-success"></i> {{TASKSTATUS['done']}}</span>
             </div>
           </div>
-          <div class="columns" v-if="!ISADMIN">
-            <div class="column col-12 center text-center" v-if="server.product.status !== 'review' && server.product.status !== 'done' && server.product.status !== 'send'">
+          <div class="columns">
+            <div v-if="CANSHOW(['qc']) && server.product.status === 'ip'" class="column col-12 center text-center">
               <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึกการเปลี่ยนแปลง'}" @submit="(tf) => submitHandle('update', tf)"></my-button>
             </div>
-          </div>
-          <div class="columns" v-else>
-            <div class="column text-center"  v-if="server.product.status !== 'done'">
+            <div class="column text-center"  v-if="CANSHOW(['admin']) && server.product.status !== 'send'">
               <my-button :config="{icon: 'fa fa-minus-circle', btnClass: 'btn btn-error', doConfirm: true, text: 'ลบงาน'}" @submit="(tf) => submitHandle('delete', tf)"></my-button>
             </div>
-            <div class="column text-center" v-if="server.product.status === 'review'">
-              <my-button  :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'เสร็จสิ้น'}" @submit="(tf) => submitHandle('done', tf)"></my-button>
-            </div>
-            <div class="column text-center" v-if="server.product.status === 'done'">
+            <div class="column text-center" v-if="CANSHOW(['admin']) && server.product.status === 'done'">
               <my-button  :config="{icon: 'fa fa-paper-plane-o', btnClass: 'btn btn-success', doConfirm: true, text: 'ส่งงาน'}" @submit="(tf) => submitHandle('send', tf)"></my-button>
             </div>
-            <div class="column text-center">
+            <div class="column text-center" v-if="CANSHOW('*')">
               <my-button :config="{icon: 'fa fa-info-circle', btnClass: 'btn btn-secondary', doConfirm: false, text: 'รายละเอียดงาน'}" @submit="(tf) => submitHandle('detail', tf)"></my-button>
             </div>
-            <div class="column text-center">
+            <div class="column text-center" v-if="CANSHOW(['admin', 'monitor'])">
               <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: false, text: 'ใบสั่งผลิต'}" @submit="(tf) => submitHandle('production-report', tf)"></my-button>
             </div>
-            <div class="column text-center">
+            <div class="column text-center" v-if="CANSHOW(['admin', 'monitor'])">
               <my-button :config="{icon: 'fa fa-print', btnClass: 'btn btn-secondary', doConfirm: false, text: 'รายงาน'}" @submit="(tf) => submitHandle('report', tf)"></my-button>
             </div>
           </div>
         </div>
         <my-modal ref="myModal">
-          <!-- <div slot="title">
-            <ul class="breadcrumb">
-              <li class="breadcrumb-item">
-                {{server.customer.name}}
-              </li>
-              <li class="breadcrumb-item">
-                {{server.job.code}}
-              </li>
-              <li class="breadcrumb-item">
-                {{server.product.name}}
-              </li>
-            </ul>
-          </div> -->
           <div slot="content">
             <div class="container">
               <div class="columns">
@@ -338,6 +320,7 @@ export default {
       }
     },
     async submitHandle (actionType, tf) {
+      // console.log(actionType)
       if (!tf) return
       let data = {}
       let resourceName = `${config.api.product.index}/${this.$route.params.key}`
@@ -349,15 +332,16 @@ export default {
             this.UPDATE_NOTIFICATION()
           }
           this.fetchData()
+          this.updateProduct()
           this.$notify('ทำรายการเสร็จสิ้น', 'success')
           break
-        case 'done':
+        // case 'done':
         case 'send':
         case 'delete':
           data = { status: actionType }
           resourceName = `${config.api.product.status}/${this.$route.params.key}`
           await service.putResource({ resourceName, data })
-          if (actionType === 'done') {
+          if (actionType === 'send') {
             this.fetchData()
             this.UPDATE_NOTIFICATION()
           } else {

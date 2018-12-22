@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-if="local !== null">
     <div class="column col-12 col-xs-12">
       <div class="card bg-gray">
         <div class="card-body">
@@ -56,24 +56,29 @@
             <div class="column col-9 col-xs-12">
               <my-chart :width="300" :height="300" v-if="chart !== null" :chartData="chart.datacollection" :options="chart.options"></my-chart>
               <br/>
-              <table class="table table-striped table-hover responsive" v-if="local.numberSummary !== null ">
-                <thead>
-                  <tr>
-                    <th class="text-center">ลูกค้า <span class="label label-rounded label-primary">{{items.length}}</span></th>
-                    <th class="text-center">จำนวนรายการผลิต <span class="label label-rounded label-primary">{{local.numberSummary.inTimeTotal + local.numberSummary.lateTotal}}</span></th>
-                    <th class="text-center">ทันกำหนดส่ง <span class="label label-rounded label-primary">{{local.numberSummary.inTimeTotal}}</span></th>
-                    <th class="text-center">ไม่ทันกำหนดส่ง <span class="label label-rounded label-primary">{{local.numberSummary.lateTotal}}</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr :key="itemIndex" v-for="(item, itemIndex) in items">
-                    <td class="text-center" data-column="ลูกค้า">{{item.cusName}}</td>
-                    <td class="text-center" data-column="จำนวนจ็อบทั้งหมด">{{item.allProduct}}</td>
-                    <td class="text-center" data-column="ทันกำหนดส่ง">{{item.inTime}}</td>
-                    <td class="text-center" data-column="ไม่ทันกำหนดส่ง">{{item.late}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-container">
+                <table class="table table-striped table-hover responsive" v-if="local.numberSummary">
+                  <thead>
+                    <tr>
+                      <th class="text-center">ลูกค้า <span class="label label-rounded label-primary">{{items.length}}</span></th>
+                       <th class="text-center">จำนวนจ็อป <span class="label label-rounded label-primary">{{local.numberSummary.jobTotal}}</span></th>
+                      <th class="text-center">จำนวนการผลิต <span class="label label-rounded label-primary">{{local.numberSummary.inTimeTotal + local.numberSummary.lateTotal}}</span></th>
+                      <th class="text-center">ทันกำหนดส่ง <span class="label label-rounded label-primary">{{local.numberSummary.inTimeTotal}}</span></th>
+                      <th class="text-center">ไม่ทันกำหนดส่ง <span class="label label-rounded label-primary">{{local.numberSummary.lateTotal}}</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr :key="itemIndex" v-for="(item, itemIndex) in items">
+                      <td class="text-center" data-column="ลูกค้า">{{item.cusName}}</td>
+                      <td class="text-center" data-column="จำนวนจ็อป">{{item.allJobs}}</td>
+                      <td class="text-center" data-column="จำนวนจ็อบทั้งหมด">{{item.allProduct}}</td>
+                      <td class="text-center" data-column="ทันกำหนดส่ง">{{item.inTime}}</td>
+                      <td class="text-center" data-column="ไม่ทันกำหนดส่ง">{{item.late}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -97,12 +102,13 @@ export default {
   data () {
     return {
       chart: null,
-      local: {
-        yearsAvailable: [],
-        monthsAvailable: [],
-        items: [],
-        numberSummary: null
-      },
+      local: null,
+      // {
+      //   yearsAvailable: [],
+      //   monthsAvailable: [],
+      //   items: [],
+      //   numberSummary: null
+      // },
       filter: {
         years: [this.TODAY('YYYY')],
         months: [this.TODAY('MM')],
@@ -220,5 +226,33 @@ export default {
 .pagination {
   padding: 0;
   margin: 0;
+}
+.table-container {
+    height: 22em;
+}
+table {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: 100%;
+}
+table thead {
+    /* head takes the height it requires, 
+    and it's not scaled when table is resized */
+    flex: 0 0 auto;
+    width: calc(100% - 0.9em);
+}
+table tbody {
+    /* body takes all the remaining available space */
+    flex: 1 1 auto;
+    display: block;
+    overflow-y: scroll;
+}
+table tbody tr {
+    width: 100%;
+}
+table thead, table tbody tr {
+    display: table;
+    table-layout: fixed;
 }
 </style>

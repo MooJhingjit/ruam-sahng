@@ -37,12 +37,15 @@ module.exports.appConfig = {
   ],
   userDepartment: [
     { key: 'admin', name: 'Admin (ผู้ดูแลระบบ)' },
+    { key: 'monitor', name: 'Monitor (ผู้ใช้ทั่วไป)' },
     { key: 'qc', name: 'Qc (ผู้ตรวจสอบสินค้า)' }
   ],
   qcSection: [
-    { key: 'cutting', name: 'ตัด', role: [8, 10]},
     { key: 'design', name: 'แบบ', role: [1, 2]},
-    { key: 'manufacture', name: 'การผลิต', role: [3, 4, 5, 6, 7]},
+    { key: 'manufacture1', name: 'การผลิต1', role: [3, 4, 5]},
+    { key: 'manufacture2', name: 'การผลิต2', role: [6, 7]},
+    { key: 'manufacture3', name: 'การผลิต3', role: [8]},
+    // { key: 'cutting', name: 'ตัด', role: [8, 10]},
     { key: 'wiring', name: 'วายริ่ง', role: [9, 10]},
     { key: 'admin', name: 'admin', role: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
   ],

@@ -3,7 +3,7 @@
         <header class="columns">
           <section class="menu-lists navbar-section column col-xs-12 col-8">
              <div class="columns">
-              <div class="column col-3 col-xs-6 text-center">
+              <div class="column col-3 col-xs-6 text-center" v-if="CANSHOW('*')">
                 <router-link :to="{ name: 'Product' } " ><i class="fa fa-tasks"></i> สินค้า
                 <span
                   :title="`รอตรวจสอบ ${local.notification.productReview} รายการ`"
@@ -12,25 +12,10 @@
                   :data-badge="local.notification.productReview"></span>
                 </router-link>
               </div>
-              <div class="column col-3 col-xs-6 text-center"><router-link :to="{ name: 'Schedule' } "><i class="fa fa-table" aria-hidden="true"></i> ตารางงาน</router-link></div>
-              <div class="column col-3 col-xs-6 text-center" v-if="ISADMIN"><router-link :to="{ name: 'User' } "><i class="fa fa-user" aria-hidden="true"></i> ผู้ใช้งาน</router-link></div>
-              <div class="column col-3 col-xs-6 text-center" v-if="ISADMIN"><router-link :to="{ name: 'Summary' } "><i class="fa fa-pie-chart" aria-hidden="true"></i> ภาพรวม</router-link></div>
+              <div class="column col-3 col-xs-6 text-center" v-if="CANSHOW('*')"><router-link :to="{ name: 'Schedule' } "><i class="fa fa-table" aria-hidden="true"></i> ตารางงาน</router-link></div>
+              <div class="column col-3 col-xs-6 text-center" v-if="CANSHOW(['admin', 'monitor'])"><router-link :to="{ name: 'User' } "><i class="fa fa-user" aria-hidden="true"></i> ผู้ใช้งาน</router-link></div>
+              <div class="column col-3 col-xs-6 text-center" v-if="CANSHOW(['admin', 'monitor'])"><router-link :to="{ name: 'Summary' } "><i class="fa fa-pie-chart" aria-hidden="true"></i> ภาพรวม</router-link></div>
             </div>
-            
-            <!-- <ul class="tab tab-block text-gray">
-              <li class="tab-item">
-                
-              </li>
-              <li class="tab-item">
-                
-              </li>
-              <li class="tab-item" >
-                
-              </li>
-              <li class="tab-item" v-if="ISADMIN">
-                
-              </li>
-            </ul> -->
           </section>
           <section class="profile navbar-section column col-xs-12 col-4">
             <div class="columns">

@@ -47,6 +47,7 @@
               <td
               :class="getItemClass(obj, task)"
               :key="index" v-for="(task, index) in obj.tasks">
+              
                 <template v-if="task.key === 'itemName'">
                   <div class="text-bold">{{obj.header.jobCode}} / {{obj.header.productName}}</div>
                   <!-- <div class="text-bold"></div> -->
@@ -198,8 +199,9 @@ export default {
       return [
         'text-center',
         { 'item-name': task.key === 'itemName' },
-        { 'bg-success': task.key === 'itemName' && obj.header.status === 'review' },
-        { 'bg-error': (task.key === 'itemName' && this.IS_LATE(task.dateEnd) && obj.header.status !== 'review') },
+        { 'bg-success': task.key === 'itemName' && obj.header.status === 'done' && !this.IS_SAMEDATE(task.dateEnd) && !this.IS_LATE(task.dateEnd) },
+        { 'bg-warning': task.key === 'itemName' && this.IS_SAMEDATE(task.dateEnd) },
+        { 'bg-error': (task.key === 'itemName' && this.IS_LATE(task.dateEnd)) },
         { 'bg-gray': task.isDisable },
         { '': (task.status === 'wait' && !task.isDisable) }
       ]

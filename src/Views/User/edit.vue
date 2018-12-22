@@ -284,6 +284,12 @@ export default {
         this.local.qcSection = this.server.user.qcSection
       }
     },
+    resetInputs () {
+      this.local.name = ''
+      this.local.userName = ''
+      this.local.department = ''
+      this.local.qcSection = ''
+    },
     async submitHandle (action, tf = false) {
       switch (action) {
         case 'closePassPanel':
@@ -358,6 +364,11 @@ export default {
     },
     confirmPassword () {
       this.passUpdate()
+    },
+    $route (to, from){
+      this.server = null
+      this.resetInputs()
+      this.fetchData()
     }
   }
 }

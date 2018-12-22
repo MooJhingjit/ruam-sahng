@@ -24,9 +24,11 @@ export default {
     // EQUIPMENT () {
     //   return config.variable.equipment
     // },
-    // COLORTYPE () {
-    //   return config.variable.colorType
-    // },
+    USERTYPE () {
+      if (this.USER) {
+        return this.USER.department
+      }
+    },
     ISADMIN () {
       if (this.USER) {
         return (this.USER.department === 'admin')
@@ -48,14 +50,16 @@ export default {
       return moment().format(format)
     },
     HAS_PRIVILEGE (pageName) {
-      let type = 'user'
-      if (this.ISADMIN) {
-        type = 'admin'
-      }
-      let rules = config.variable.privilege[type]
+      let rules = config.variable.privilege[this.USERTYPE]
       if (rules === '*') return true
       if (rules.indexOf(pageName) >= 0) return true
       return false
+    },
+    CANSHOW (typeAllowArr) {
+      if (this.USER) {
+        if (typeAllowArr === '*') return true
+        return (typeAllowArr.indexOf(this.USERTYPE) !== -1)
+      }
     },
     GO_TOPAGE (pageName, options = {}) {
       this.$router.push({
@@ -116,6 +120,14 @@ export default {
       let dataDiff = dateEnd.diff(today, 'days')
       // console.log(dataDiff)
       return (dataDiff < 0)
+    },
+    IS_SAMEDATE (dateEnd) {
+      // console.log(dateEnd)
+      let today = moment()
+      dateEnd = moment(dateEnd)
+      let dataDiff = dateEnd.diff(today, 'days')
+      // console.log(dataDiff)
+      return (dataDiff === 0)
     },
     ISROLE (taskId) {
       return this.USER.role.indexOf(taskId) >= 0

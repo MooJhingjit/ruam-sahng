@@ -5,7 +5,7 @@
         <template slot="left-slot"></template>
         <div class="has-icon-left" slot="right-slot">
           <div class="input-group">
-            <button class="btn btn-success" @click="add()">
+            <button v-if="CANSHOW(['admin'])" class="btn btn-success" @click="add()">
               <i class="fa fa-plus"></i>
             </button>
             &nbsp;

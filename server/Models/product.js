@@ -17,7 +17,8 @@ const product = mongoose.Schema({
   surface: {type: String, required: false},
   colorName: {type: String, required: false},
   status: {type: String, required: true},
-  sendAt: {type: Date, required: false}
+  sendAt: {type: Date, required: false},
+  updatedBy: {type: String, required: true}
 },
 {
     timestamps: true

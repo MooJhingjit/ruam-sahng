@@ -9,7 +9,8 @@ const task = mongoose.Schema({
   dateEnd: {type: Date, required: false},
   note: {type: String, required: false},
   status: {type: String, required: true},
-  isDisable: {type: Boolean, required: true}
+  isDisable: {type: Boolean, required: true},
+  updatedBy: {type: String, required: true}
 },
 {
     timestamps: true

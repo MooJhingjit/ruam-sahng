@@ -20,6 +20,7 @@ const tranFormData = (data) => {
   let result = {
     data: [],
     number: {
+      jobTotal: 0,
       inTimeTotal: 0,
       lateTotal: 0,
       inTimePercent: 0,
@@ -27,16 +28,18 @@ const tranFormData = (data) => {
     },
   }
   let total = 0
+  let jobTotal = 0
   let inTimeTotal = 0
   let lateTotal = 0
   data.map((element) => {
     let cusName = element.customer[0][0].name
-    // console.log(cusName)
-    result.data.push({cusName:cusName, allProduct: element.total, inTime: element.inTime, late: element.late})
+    result.data.push({cusName:cusName, allJobs: element.jobs.length, allProduct: element.total, inTime: element.inTime, late: element.late})
+    jobTotal += parseInt(element.jobs.length)
     inTimeTotal += parseInt(element.inTime)
     lateTotal += parseInt(element.late)
     total += parseInt(element.total)
   })
+  result.number.jobTotal = jobTotal
   result.number.inTimeTotal = inTimeTotal
   result.number.lateTotal = lateTotal
   result.number.inTimePercent = ((inTimeTotal / total) * 100).toFixed(2)

@@ -78,7 +78,8 @@ const variable = {
   ],
   privilege: {
     admin: '*',
-    user: ['Product', 'ProductUpdate', 'Schedule', 'UserEdit', 'Login']
+    monitor: '*',
+    qc: ['Product', 'ProductUpdate', 'Schedule', 'UserEdit', 'Login']
   }
 }
 

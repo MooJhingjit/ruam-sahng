@@ -21,7 +21,6 @@
                     selection: [
                       {key: 'all', name: 'สถานะทั้งหมด'},
                       {key: 'ip', name: 'กำลังดำเนินงาน'},
-                      {key: 'review', name: 'รอตรวจสอบ'},
                       {key: 'done', name: 'รอส่ง'},
                       {key: 'send', name: 'ส่งงานแล้ว'}
                     ]
@@ -75,7 +74,10 @@
           <div class="columns">
             <div class="column col-12">
               <vuetable ref="vuetable"
-                :css="{tableClass: 'table table-striped table-hover text-center'}"
+                :css="{
+                  tableClass: 'table table-striped table-hover text-center'
+                }"
+                :row-class="onRowClass"
                 :http-options="httpOptions"
                 :fields="local.fields"
                 @vuetable:pagination-data="onPaginationData"
@@ -261,7 +263,7 @@ export default {
     getStatusClass (status) {
       return [
         {'': status === 'ip'},
-        {'label label-warning mr-1': status === 'review'},
+        // {'label label-warning mr-1': status === 'review'},
         {'label label-success mr-1': status === 'done'},
         {'label label-secondary mr-1': status === 'send'}
       ]
@@ -281,11 +283,13 @@ export default {
     },
     setSearchType (val) {
       this.local.searchType = val
+    },
+    onRowClass(dataItem, index) {
+      return [
+        {'text-error': (this.IS_LATE(dataItem.product.dateEnd) && (dataItem.product.status === 'ip' || dataItem.product.status === 'done'))},
+        {'text-warning': (this.IS_SAMEDATE(dataItem.product.dateEnd) && (dataItem.product.status === 'ip' || dataItem.product.status === 'done'))},
+      ]
     }
-    // setPerPage (val) {
-      // this.perPage = parseInt(val)
-      // this.$refs.vuetable.refresh()
-    // }
   },
   watch: {
   }
