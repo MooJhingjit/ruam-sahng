@@ -145,7 +145,7 @@
             </div>
           </div>
           <div class="columns">
-            <div v-if="CANSHOW(['qc']) && server.product.status === 'ip'" class="column col-12 center text-center">
+            <div v-if="CANSHOW(['qc']) && server.product.status === 'ip'" class="column text-center">
               <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึกการเปลี่ยนแปลง'}" @submit="(tf) => submitHandle('update', tf)"></my-button>
             </div>
             <div class="column text-center"  v-if="CANSHOW(['admin']) && server.product.status !== 'send'">
@@ -188,7 +188,7 @@
                 <div class="column col-4 col-sm-6">
                   <div class="tile tile-centered">
                     <div class="tile-content">
-                      <div class="tile-title text-bold">วันเริ่มเปิดจ็อบ</div>
+                      <div class="tile-title text-bold">วันเริ่มเปิดจ๊อบ</div>
                       <div class="tile-subtitle">{{GET_DATE(server.job.createdAt)}}</div>
                     </div>
                   </div>
@@ -327,6 +327,13 @@ export default {
       switch (actionType) {
         case 'update':
           data = this.server
+          data.tasks.map((item) => {
+            if (!this.ISROLE(item.order)) {
+              item.isMainTask = false
+            } else {
+              item.isMainTask = true
+            }
+          })
           let result = await service.putResource({ resourceName, data })
           if (result.data.result.isReview) { // if true === product status = review
             this.UPDATE_NOTIFICATION()

@@ -61,7 +61,7 @@
                   <thead>
                     <tr>
                       <th class="text-center">ลูกค้า <span class="label label-rounded label-primary">{{items.length}}</span></th>
-                       <th class="text-center">จำนวนจ็อป <span class="label label-rounded label-primary">{{local.numberSummary.jobTotal}}</span></th>
+                       <th class="text-center">จำนวนจ๊อบ <span class="label label-rounded label-primary">{{local.numberSummary.jobTotal}}</span></th>
                       <th class="text-center">จำนวนการผลิต <span class="label label-rounded label-primary">{{local.numberSummary.inTimeTotal + local.numberSummary.lateTotal}}</span></th>
                       <th class="text-center">ทันกำหนดส่ง <span class="label label-rounded label-primary">{{local.numberSummary.inTimeTotal}}</span></th>
                       <th class="text-center">ไม่ทันกำหนดส่ง <span class="label label-rounded label-primary">{{local.numberSummary.lateTotal}}</span></th>
@@ -70,15 +70,14 @@
                   <tbody>
                     <tr :key="itemIndex" v-for="(item, itemIndex) in items">
                       <td class="text-center" data-column="ลูกค้า">{{item.cusName}}</td>
-                      <td class="text-center" data-column="จำนวนจ็อป">{{item.allJobs}}</td>
-                      <td class="text-center" data-column="จำนวนจ็อบทั้งหมด">{{item.allProduct}}</td>
+                      <td class="text-center" data-column="จำนวนจ๊อบ">{{item.allJobs}}</td>
+                      <td class="text-center" data-column="จำนวนจ๊อบทั้งหมด">{{item.allProduct}}</td>
                       <td class="text-center" data-column="ทันกำหนดส่ง">{{item.inTime}}</td>
                       <td class="text-center" data-column="ไม่ทันกำหนดส่ง">{{item.late}}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              
             </div>
           </div>
         </div>

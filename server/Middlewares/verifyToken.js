@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
       return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' })
     }
     req.userId = decoded._id
+    req.userObject = decoded
     next()
-    // console.log(decoded)
   })
 }

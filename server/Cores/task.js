@@ -11,7 +11,7 @@ const getByProduct = async (productId) => {
   }
 }
 
-const store = async (newProduct, product) => {
+const store = async (req, newProduct, product) => {
   let dateStart = new Date()
   let status = 'ip'
   // await Promise.all(
@@ -33,7 +33,8 @@ const store = async (newProduct, product) => {
           dateEnd: null,
           note: '',
           status,
-          isDisable: (product.departmentSelected.indexOf(task.key) === -1)
+          isDisable: (product.departmentSelected.indexOf(task.key) === -1),
+          updatedBy: req.userObject.name
         });
         await newTask.save()
       } catch (error) {
@@ -45,7 +46,7 @@ const store = async (newProduct, product) => {
   // )
 }
 
-const update = async (productId, tasks) => {
+const update = async (req, productId, tasks) => {
   let today = ''
   // let status = ''
   let nextTask = []
@@ -54,6 +55,7 @@ const update = async (productId, tasks) => {
     // tasks.map( async (task, index) => {
   for (let t = 0; t < tasks.length; t++){
     let task = tasks[t]
+    let currentStatus = JSON.parse(JSON.stringify(task.status))
     today = new Date()
     let currentTask = task.order
     let dateStart = null // start working
@@ -75,12 +77,19 @@ const update = async (productId, tasks) => {
     }
     // console.log(nextTask)
     try {
-      await Task.findOneAndUpdate({_id: task._id}, {
-        dateStart: (dateStart !== null) ? dateStart : task.dateStart,
-        dateEnd: today,
-        note: task.note,
-        status: task.status
-      })
+      // console.log(task)
+      let obj = {
+        update: {
+          dateStart: (dateStart !== null) ? dateStart : task.dateStart,
+          dateEnd: today,
+          note: task.note,
+          status: task.status
+        }
+      }
+      if (task.isMainTask && currentStatus === 'ip') {
+        obj.update.updatedBy= req.userObject.name
+      }
+      await Task.findOneAndUpdate({_id: task._id}, obj.update)
     } catch (error) {
       console.log(error)
       return false

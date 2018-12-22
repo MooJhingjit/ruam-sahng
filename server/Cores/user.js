@@ -61,14 +61,15 @@ const getById = async (userId) => {
   }
 }
 
-const store = async (hash, userObj) => {
+const store = async (req, hash, userObj) => {
   const user = new User({
     _id: new  mongoose.Types.ObjectId(),
     username: userObj.username,
     name: userObj.name,
     password: hash,
     department: userObj.department,
-    qcSection: userObj.qcSection
+    qcSection: userObj.qcSection,
+    updatedBy: req.userObject.name
   });
   try {
     user.save()
@@ -78,7 +79,7 @@ const store = async (hash, userObj) => {
   }
 }
 
-const update = async (userId, userObj) => {
+const update = async (req, userId, userObj) => {
   let userUpdate = {}
   if (userObj.oldPass !== null && userObj.newPass !== null) { // change password
     // check old pass
@@ -95,6 +96,7 @@ const update = async (userId, userObj) => {
   userUpdate.name = userObj.name
   userUpdate.username = userObj.username
   userUpdate.department = userObj.department
+  userUpdate.updatedBy = req.userObject.name
   if (userObj.department === 'qc') {
     userUpdate.qcSection = userObj.qcSection
   } else {

@@ -5,7 +5,7 @@ const Job = require('../Models/job');
 const mongoose = require('mongoose');
 const CustomerCore = require('./customer.js');
 const ProductCore = require('./product.js');
-const create = () => {
+const index = () => {
   return {config: config.appConfig}
 }
 
@@ -19,12 +19,12 @@ const get = async (jobId) => {
   }
 }
 
-const store = async (inputs) => {
+const store = async (req, inputs) => {
   // console.log(input)
   let header = inputs.header
   let products = inputs.products
   if (header.customer.id === null) {
-    let cusId = await CustomerCore.store(header.customer)
+    let cusId = await CustomerCore.store(req, header.customer)
     if (!cusId) return false
     header.customer.id = cusId
   }
@@ -33,11 +33,12 @@ const store = async (inputs) => {
   const newJob = new Job({
     _id: new  mongoose.Types.ObjectId(),
     cusId: header.customer.id,
-    code: header.jobCode
+    code: header.jobCode,
+    updatedBy: req.userObject.name
   });
   try {
     let jobObj = await newJob.save()
-    let res = await ProductCore.store(jobObj, header.customer.id, products)
+    let res = await ProductCore.store(req, jobObj, header.customer.id, products)
     return res
   } catch (error) {
     return false
@@ -70,7 +71,7 @@ const findByCode = async (str) => {
 // }
 
 module.exports.get = get
-module.exports.create = create
+module.exports.index = index
 module.exports.store = store
 module.exports.findInArr = findInArr
 module.exports.findByCode = findByCode

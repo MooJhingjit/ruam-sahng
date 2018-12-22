@@ -107,7 +107,7 @@ const getFullData = async (data) => {
   }
 }
 
-const store = async (jobObj, cusId, products) => {
+const store = async (req, jobObj, cusId, products) => {
   if (products.length) {
     // await Promise.all(
       // products.map( async (product) => {
@@ -130,10 +130,11 @@ const store = async (jobObj, cusId, products) => {
           accessory: product.accessory,
           surface: (product.options.surface)? product.options.surface : null,
           colorName: (product.options.colorName)? product.options.colorName :  null,
-          status: 'ip'
+          status: 'ip',
+          updatedBy: req.userObject.name
         });
         let newProductObj = await newProduct.save()
-        await TaskCore.store(newProductObj, product)
+        await TaskCore.store(req, newProductObj, product)
       } catch (error) {
         console.log(error)
         return false
@@ -164,10 +165,10 @@ const edit = async (productId) => {
   }
 }
 
-const update = async (productId, product) => {
+const update = async (req, productId, product) => {
   let result = {}
   try {
-    let tasks = await TaskCore.update(productId, product.tasks)
+    let tasks = await TaskCore.update(req, productId, product.tasks)
     // check product completed
     let productCompleted = true
     tasks.map((task, index) => {
@@ -177,7 +178,8 @@ const update = async (productId, product) => {
     })
     if (productCompleted) {
       await Product.findOneAndUpdate({_id: productId}, {
-        status: 'done'
+        status: 'done',
+        updatedBy: req.userObject.name
       })
     }
     return {
@@ -189,16 +191,17 @@ const update = async (productId, product) => {
   }
 }
 
-const updateStatus = async (productId, status) => {
+const updateStatus = async (req, productId, status) => {
   let result = {}
   try {
     let objUpdate = {
       status: status
     }
     if (status === 'send') {
-      console.log('do')
+      // console.log('do')
       objUpdate.sendAt = new Date()
     }
+    objUpdate.updatedBy = req.userObject.name
     await Product.findOneAndUpdate({_id: productId}, objUpdate)
     return result
   } catch (error) {
@@ -267,6 +270,7 @@ const filterByDate = async (years, months) => { // from summary page
             year: { $year: "$createdAt" },
             customer: "$customer_docs",
             cusId: 1,
+            status: 1,
             dateEnd: { $dateToString: { format: "%Y-%m-%d", date: "$dateEnd" } },
             sendAt: { $dateToString: { format: "%Y-%m-%d", date: "$sendAt" } },
         }
@@ -280,6 +284,7 @@ const filterByDate = async (years, months) => { // from summary page
         cusId: 1,
         dateEnd: 1,
         sendAt: 1,
+        status: 1,
         inTime:
         {
           $cond: { if: { $lte: [ "$sendAt", "$dateEnd" ] }, then: 1, else: 0 }
@@ -290,7 +295,7 @@ const filterByDate = async (years, months) => { // from summary page
         },
       }
     },
-    {$match : { "year":  { "$in": years }, "month":  { "$in": months }, "sendAt": { "$exists": true }} },
+    {$match : { "year":  { "$in": years }, "month":  { "$in": months }, "sendAt": { "$exists": true }, "status": { "$eq": 'send' }} },
     {
       $group: { 
         _id: "$cusId", 

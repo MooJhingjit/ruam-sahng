@@ -13,13 +13,14 @@ const get = async (cusId) => {
   }
 }
 
-const store = async (customerObj) => {
+const store = async (req, customerObj) => {
   // const customer = new Customer
   let cus = await Customer.findOne({name: customerObj.name})
   if (cus === null) {
     const customer = new Customer({
       _id: new  mongoose.Types.ObjectId(),
       name: customerObj.name,
+      updatedBy: req.userObject.name
     });
     try {
       let res = await customer.save()

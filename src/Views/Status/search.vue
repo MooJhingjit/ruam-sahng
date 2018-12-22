@@ -6,7 +6,7 @@
           <table class="table table-striped table-hover text-center">
             <thead>
               <tr>
-                <th>รหัสสินค้า / รายการผลิต</th>
+                <th>เลขที่จ๊อบ / รายการผลิต</th>
                 <th>ลูกค้า</th>
                 <th>วันที่เริ่มผลิต</th>
                 <th>กำหนดส่ง</th>

@@ -11,11 +11,10 @@
           {{local.currentPage}} / {{pageCount}} จาก {{totalProducts}} งาน
         </h5>
       </div>
-      <div class="column text-center">
+      <!-- <div class="column text-center">
        <h5> </h5>
-      </div>
+      </div> -->
       <div class="column text-right">
-        
         <!-- <span class=""><h6></h6></span>&nbsp; -->
         <span class="label"><i class="fa fa fa-clock-o h5" aria-hidden="true"></i> {{TASKSTATUS['wait']}}</span>
         <span class="label"><i class="fa fa-circle-o h5" aria-hidden="true"></i> {{TASKSTATUS['ip']}}</span>
@@ -26,7 +25,7 @@
     </div>
     <div class="columns">
       <div class="column">
-        <table class="table">
+        <table class="table responsive">
           <thead>
             <tr>
               <th class="h5 text-bold text-center text-primary" width=""></th>
@@ -46,8 +45,9 @@
             <tr class="" :key="obj._id" v-for="(obj) in products">
               <td
               :class="getItemClass(obj, task)"
-              :key="index" v-for="(task, index) in obj.tasks">
-              
+              :key="index" v-for="(task, index) in obj.tasks"
+              :data-column="task.taskTitle"
+              >
                 <template v-if="task.key === 'itemName'">
                   <div class="text-bold">{{obj.header.jobCode}} / {{obj.header.productName}}</div>
                   <!-- <div class="text-bold"></div> -->
@@ -118,7 +118,7 @@ export default {
         // end: 0
       },
       tmp: {
-        productStore: [],
+        productStore: []
       }
     }
   },
@@ -160,7 +160,7 @@ export default {
       this.recheckProductLists()
       // this.local.pageCount = this.pageCount
       this.local.products = this.local.currentProductObj.slice(0, this.local.rows)
-      this.local.timer = setInterval( function() {
+      this.local.timer = setInterval (function () {
         if (!self.local.isPause) {
           self.local.currentPage = parseInt(self.local.currentPage) + 1
           // console.log(self.pageCount)
@@ -188,9 +188,6 @@ export default {
     },
     addProductEvent () {
 
-    },
-    removeProductEvent () {
-      
     },
     stopRunnigSchedule () {
       clearInterval(this.local.timer)

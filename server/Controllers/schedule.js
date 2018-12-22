@@ -10,10 +10,10 @@ const index = async (req, res, next) => {
   let result = []
   if (products.data.length) {
     products.data.map((item) => {
-      // console.log(item.product.createdAt)
       let tasks = item.tasks.map((taskItem) => {
         return {
           key: '',
+          taskTitle: taskItem.department,
           dateStart: taskItem.dateStart,
           dateEnd: taskItem.dateEnd,
           status: taskItem.status,
@@ -22,6 +22,7 @@ const index = async (req, res, next) => {
       })
       tasks.unshift({ // first td in tr
         key: 'itemName',
+        taskTitle: '',
         dateStart: item.product.createdAt,
         dateEnd: item.product.dateEnd,
         status: item.product.status,

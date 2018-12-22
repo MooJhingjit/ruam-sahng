@@ -54,8 +54,7 @@ table {
 	// border-collapse: collapse; 
 	// margin:50px auto;
 }
-@media only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
+@media only screen and (max-width: 760px) {
 
 	table.responsive { 
 	  	width: 100%; 
@@ -63,7 +62,11 @@ table {
 
 	/* Force table to not be like tables anymore */
 	table.responsive, thead, tbody, th, td, tr { 
-		display: block; 
+    display: block; 
+  }
+
+  table tbody tr { 
+    margin-bottom: 20px !important;
 	}
 	
 	/* Hide table headers (but not display: none;, for accessibility) */

@@ -40,7 +40,7 @@ const store = async (req, res, next) => {
        });
     }
     else {
-      let result = UserCore.store(hash, req.body.data)
+      let result = UserCore.store(req, hash, req.body.data)
       if (result) {
         res.status(200).json({});
       } else {
@@ -61,7 +61,7 @@ const edit = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
-  let result = await UserCore.update(req.params.key, req.body.data)
+  let result = await UserCore.update(req, req.params.key, req.body.data)
   if (!result.isPass) {
     res.status(422).json({data: result, msg: 'error'})
   }

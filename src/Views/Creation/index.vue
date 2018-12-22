@@ -7,7 +7,7 @@
             <div class="column col-6 col-sm-12">
               <!-- {{this.local.inputs}} -->
               <div class="form-group">
-                <label class="form-label" for="input-example-1">เลขที่</label>
+                <label class="form-label" for="input-example-1">เลขที่จ๊อบ</label>
                 <my-input
                   :config="{
                     type: 'text',
@@ -40,11 +40,11 @@
             </div>
             <div class="column col-6 col-sm-12">
               <div class="form-group">
-                <label class="form-label" for="input-example-1">วันเริ่มเปิดจ็อบ</label>
+                <label class="form-label" for="input-example-1">วันเริ่มเปิดจ๊อบ</label>
                 <my-date-picker
                   :config="{
                     key: 'dateStart',
-                    placeholder: 'วันเริ่มเปิดจ็อบ',
+                    placeholder: 'วันเริ่มเปิดจ๊อบ',
                     rules: 'required',
                     validator: $validator
                   }"
@@ -138,6 +138,7 @@
               </div>
             </div>
             <template v-if="productSelected !== null">
+              <!-- {{local.inputs.products[productSelected]}} -->
               <div class="column col-12">
                 <h5>รายละเอียดการผลิต: <span class="label label-primary">{{local.inputs.products[productSelected].name}}</span></h5>
               </div>
@@ -206,6 +207,7 @@
                       </label>
                       <my-input
                       v-if="local.inputs.products[productSelected].equipment === 2"
+                      :key="`equipment_${productSelected}`"
                       :config="{
                         type: 'text',
                         key: 'surface',
@@ -233,6 +235,7 @@
                       </label>
                       <my-input
                       v-if="local.inputs.products[productSelected].colorType === 2"
+                      :key="`colorCode_${productSelected}`"
                       :config="{
                         type: 'text',
                         key: 'colorCode',
@@ -354,6 +357,9 @@ export default {
     },
     productSelected () {
       return this.local.productSelected
+    },
+    productAll () { // for watching
+      return this.local.inputs.products
     }
   },
   created () {
@@ -379,6 +385,7 @@ export default {
     },
     inputProductDetail (productIndex) {
       this.local.productSelected = productIndex
+      this.checkProductData()
     },
     editTable (actionType) {
       if (actionType === 'minus') {
@@ -405,6 +412,7 @@ export default {
       let isValid = await this.$validator.validateAll()
       let isValidData = this.checkProductData()
       if (isConfirm && isValid && isValidData) {
+        // console.log('pass')
         let resourceName = config.api.job.index
         let data = { input: this.local.inputs }
         await service.postResource({ resourceName, data })
@@ -418,7 +426,13 @@ export default {
       this.local.productRequired = []
       let isPass = true
       this.local.inputs.products.map((item, index) => {
-        if (item.dateEnd === null || item.type === null || item.departmentSelected.length === 0) {
+        if (
+          item.dateEnd === null
+          || item.type === null
+          || item.departmentSelected.length === 0
+          || (item.colorType === 2 && (item.options.colorName === undefined || item.options.colorName === ''))
+          || (item.equipment === 2 && (item.options.surface === undefined || item.options.surface === ''))
+        ) {
           isPass = false
           this.local.productRequired.push(index)
         }
@@ -433,6 +447,11 @@ export default {
         }
       }
       bus.$emit('emitSocket', emitObj)
+    }
+  },
+  watch: {
+    productAll () {
+      this.checkProductData()
     }
   }
 }

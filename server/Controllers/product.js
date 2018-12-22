@@ -65,7 +65,7 @@ const edit = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
-  let result = await ProductCore.update(req.params.key, req.body.data)
+  let result = await ProductCore.update(req, req.params.key, req.body.data)
   if (!result) {
     res.status(422).json({msg: 'error'})
     return
@@ -77,7 +77,7 @@ const updateStatus = async (req, res, next) => {
   let status = req.body.data.status
   let result = {}
   if (status === 'done' || status === 'send') {
-    result = await ProductCore.updateStatus(req.params.key, status)
+    result = await ProductCore.updateStatus(req, req.params.key, status)
   } else if (status === 'delete') {
     result = await ProductCore.remove(req.params.key)
   }

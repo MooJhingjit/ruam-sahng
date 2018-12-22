@@ -26,11 +26,11 @@
             <td style="width: 50%;">รายการผลิต: {{product.name}}</td>
           </tr>
           <tr>
-            <td style="width: 50%;">เลขที่จ็อบ: {{job.code}}</td>
+            <td style="width: 50%;">เลขที่จ๊อบ: {{job.code}}</td>
             <td style="width: 50%;">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</td>
           </tr>
           <tr>
-            <td style="width: 50%;">วันเริ่มเปิดจ็อบ: {{GET_DATE(job.createdAt)}}</td>
+            <td style="width: 50%;">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createdAt)}}</td>
             <td style="width: 50%;">จำนวน: {{product.amount}}</td>
           </tr>
           <tr>

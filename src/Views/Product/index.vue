@@ -39,7 +39,7 @@
                     hasTextDefault: false,
                     selection: [
                       {key: 'productName', name: 'รายการผลิต'},
-                      {key: 'jobCode', name: 'รหัสสินค้า'},
+                      {key: 'jobCode', name: 'เลขที่จ๊อบ'},
                       {key: 'cusName', name: 'ลูกค้า'}
                     ]
                   }"
@@ -126,7 +126,6 @@
                     @vuetable-pagination:change-page="onChangePage"
                   ></vuetable-pagination>
                 </div>
-                
                 <!-- <div class="column col-6">
                   <div class="columns">
                     <div class="column col-8">
@@ -195,7 +194,7 @@ export default {
         fields: [
           {
             name: '__slot:productName',
-            title: 'รหัสสินค้า / รายการผลิต'
+            title: 'เลขที่จ๊อบ / รายการผลิต'
           },
           {
             name: 'customer.name',
@@ -262,10 +261,10 @@ export default {
     },
     getStatusClass (status) {
       return [
-        {'': status === 'ip'},
-        // {'label label-warning mr-1': status === 'review'},
-        {'label label-success mr-1': status === 'done'},
-        {'label label-secondary mr-1': status === 'send'}
+        { '': status === 'ip' },
+        // { 'label label-warning mr-1': status === 'review' },
+        { 'label label-success mr-1': status === 'done' },
+        { 'label label-secondary mr-1': status === 'send' }
       ]
     },
     onPaginationData (paginationData) {
@@ -284,10 +283,10 @@ export default {
     setSearchType (val) {
       this.local.searchType = val
     },
-    onRowClass(dataItem, index) {
+    onRowClass (dataItem, index) {
       return [
-        {'text-error': (this.IS_LATE(dataItem.product.dateEnd) && (dataItem.product.status === 'ip' || dataItem.product.status === 'done'))},
-        {'text-warning': (this.IS_SAMEDATE(dataItem.product.dateEnd) && (dataItem.product.status === 'ip' || dataItem.product.status === 'done'))},
+        { 'text-error': (this.IS_LATE(dataItem.product.dateEnd) && (dataItem.product.status === 'ip' || dataItem.product.status === 'done')) },
+        { 'text-warning': (this.IS_SAMEDATE(dataItem.product.dateEnd) && (dataItem.product.status === 'ip' || dataItem.product.status === 'done')) },
       ]
     }
   },
