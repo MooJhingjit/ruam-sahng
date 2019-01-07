@@ -55,7 +55,8 @@ const login = async (req, res) => {
           {
             expiresIn: '12h'
           })
-          let appData = await AppCore.index({userId: user._id}) //result contain userId
+          req.userId = user._id
+          let appData = await AppCore.index(req) //result contain userId
           return res.status(200).json({token: JWTToken, appData})
         }
         return res.status(401).json({

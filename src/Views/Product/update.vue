@@ -82,7 +82,7 @@
                       </template>
                     </td>
                     <td data-column="การตรวจสอบ" class="text-center">
-                      <template v-if="ISADMIN">
+                      <template v-if="!CAN_ACCESS('updateProduct')">
                         <i class="fa fa-check-circle-o h5 text-success" aria-hidden="true" :title="TASKSTATUS[item.status]" v-if="item.status === 'done'"></i>
                         <i class="fa fa-circle-o h5" aria-hidden="true" :title="TASKSTATUS[item.status]" v-else-if="item.status === 'ip'"></i>
                         <i class="fa fa fa-clock-o h5" aria-hidden="true" :title="TASKSTATUS[item.status]" v-else-if="item.status === 'wait'"></i>

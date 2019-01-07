@@ -90,7 +90,7 @@
                 </div>
               </div>
             </div>
-            <div class="column col-6">
+            <div class="column col-6" v-if="canAccess">
               <div class="columns" v-if="userKey !== 'new'">
                 <div class="column col-12 col-mx-auto">
                   <label class="form-label" for="input-example-1">รหัสผ่าน</label>
@@ -200,13 +200,13 @@
         </div>
         <div class="card-footer">
           <div class="columns">
-            <div class="column text-center">
+            <div class="column text-center" v-if="canAccess">
               <my-button
               :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึก'}"
               @submit="(tf) => submitHandle('update', tf)">
               </my-button>
             </div>
-            <div class="column text-center" v-if="userKey !== 'new'">
+            <div class="column text-center" v-if="userKey !== 'new' && ISADMIN">
               <my-button
               :config="{icon: 'fa fa-trash', btnClass: 'btn btn-error', doConfirm: true, text: 'ลบผู้ใช้'}"
               @submit="(tf) => submitHandle('delete', tf)">
@@ -267,6 +267,9 @@ export default {
     },
     userKey () {
       return this.$route.params.key
+    },
+    canAccess () {
+      return (this.USER._id === this.userKey || this.ISADMIN)
     }
   },
   created () {

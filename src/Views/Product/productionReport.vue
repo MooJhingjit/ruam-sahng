@@ -11,8 +11,7 @@
             <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
           </td>
           <td style="text-align: right" width="30%">
-              {{job.code}}
-              <div style="font-size: 13px;">{{TODAY()}}</div>
+              <div style="font-size: 13px;">{{job.code}} : {{TODAY()}}</div>
           </td>
         </tr>
       </table>
@@ -34,7 +33,6 @@
           <tr>
             <td style="width: 50%; padding: 4px 0">กำหนดส่ง: {{GET_DATE(product.dateEnd)}}</td>
             <td style="width: 50%; padding: 4px 0">
-              
               <span>หนา: {{product.thickness}},&nbsp;&nbsp;</span>
               <span>วัสดุ: {{getDataFromConfig(product.equipment, 'equipment')}},&nbsp;&nbsp;</span>
               <span>สี: {{getDataFromConfig(product.colorType, 'colorType')}} <template v-if="product.colorName">( {{product.colorName}} )</template></span>
@@ -67,8 +65,7 @@
             <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
           </td>
           <td style="text-align: right">
-              {{job.code}}
-              <div style="font-size: 13px;">{{TODAY()}}</div>
+              <div style="font-size: 13px;">{{job.code}} : {{TODAY()}}</div>
           </td>
         </tr>
       </table>
@@ -90,7 +87,6 @@
           <tr>
             <td style="width: 50%; padding: 4px 0">กำหนดส่ง: {{GET_DATE(product.dateEnd)}}</td>
             <td style="width: 50%; padding: 4px 0">
-              
               <span>หนา: {{product.thickness}},&nbsp;&nbsp;</span>
               <span>วัสดุ: {{getDataFromConfig(product.equipment, 'equipment')}},&nbsp;&nbsp;</span>
               <span>สี: {{getDataFromConfig(product.colorType, 'colorType')}} <template v-if="product.colorName">( {{product.colorName}} )</template></span>
@@ -123,8 +119,7 @@
               <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
             </td>
             <td style="text-align: right">
-                {{job.code}}
-                <div style="font-size: 13px;">{{TODAY()}}</div>
+                <div style="font-size: 13px;">{{job.code}} : {{TODAY()}}</div>
             </td>
           </tr>
         </table>
@@ -146,7 +141,6 @@
           <tr>
             <td style="width: 50%; padding: 4px 0">กำหนดส่ง: {{GET_DATE(product.dateEnd)}}</td>
             <td style="width: 50%; padding: 4px 0">
-              
               <span>หนา: {{product.thickness}},&nbsp;&nbsp;</span>
               <span>วัสดุ: {{getDataFromConfig(product.equipment, 'equipment')}},&nbsp;&nbsp;</span>
               <span>สี: {{getDataFromConfig(product.colorType, 'colorType')}} <template v-if="product.colorName">( {{product.colorName}} )</template></span>
@@ -166,7 +160,7 @@
             <td width="30%">PACKING: </td>
           </tr>
         </table>
-    </div>   
+    </div>
   </div>
 </template>
 

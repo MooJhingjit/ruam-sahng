@@ -6,7 +6,7 @@
       :input-class="getInputClass()"
       :name="config.key"
       readonly="false"
-      placeholder="วันเริ่มเปิดจ๊อบ"
+      :placeholder="config.placeholder"
       v-model="myValue"
     >
     </datepicker>

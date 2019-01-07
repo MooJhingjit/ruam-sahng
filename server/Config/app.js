@@ -47,7 +47,7 @@ module.exports.appConfig = {
     { key: 'manufacture3', name: 'การผลิต3', role: [8]},
     // { key: 'cutting', name: 'ตัด', role: [8, 10]},
     { key: 'wiring', name: 'วายริ่ง', role: [9, 10]},
-    { key: 'admin', name: 'admin', role: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+    { key: 'admin', name: 'admin', role: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]},
   ],
   months: {
     '1': 'มกราคม',

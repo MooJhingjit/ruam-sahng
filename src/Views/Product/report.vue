@@ -10,8 +10,7 @@
           <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
         </td>
         <td style="text-align: right" width="30%">
-            {{job.code}}
-            <div style="font-size: 13px;">{{TODAY()}}</div>
+            <div style="font-size: 13px;">{{job.code}} : {{TODAY()}}</div>
         </td>
       </tr>
     </table>

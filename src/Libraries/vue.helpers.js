@@ -130,7 +130,7 @@ export default {
       return (dataDiff === 0)
     },
     ISROLE (taskId) {
-      return this.USER.role.indexOf(taskId) >= 0
+      return (this.USER.role === undefined) ? false : (this.USER.role.indexOf(taskId) >= 0)
     },
     UPDATE_NOTIFICATION () {
       let emitObj = {
@@ -160,6 +160,11 @@ export default {
         }
       }
       return ''
+    },
+    CAN_ACCESS (type) {
+      if (type === 'updateProduct') {
+        return (this.USER.department === 'qc')
+      }
     }
     // LOGOUT () {
     //   Helper.REMOVE_STORAGEITEM('isAuth')
