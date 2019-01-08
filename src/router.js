@@ -20,11 +20,11 @@ export default new Router({
       name: 'ProductUpdate',
       component: () => import('@Views/Product/update')
     },
-    {
-      path: '/job',
-      name: 'Job',
-      component: () => import('@Views/Job')
-    },
+    // {
+    //   path: '/job',
+    //   name: 'Job',
+    //   component: () => import('@Views/Job')
+    // },
     {
       path: '/job/:key',
       name: 'JobEdit',
