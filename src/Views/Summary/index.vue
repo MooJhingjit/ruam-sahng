@@ -229,29 +229,29 @@ export default {
 .table-container {
     height: 22em;
 }
-table {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-    width: 100%;
-}
-table thead {
-    /* head takes the height it requires, 
-    and it's not scaled when table is resized */
-    flex: 0 0 auto;
-    width: calc(100% - 0.9em);
-}
-table tbody {
-    /* body takes all the remaining available space */
-    flex: 1 1 auto;
-    display: block;
-    overflow-y: scroll;
-}
-table tbody tr {
-    width: 100%;
-}
-table thead, table tbody tr {
-    display: table;
-    table-layout: fixed;
-}
+// table {
+//     display: flex;
+//     flex-flow: column;
+//     height: 100%;
+//     width: 100%;
+// }
+// table thead {
+//     /* head takes the height it requires, 
+//     and it's not scaled when table is resized */
+//     flex: 0 0 auto;
+//     width: calc(100% - 0.9em);
+// }
+// table tbody {
+//     /* body takes all the remaining available space */
+//     flex: 1 1 auto;
+//     display: block;
+//     overflow-y: scroll;
+// }
+// table tbody tr {
+//     width: 100%;
+// }
+// table thead, table tbody tr {
+//     display: table;
+//     table-layout: fixed;
+// }
 </style>
