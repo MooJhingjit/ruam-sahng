@@ -27,7 +27,7 @@
             <td style="width: 50%; padding: 4px 0">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</td>
           </tr>
           <tr>
-            <td style="width: 50%; padding: 4px 0">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createdAt)}}</td>
+            <td style="width: 50%; padding: 4px 0">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createDate)}}</td>
             <td style="width: 50%; padding: 4px 0">จำนวน: {{product.amount}}</td>
           </tr>
           <tr>
@@ -81,7 +81,7 @@
             <td style="width: 50%; padding: 4px 0">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</td>
           </tr>
           <tr>
-            <td style="width: 50%; padding: 4px 0">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createdAt)}}</td>
+            <td style="width: 50%; padding: 4px 0">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createDate)}}</td>
             <td style="width: 50%; padding: 4px 0">จำนวน: {{product.amount}}</td>
           </tr>
           <tr>
@@ -135,7 +135,7 @@
             <td style="width: 50%; padding: 4px 0">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</td>
           </tr>
           <tr>
-            <td style="width: 50%; padding: 4px 0">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createdAt)}}</td>
+            <td style="width: 50%; padding: 4px 0">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createDate)}}</td>
             <td style="width: 50%; padding: 4px 0">จำนวน: {{product.amount}}</td>
           </tr>
           <tr>

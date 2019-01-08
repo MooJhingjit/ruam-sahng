@@ -206,8 +206,8 @@ export default {
             title: 'ลูกค้า'
           },
           {
-            name: 'job.createdAt',
-            sortField: 'createdAt',
+            name: 'job.createDate',
+            sortField: 'createDate',
             title: 'วันที่เริ่มผลิต',
             callback: 'GET_DATE'
           },
@@ -228,7 +228,7 @@ export default {
         ],
         sortOrder: [
           {
-            field: 'createdAt',
+            field: 'createDate',
             direction: 'desc'
           },
           {

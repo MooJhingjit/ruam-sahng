@@ -410,7 +410,7 @@ export default {
       this.local.inputs.header.jobId = item.job._id
       this.local.inputs.header.jobCode = item.job.code
       this.local.inputs.header.customer.name = item.customer.name
-      this.local.inputs.header.createDate = this.TO_DATE(item.job.createdAt)
+      this.local.inputs.header.createDate = this.TO_DATE(item.job.createDate)
       item.product.map((item) => {
         let options = {}
         if (item.colorName !== null) {

@@ -18,7 +18,7 @@
         <div class="card-body">
           <div class="columns">
             <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">ลูกค้า: {{server.customer.name}}</span></div>
-            <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">วันที่เริ่มผลิต: {{GET_DATE(server.job.createdAt)}}</span></div>
+            <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">วันที่เริ่มผลิต: {{GET_DATE(server.job.createDate)}}</span></div>
             <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">กำหนดเสร็จ: {{GET_DATE(server.product.dateEnd)}}</span></div>
             <div class="column flex-item-center col-xs-12"><span class="label label-gray p-2">สถานะ: {{JOBSTATUS[server.product.status]}}</span></div>
             <!-- <div class="column text-right">
@@ -189,7 +189,7 @@
                   <div class="tile tile-centered">
                     <div class="tile-content">
                       <div class="tile-title text-bold">วันเริ่มเปิดจ๊อบ</div>
-                      <div class="tile-subtitle">{{GET_DATE(server.job.createdAt)}}</div>
+                      <div class="tile-subtitle">{{GET_DATE(server.job.createDate)}}</div>
                     </div>
                   </div>
                 </div>

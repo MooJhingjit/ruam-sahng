@@ -34,6 +34,7 @@ const store = async (req, inputs) => {
     _id: new  mongoose.Types.ObjectId(),
     cusId: header.customer.id,
     code: header.jobCode,
+    createDate: header.createDate,
     updatedBy: req.userObject.name
   });
   try {
@@ -56,7 +57,8 @@ const update = async (req, inputs) => {
     }
     let res = await Job.findOneAndUpdate({_id: header.jobId}, {
       code: header.jobCode,
-      cusId
+      cusId,
+      createDate: header.createDate,
     })
     await ProductCore.update(req, products, {cusId: res.cusId, jobId: res._id})
   } catch (error) {
