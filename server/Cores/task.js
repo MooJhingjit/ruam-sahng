@@ -1,6 +1,7 @@
 const config = require('../Config/app.js')
 const mongoose = require('mongoose');
 const Task = require('../Models/task');
+const ProductCore = require('./product.js')
 
 const getByProduct = async (productId) => {
   try {
@@ -46,13 +47,37 @@ const store = async (req, newProduct, product) => {
   // )
 }
 
-const update = async (req, productId, tasks) => {
+
+const update = async (req, productId, product) => {
+  let result = {}
+  try {
+    let tasks = await updateTask(req, productId, product.tasks)
+    // check product completed
+    let productCompleted = true
+    tasks.map((task, index) => {
+      if (!task.isDisable && task.status !== 'done') {
+        productCompleted = false
+      }
+    })
+    if (productCompleted) {
+      await ProductCore.updateStatus(req, productId, 'done')
+      // await Product.findOneAndUpdate({_id: productId}, {
+      //   status: 'done',
+      //   updatedBy: req.userObject.name
+      // })
+    }
+    return {
+      isReview: productCompleted
+    }
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
+const updateTask = async (req, productId, tasks) => {
   let today = ''
-  // let status = ''
   let nextTask = []
-  // console.log(tasks)
-  // await Promise.all(
-    // tasks.map( async (task, index) => {
   for (let t = 0; t < tasks.length; t++){
     let task = tasks[t]
     let currentStatus = JSON.parse(JSON.stringify(task.status))

@@ -6,7 +6,7 @@
         <div class="has-icon-left" slot="right-slot">
             <div class="columns">
               <div class="column col-1 col-md-1 col-xs-12 text-right">
-                <button class="btn btn-success" @click="GO_TOPAGE('Creation')" v-if="ISADMIN">
+                <button class="btn btn-success" @click="GO_TOPAGE('JobEdit', { key: 'create' })" v-if="ISADMIN">
                   <i class="fa fa-plus"></i>
                 </button>
               </div>
@@ -87,7 +87,12 @@
                 :sort-order="local.sortOrder"
               >
                 <template slot="productName" scope="props">
-                  {{props.rowData.job.code}} / {{props.rowData.product.name}}
+                  <template v-if="ISADMIN">
+                    <span class="c-hand text-bold job-id" @click="GO_TOPAGE('JobEdit', { key: props.rowData.job._id })">{{props.rowData.job.code}}</span> / {{props.rowData.product.name}}
+                  </template>
+                  <template v-else>
+                    {{props.rowData.job.code}} / {{props.rowData.product.name}}
+                  </template>
                  </template>
                 <template slot="status" scope="props">
                   <span :class="getStatusClass(props.rowData.product.status)">{{JOBSTATUS[props.rowData.product.status]}}</span>
@@ -299,5 +304,8 @@ export default {
 .pagination {
   padding: 0;
   margin: 0;
+}
+.job-id:hover{
+  text-decoration: underline;
 }
 </style>

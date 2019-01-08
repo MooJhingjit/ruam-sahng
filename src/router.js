@@ -21,9 +21,14 @@ export default new Router({
       component: () => import('@Views/Product/update')
     },
     {
-      path: '/creation',
-      name: 'Creation',
-      component: () => import('@Views/Creation')
+      path: '/job',
+      name: 'Job',
+      component: () => import('@Views/Job')
+    },
+    {
+      path: '/job/:key',
+      name: 'JobEdit',
+      component: () => import('@Views/Job/edit')
     },
     {
       path: '/schedule',

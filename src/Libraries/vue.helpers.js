@@ -46,6 +46,9 @@ export default {
     ...mapActions([
       'SET_APP_STORE'
     ]),
+    TO_DATE (date) {
+      return moment(date).toDate()
+    },
     TODAY (format = 'DD/MM/YYYY') {
       return moment().format(format)
     },

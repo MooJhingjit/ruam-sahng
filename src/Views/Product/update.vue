@@ -4,7 +4,7 @@
       <page-title>
         <template slot="left-slot">
           <div v-if="ISADMIN" class="p-2 bg-primary">
-            {{server.job.code}} / {{server.product.name}}
+            <span class="c-hand" @click="GO_TOPAGE('JobEdit', { key: server.job._id})">{{server.job.code}}</span> / {{server.product.name}}
           </div>
           <div v-else class="p-2 bg-warning">
             <span class="p-2">QC:</span>{{server.job.code}} / {{server.product.name}}
@@ -326,6 +326,7 @@ export default {
       let resourceName = `${config.api.product.index}/${this.$route.params.key}`
       switch (actionType) {
         case 'update':
+          resourceName = `${config.api.task.index}/${this.$route.params.key}`
           data = this.server
           data.tasks.map((item) => {
             if (!this.ISROLE(item.order)) {
