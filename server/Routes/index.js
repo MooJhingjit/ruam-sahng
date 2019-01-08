@@ -13,7 +13,8 @@ app.use('/api',
     require('./product'),
     require('./schedule'),
     require('./user'),
-    require('./summary')
+    require('./summary'),
+    require('./task')
   ]
 );
 

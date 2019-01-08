@@ -1,7 +1,7 @@
 const ProductCore = require('../Cores/product.js')
 
 const index = async (req, res, next) => {
-  let products = await ProductCore.get({type: 'schedule'})
+  let products = await ProductCore.getTable({type: 'schedule'})
   // console.log(products)
   if (!products) {
     res.status(401).json({msg: 'error'})

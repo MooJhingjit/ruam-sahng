@@ -35,7 +35,7 @@ export default {
       required: true
     },
     value: {
-      type: String,
+      type: [String, Number],
       required: false
     }
   },
@@ -75,6 +75,9 @@ export default {
   watch: {
     myValue () {
       this.$emit('input', this.myValue)
+    },
+    value () {
+      this.myValue = this.value
     }
   }
    

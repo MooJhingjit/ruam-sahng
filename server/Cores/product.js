@@ -9,7 +9,16 @@ const CustomerCore = require('./customer.js');
 const config = require('../Config/app.js')
 moment = require('moment')
 
-const get = async (obj) => {
+const getByJob = async (JobId) => {
+  try {
+    let res = await Product.find({ jobId: JobId });
+    return res
+  } catch (error) {
+    return {}
+  }
+}
+
+const getTable = async (obj) => {
   let products = {}
   let condition = {}
 
@@ -107,8 +116,9 @@ const getFullData = async (data) => {
   }
 }
 
-const store = async (req, jobObj, cusId, products) => {
+const store = async (req, products, options) => {
   if (products.length) {
+    // console.log('do')
     // await Promise.all(
       // products.map( async (product) => {
     for (let p = 0; p < products.length; p++){
@@ -116,8 +126,8 @@ const store = async (req, jobObj, cusId, products) => {
       try {
         const newProduct = new Product({
           _id: new  mongoose.Types.ObjectId(),
-          jobId: jobObj._id,
-          cusId: cusId,
+          jobId: options.jobId,
+          cusId: options.cusId,
           name: product.name,
           amount: product.amount,
           thickness: product.thickness,
@@ -165,28 +175,47 @@ const edit = async (productId) => {
   }
 }
 
-const update = async (req, productId, product) => {
-  let result = {}
+const update = async (req, products, options = {}) => {
   try {
-    let tasks = await TaskCore.update(req, productId, product.tasks)
-    // check product completed
-    let productCompleted = true
-    tasks.map((task, index) => {
-      if (!task.isDisable && task.status !== 'done') {
-        productCompleted = false
-      }
+    // clear other product that not exist in lists
+    let productIds = []
+    products.map((item) => {
+      productIds.push(item.id)
     })
-    if (productCompleted) {
-      await Product.findOneAndUpdate({_id: productId}, {
-        status: 'done',
-        updatedBy: req.userObject.name
+    let productRemoveIds =  await Product.find({ "_id": { "$nin": productIds,  }, "cusId": { "$eq": options.cusId}  }).select('_id')
+    await Promise.all(
+      productRemoveIds.map( async (item) => {
+        await remove(item._id)
       })
-    }
-    return {
-      isReview: productCompleted
-    }
-  } catch (error) {
-    console.log(error)
+    )
+    // END
+    await Promise.all(
+      products.map( async (item) => {
+        if (item.id === null) { // new one
+          await store(req, [item], options)
+        } else {
+          await Product.findOneAndUpdate({_id: item.id}, {
+            cusId: options.cusId,
+            name: item.name,
+            amount: item.amount,
+            thickness: item.thickness,
+            note: item.note,
+            dateEnd: item.dateEnd,
+            // type: item.type,
+            // departmentSelected: item.departmentSelected,
+            equipment: (Array.isArray(item.equipment)) ? null : item.equipment,
+            colorType: (Array.isArray(item.colorType)) ? null : item.colorType,
+            accessory: item.accessory,
+            surface: (item.options.surface)? item.options.surface : null,
+            colorName: (item.options.colorName)? item.options.colorName :  null,
+            // status: 'ip',
+            updatedBy: req.userObject.name
+          })
+        }
+      })
+    )
+    return true
+  } catch (err) {
     return false
   }
 }
@@ -220,6 +249,24 @@ const remove = async (productId) => {
     return false
   }
 }
+
+const removeByJob = async (jobId) => {
+  try {
+    let ObjectId = require('mongoose').Types.ObjectId; 
+    let productRemoveIds =  await Product.find({ "jobId": { "$eq": new ObjectId(jobId)}  }).select('_id')
+    // console.log(productRemoveIds)
+    await Promise.all(
+      productRemoveIds.map( async (item) => {
+        await remove(item._id)
+      })
+    )
+    return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
+
 
 const getYearsAvailable = async () => {
   return Product.aggregate([
@@ -311,7 +358,8 @@ const filterByDate = async (years, months) => { // from summary page
 ])
 }
 
-module.exports.get = get
+module.exports.getByJob = getByJob
+module.exports.getTable = getTable
 module.exports.store = store
 module.exports.edit = edit
 module.exports.update = update
@@ -319,6 +367,7 @@ module.exports.remove = remove
 module.exports.filterByDate = filterByDate
 module.exports.updateStatus = updateStatus
 module.exports.countProduct = countProduct
+module.exports.removeByJob = removeByJob
 module.exports.getYearsAvailable = getYearsAvailable
 module.exports.getMonthsAvailable = getMonthsAvailable
 

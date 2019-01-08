@@ -14,6 +14,9 @@ const api = {
     'index': '/products',
     'status': '/products/update-status'
   },
+  'task': {
+    'index': '/tasks'
+  },
   'schedule': {
     'index': '/schedule'
   },
