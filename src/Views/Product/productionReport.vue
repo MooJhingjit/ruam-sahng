@@ -3,15 +3,16 @@
     <div style="border:1px solid #ccc; padding: 10px;">
     <table width="100%">
         <tr>
-          <td style="text-align: left" width="30%">
+          <td style="text-align: left">
             <img :src="APPDATA.logo" width="60" height="60"/>
           </td>
-          <td style="text-align: center;font-weight: bold;" width="30%">
+          <td style="text-align: center;font-weight: bold;">
             <h3 style="margin: 0;">ใบสั่งผลิต/ตรวจสอบโรงงาน 2</h3>
             <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
           </td>
-          <td style="text-align: right" width="30%">
-              <div style="font-size: 13px;">{{job.code}} : {{TODAY()}}</div>
+          <td style="text-align: right">
+              <div style="font-size: 13px;">QPOF-8-05-20</div>
+              <div style="font-size: 13px;">03/10/2560</div>
           </td>
         </tr>
       </table>
@@ -65,7 +66,8 @@
             <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
           </td>
           <td style="text-align: right">
-              <div style="font-size: 13px;">{{job.code}} : {{TODAY()}}</div>
+              <div style="font-size: 13px;">QPOF-8-05-20</div>
+              <div style="font-size: 13px;">03/10/2560</div>
           </td>
         </tr>
       </table>
@@ -119,7 +121,8 @@
               <p style="margin: 7px 0">บริษัทร่วมสร้างอินเตอร์กรุ๊ปจำกัด</p>
             </td>
             <td style="text-align: right">
-                <div style="font-size: 13px;">{{job.code}} : {{TODAY()}}</div>
+                <div style="font-size: 13px;">QPOF-8-05-20</div>
+                <div style="font-size: 13px;">03/10/2560</div>
             </td>
           </tr>
         </table>
