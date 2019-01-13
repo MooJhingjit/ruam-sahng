@@ -39,7 +39,7 @@ const store = async (req, inputs) => {
   });
   try {
     let jobObj = await newJob.save()
-    let res = await ProductCore.store(req, products, {cusId: header.customer.id, jobId: jobObj._id})
+    let res = await ProductCore.store(req, products, {cusId: header.customer.id, jobId: jobObj._id, dateStart: header.createDate})
     return res
   } catch (error) {
     return false

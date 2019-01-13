@@ -144,7 +144,7 @@ const store = async (req, products, options) => {
           updatedBy: req.userObject.name
         });
         let newProductObj = await newProduct.save()
-        await TaskCore.store(req, newProductObj, product)
+        await TaskCore.store(req, newProductObj, product, options)
       } catch (error) {
         console.log(error)
         return false

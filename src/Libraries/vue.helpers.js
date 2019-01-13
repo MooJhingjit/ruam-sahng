@@ -118,19 +118,21 @@ export default {
     },
     IS_LATE (dateEnd) {
       // console.log(dateEnd)
-      let today = moment()
-      dateEnd = moment(dateEnd)
-      let dataDiff = dateEnd.diff(today, 'days')
+      // let today = moment()
+      // dateEnd = moment(dateEnd)
+      // let dataDiff = dateEnd.diff(today, 'days')
       // console.log(dataDiff)
-      return (dataDiff < 0)
+      // return (dataDiff < 0)
+      return moment().isAfter(dateEnd, 'day')
     },
     IS_SAMEDATE (dateEnd) {
       // console.log(dateEnd)
-      let today = moment()
-      dateEnd = moment(dateEnd)
-      let dataDiff = dateEnd.diff(today, 'days')
+      // let today = moment()
+      // dateEnd = moment(dateEnd)
+      // let dataDiff = dateEnd.diff(today, 'days')
       // console.log(dataDiff)
-      return (dataDiff === 0)
+      // return (dataDiff === 0)
+      return moment(dateEnd).isSame(moment(), 'day')
     },
     ISROLE (taskId) {
       return (this.USER.role === undefined) ? false : (this.USER.role.indexOf(taskId) >= 0)

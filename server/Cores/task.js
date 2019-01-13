@@ -12,8 +12,11 @@ const getByProduct = async (productId) => {
   }
 }
 
-const store = async (req, newProduct, product) => {
+const store = async (req, newProduct, product, options = {}) => {
   let dateStart = new Date()
+  if (options.dateStart !== undefined) {
+    dateStart = options.dateStart
+  }
   let status = 'ip'
   // await Promise.all(
     // config.appConfig.productDepartment.map( async (task) => {
@@ -90,7 +93,7 @@ const updateTask = async (req, productId, tasks) => {
       nextTask.splice(taskIndex, 1)
     }
     if (task.done) {
-      dateStart = today
+      // dateStart = today
       task.status = 'done'
       nextTask.push(findNextTask(currentTask, tasks))
       if (currentTask === 8 || currentTask === 9) {
@@ -105,11 +108,14 @@ const updateTask = async (req, productId, tasks) => {
       // console.log(task)
       let obj = {
         update: {
-          dateStart: (dateStart !== null) ? dateStart : task.dateStart,
+          // dateStart: (dateStart !== null) ? dateStart : task.dateStart,
           dateEnd: today,
           note: task.note,
           status: task.status
         }
+      }
+      if (dateStart !== null) {
+        obj.update.dateStart= dateStart
       }
       if (task.isMainTask && currentStatus === 'ip') {
         obj.update.updatedBy= req.userObject.name
