@@ -148,7 +148,7 @@
             <div v-if="CANSHOW(['qc']) && server.product.status === 'ip'" class="column text-center">
               <my-button :config="{icon: 'fa fa-check-circle', btnClass: 'btn btn-success', doConfirm: true, text: 'บันทึกการเปลี่ยนแปลง'}" @submit="(tf) => submitHandle('update', tf)"></my-button>
             </div>
-            <div class="column text-center"  v-if="CANSHOW(['admin']) && server.product.status !== 'send'">
+            <div class="column text-center"  v-if="CANSHOW(['admin'])">
               <my-button :config="{icon: 'fa fa-minus-circle', btnClass: 'btn btn-error', doConfirm: true, text: 'ลบงาน'}" @submit="(tf) => submitHandle('delete', tf)"></my-button>
             </div>
             <div class="column text-center" v-if="CANSHOW(['admin']) && server.product.status === 'done'">

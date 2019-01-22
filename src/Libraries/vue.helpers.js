@@ -149,7 +149,6 @@ export default {
       let obj = []
       let str = ''
       if (configKey === 'accessory') {
-        
         configValue.map((item) => {
           if (key.indexOf(item.key) >= 0) {
             str += `${item.name}, `

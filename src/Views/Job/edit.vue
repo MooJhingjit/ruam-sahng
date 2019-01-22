@@ -186,14 +186,18 @@
                 </div>
                 <div class="form-group">
                   <div class="col-12 col-sm-12">
-                    <label class="form-label" for="input-example-4">แผนก</label>
+                    <label class="form-label" for="input-example-4">แผนก
+                      <span class="text-error"  v-if="errors.has('department')">กรุณาตรวจสอบข้อมูลข้างต้น</span>
+                    </label>
                   </div>
                   <div class="col-12 col-sm-12 panel p-2">
                     <label class="form-checkbox form-inline c-hand"
                     :key="index"
                     v-for="(item, index) in productDepartment"
                     >
-                      <input :class="[{'disabled': isDisable(local.inputs.products[productSelected].id)}]" :disabled="isDisable(local.inputs.products[productSelected].id)" type="checkbox" :value="item.key"
+                      <input :class="[{'disabled': isDisable(local.inputs.products[productSelected].id)}]"
+                      :disabled="isDisable(local.inputs.products[productSelected].id)" type="checkbox" :value="item.key"
+                      name="department" v-validate="'required'"
                       v-model="local.inputs.products[productSelected].departmentSelected">
                       <i class="form-icon"></i> {{item.name}}
                     </label>
@@ -464,6 +468,8 @@ export default {
         departmentSelected = departmentSelected.filter((item) => {
           return (item !== 9 && item !== 10)
         })
+      } else if (type === 3) {
+        departmentSelected = []
       }
       this.local.inputs.products[this.productSelected].departmentSelected = departmentSelected
     },

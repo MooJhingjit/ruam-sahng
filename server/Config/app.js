@@ -7,6 +7,10 @@ module.exports.appConfig = {
     {
       key: 2,
       name: 'วายริ่ง'
+    },
+    {
+      key: 3,
+      name: 'อื่นๆ'
     }
   ],
   productDepartment: [
