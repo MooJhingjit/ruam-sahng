@@ -10,6 +10,7 @@ const product = mongoose.Schema({
   note: {type: String, required: false},
   dateEnd: {type: Date, required: true},
   type: {type: String, required: true},
+  otherTypeName: {type: String, required: false},
   departmentSelected: {type: Array, required: true},
   equipment: {type: Number, required: false},
   colorType: {type: Number, required: false},
@@ -21,7 +22,7 @@ const product = mongoose.Schema({
   updatedBy: {type: String, required: true}
 },
 {
-    timestamps: true
+    timestamps: true,
 });
 
 module.exports = mongoose.model('Product', product);

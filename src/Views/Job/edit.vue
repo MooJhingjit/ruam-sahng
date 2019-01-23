@@ -173,15 +173,34 @@
                       <span class="text-error"  v-if="errors.has('productType')">กรุณาตรวจสอบข้อมูลข้างต้น</span></label>
                   </div>
                   <div class="col-12 col-sm-12  panel p-2">
-                    <label :key="index" class="form-radio" v-for="(item, index) in productType">
-                      <input type="radio" name="productType"
-                      :class="[{'disabled': isDisable(local.inputs.products[productSelected].id)}]"
-                      :disabled="isDisable(local.inputs.products[productSelected].id)" 
-                      v-validate="'required'"
-                      @change="selectProductType()"
-                      v-model="local.inputs.products[productSelected].type" :value="item.key">
-                      <i class="form-icon"></i> {{item.name}}
-                    </label>
+                    <div class="col-12 columns" :key="index" v-for="(item, index) in productType">
+                      <div class="column">
+                        <label :key="index" class="form-radio" >
+                          <input type="radio" name="productType"
+                          :class="[{'disabled': isDisable(local.inputs.products[productSelected].id)}]"
+                          :disabled="isDisable(local.inputs.products[productSelected].id)" 
+                          v-validate="'required'"
+                          @change="selectProductType()"
+                          v-model="local.inputs.products[productSelected].type" :value="item.key">
+                          <i class="form-icon"></i> {{item.name}}
+                        </label>
+                      </div>
+                      <div class="col-8 col-sm-8 column">
+                        <my-input
+                          v-if="local.inputs.products[productSelected].type == 3 && item.key === 3"
+                          :key="`otherTypeName_${productSelected}`"
+                          :config="{
+                            type: 'text',
+                            key: 'otherTypeName',
+                            placeholder: 'ระบุประเภทตู้',
+                            rules: 'required',
+                            validator: $validator
+                          }"
+                          :value="local.inputs.products[productSelected].otherTypeName"
+                           @input="val => {local.inputs.products[productSelected].otherTypeName = val}"
+                          ></my-input>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -431,6 +450,7 @@ export default {
           note: item.note,
           dateEnd: this.TO_DATE(item.dateEnd),
           type: item.type,
+          otherTypeName: item.otherTypeName,
           departmentSelected: item.departmentSelected,
           equipment: item.equipment,
           colorType: item.colorType,

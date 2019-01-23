@@ -39,7 +39,7 @@ const getTable = async (obj) => {
       sort[str[0]] = str[1]
     })
   } else {
-    sort.createdAt = 'desc'
+    sort.createdAt = 'asc'
   }
 
   if (obj.mainSearch) {
@@ -134,6 +134,7 @@ const store = async (req, products, options) => {
           note: product.note,
           dateEnd: product.dateEnd,
           type: product.type,
+          otherTypeName: product.otherTypeName,
           departmentSelected: product.departmentSelected,
           equipment: (Array.isArray(product.equipment)) ? null : product.equipment,
           colorType: (Array.isArray(product.colorType)) ? null : product.colorType,
@@ -202,6 +203,7 @@ const update = async (req, products, options = {}) => {
             note: item.note,
             dateEnd: item.dateEnd,
             // type: item.type,
+            otherTypeName: item.otherTypeName,
             // departmentSelected: item.departmentSelected,
             equipment: (Array.isArray(item.equipment)) ? null : item.equipment,
             colorType: (Array.isArray(item.colorType)) ? null : item.colorType,

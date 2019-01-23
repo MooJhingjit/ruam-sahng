@@ -25,7 +25,7 @@
           </tr>
           <tr>
             <td style="width: 50%; padding: 4px 0">เลขที่จ๊อบ: {{job.code}}</td>
-            <td style="width: 50%; padding: 4px 0">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</td>
+            <td style="width: 50%; padding: 4px 0">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}} <span v-if="product.otherTypeName">( {{product.otherTypeName}} )</span></td>
           </tr>
           <tr>
             <td style="width: 50%; padding: 4px 0">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createDate)}}</td>
@@ -40,17 +40,21 @@
               </td>
           </tr>
           <tr>
-            <td style="width: 50%; padding: 4px 0"></td>
+            <td style="width: 50%; padding: 4px 0">เครื่อง: </td>
             <td style="width: 50%; padding: 4px 0">อุปกรณ์เสริม: {{getDataFromConfig(product.accessory, 'accessory')}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%; padding: 4px 0">หมายเหตุ: </td>
+            <td style="width: 50%; padding: 4px 0"></td>
           </tr>
         </tbody>
       </table>
       <br/>
       <table class="main-table" width="100%">
         <tr>
-          <td width="30%">ผู้จัดทำ: BENCHARAT S.</td>
-          <td width="30%">ผู้อนุมัติ: ADUL S.</td>
-          <td width="30%">ฝ่ายผลิต: </td>
+          <td width="30%">ผู้จัดทำ:</td>
+          <td width="30%">ผู้อนุมัติ:</td>
+          <td width="30%" style="text-align: right">ฝ่ายผลิต</td>
         </tr>
       </table>
   </div>
@@ -80,7 +84,7 @@
           </tr>
           <tr>
             <td style="width: 50%; padding: 4px 0">เลขที่จ๊อบ: {{job.code}}</td>
-            <td style="width: 50%; padding: 4px 0">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</td>
+            <td style="width: 50%; padding: 4px 0">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}} <span v-if="product.otherTypeName">( {{product.otherTypeName}} )</span></td>
           </tr>
           <tr>
             <td style="width: 50%; padding: 4px 0">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createDate)}}</td>
@@ -95,17 +99,21 @@
               </td>
           </tr>
           <tr>
-            <td style="width: 50%; padding: 4px 0"></td>
+            <td style="width: 50%; padding: 4px 0">เครื่อง:</td>
             <td style="width: 50%; padding: 4px 0">อุปกรณ์เสริม: {{getDataFromConfig(product.accessory, 'accessory')}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%; padding: 4px 0">หมายเหตุ: </td>
+            <td style="width: 50%; padding: 4px 0"></td>
           </tr>
         </tbody>
       </table>
       <br/>
       <table class="main-table" width="100%">
         <tr>
-          <td width="30%">ผู้จัดทำ: BENCHARAT S.</td>
-          <td width="30%">ผู้อนุมัติ: ADUL S.</td>
-          <td width="30%">QC: </td>
+          <td width="30%">ผู้จัดทำ:</td>
+          <td width="30%">ผู้อนุมัติ:</td>
+          <td width="30%" style="text-align: right">QC</td>
         </tr>
       </table>
     </div>
@@ -135,7 +143,7 @@
           </tr>
           <tr>
             <td style="width: 50%; padding: 4px 0">เลขที่จ๊อบ: {{job.code}}</td>
-            <td style="width: 50%; padding: 4px 0">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</td>
+            <td style="width: 50%; padding: 4px 0">ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}} <span v-if="product.otherTypeName">( {{product.otherTypeName}} )</span></td>
           </tr>
           <tr>
             <td style="width: 50%; padding: 4px 0">วันเริ่มเปิดจ๊อบ: {{GET_DATE(job.createDate)}}</td>
@@ -150,17 +158,21 @@
               </td>
           </tr>
           <tr>
-            <td style="width: 50%; padding: 4px 0"></td>
+            <td style="width: 50%; padding: 4px 0">เครื่อง:</td>
             <td style="width: 50%; padding: 4px 0">อุปกรณ์เสริม: {{getDataFromConfig(product.accessory, 'accessory')}}</td>
+          </tr>
+          <tr>
+            <td style="width: 50%; padding: 4px 0">หมายเหตุ: </td>
+            <td style="width: 50%; padding: 4px 0"></td>
           </tr>
         </tbody>
         </table>
         <br/>
         <table class="main-table" width="100%">
           <tr>
-            <td width="30%">ผู้จัดทำ: BENCHARAT S.</td>
-            <td width="30%">ผู้อนุมัติ: ADUL S.</td>
-            <td width="30%">PACKING: </td>
+            <td width="30%">ผู้จัดทำ:</td>
+            <td width="30%">ผู้อนุมัติ:</td>
+            <td width="30%" style="text-align: right">PACKING</td>
           </tr>
         </table>
     </div>

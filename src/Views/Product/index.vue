@@ -207,7 +207,7 @@ export default {
           },
           {
             name: 'job.createDate',
-            sortField: 'createDate',
+            sortField: 'createdAt',
             title: 'วันที่เริ่มผลิต',
             callback: 'GET_DATE'
           },
@@ -228,13 +228,13 @@ export default {
         ],
         sortOrder: [
           {
-            field: 'createDate',
-            direction: 'desc'
-          },
-          {
-            field: 'dateEnd',
-            direction: 'desc'
+            field: 'createdAt',
+            direction: 'asc'
           }
+          // {
+          //   field: 'dateEnd',
+          //   direction: 'desc'
+          // }
         ],
         products: []
       },

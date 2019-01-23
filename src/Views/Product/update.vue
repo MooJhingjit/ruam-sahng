@@ -223,7 +223,7 @@
                       <div class="tile-title text-bold">รายละเอียดการผลิต</div>
                       <div class="tile-subtitle">
                         <div>รายการผลิต: {{product.name}}</div>
-                        <div>ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}}</div>
+                        <div>ประเภทตู้: {{getDataFromConfig(product.type, 'productType')}} <span v-if="product.otherTypeName">( {{product.otherTypeName}} )</span> </div>
                         <div>จำนวน: {{product.amount}}</div>
                         <div>หนา: {{product.thickness}}</div>
                         <div>
