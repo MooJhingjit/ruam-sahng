@@ -123,7 +123,7 @@
                       <!-- <input class="form-input" type="text" id="input-example-1" placeholder="ระบุหมายเหตุ"> -->
                     </td>
                     <td>
-                      <i 
+                      <i
                         v-if="product.name"
                         :class="['fa fa-list h4 p-2 c-hand', {'text-error': local.productRequired.indexOf(index) >= 0}]"
                         aria-hidden="true"
@@ -141,8 +141,8 @@
             <template v-if="productSelected !== null">
               <!-- {{local.inputs.products[productSelected]}} -->
               <div class="column col-12">
-                <h5>รายละเอียดการผลิต: 
-                  <span 
+                <h5>รายละเอียดการผลิต:
+                  <span
                   class="label label-primary c-hand"
                   v-if="isUpdateMode && local.inputs.products[productSelected].id !== null"
                   @click="GO_TOPAGE('ProductUpdate', { key: local.inputs.products[productSelected].id })" >{{local.inputs.products[productSelected].name}}</span>
@@ -178,7 +178,7 @@
                         <label :key="index" class="form-radio" >
                           <input type="radio" name="productType"
                           :class="[{'disabled': isDisable(local.inputs.products[productSelected].id)}]"
-                          :disabled="isDisable(local.inputs.products[productSelected].id)" 
+                          :disabled="isDisable(local.inputs.products[productSelected].id)"
                           v-validate="'required'"
                           @change="selectProductType()"
                           v-model="local.inputs.products[productSelected].type" :value="item.key">
@@ -484,11 +484,11 @@ export default {
       let departmentSelected = this.productDepartment.map((item) => {
         return item.key
       })
-      if (type === 1) { // ตู้เปล่่า
+      if (parseInt(type) === 1) { // ตู้เปล่่า
         departmentSelected = departmentSelected.filter((item) => {
           return (item !== 9 && item !== 10)
         })
-      } else if (type === 3) {
+      } else if (parseInt(type) === 3) {
         departmentSelected = []
       }
       this.local.inputs.products[this.productSelected].departmentSelected = departmentSelected
@@ -522,11 +522,12 @@ export default {
       let isPass = true
       this.local.inputs.products.map((item, index) => {
         if (
-          item.dateEnd === null
-          || item.type === null
-          || item.departmentSelected.length === 0
-          || (item.colorType === 2 && (item.options.colorName === undefined || item.options.colorName === ''))
-          || (item.equipment === 2 && (item.options.surface === undefined || item.options.surface === ''))
+          item.dateEnd === null ||
+          item.type === null ||
+          item.departmentSelected.length === 0 ||
+          (parseInt(item.colorType) === 2 && (item.options.colorName === undefined || item.options.colorName === '')) ||
+          (parseInt(item.equipment) === 2 && (item.options.surface === undefined || item.options.surface === '')) ||
+          (parseInt(item.type) === 3 && (!item.otherTypeName))
         ) {
           isPass = false
           this.local.productRequired.push(index)

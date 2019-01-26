@@ -30,7 +30,6 @@
           </div>
           <!-- <div class="columns panel" v-if="local.isShowDetail">
             <div class="column flex-item-center col-xs-12">
-              
             </div>
           </div> -->
           <!-- <div class="divider"></div> -->
@@ -260,7 +259,6 @@
     </div>
     <report-template class="report-template" ref="reportTemplate" :dataObj="server" ></report-template>
     <production-report-template class="production-report-template" ref="procuctionReportTemplate" :dataObj="server" ></production-report-template>
-    
   </section>
 </template>
 

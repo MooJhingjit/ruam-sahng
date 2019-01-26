@@ -172,7 +172,6 @@ import MyButton from '@Components/Form/myButton'
 import MyInput from '@Components/Form/myInput'
 import MyOption from '@Components/Form/myOption'
 import config from '@Config/app.config'
-import service from '@Services/app.service'
 import Vuetable from 'vuetable-2/src/components/Vuetable.vue'
 import VuetablePagination from 'vuetable-2/src/components/VuetablePagination.vue'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
@@ -237,7 +236,7 @@ export default {
           // }
         ],
         products: []
-      },
+      }
     }
   },
   computed: {
@@ -291,7 +290,7 @@ export default {
     onRowClass (dataItem, index) {
       return [
         { 'text-error': (this.IS_LATE(dataItem.product.dateEnd) && (dataItem.product.status === 'ip' || dataItem.product.status === 'done')) },
-        { 'text-warning': (this.IS_SAMEDATE(dataItem.product.dateEnd) && (dataItem.product.status === 'ip' || dataItem.product.status === 'done')) },
+        { 'text-warning': (this.IS_SAMEDATE(dataItem.product.dateEnd) && (dataItem.product.status === 'ip' || dataItem.product.status === 'done')) }
       ]
     }
   },

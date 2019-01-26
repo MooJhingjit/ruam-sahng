@@ -183,7 +183,11 @@ const update = async (req, products, options = {}) => {
     products.map((item) => {
       productIds.push(item.id)
     })
-    let productRemoveIds =  await Product.find({ "_id": { "$nin": productIds,  }, "cusId": { "$eq": options.cusId}  }).select('_id')
+    let productRemoveIds =  await Product.find({
+      "_id": { "$nin": productIds,  },
+      "cusId": { "$eq": options.cusId},
+      "jobId": { "$eq": options.jobId}
+    }).select('_id')
     await Promise.all(
       productRemoveIds.map( async (item) => {
         await remove(item._id)
