@@ -60,7 +60,7 @@ const update = async (req, inputs) => {
       cusId,
       createDate: header.createDate,
     })
-    await ProductCore.update(req, products, {cusId: res.cusId, jobId: res._id})
+    await ProductCore.update(req, products, {cusId, jobId: res._id})
   } catch (error) {
     return false
   }

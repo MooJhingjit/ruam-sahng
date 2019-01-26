@@ -185,7 +185,7 @@ const update = async (req, products, options = {}) => {
     })
     let productRemoveIds =  await Product.find({
       "_id": { "$nin": productIds,  },
-      "cusId": { "$eq": options.cusId},
+      // "cusId": { "$eq": options.cusId},
       "jobId": { "$eq": options.jobId}
     }).select('_id')
     await Promise.all(

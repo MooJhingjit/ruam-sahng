@@ -87,7 +87,7 @@
                           type: 'text',
                           key: `amount${index}`,
                           placeholder: 'จำนวน',
-                          rules: 'required',
+                          rules: 'required|numeric',
                           validator: $validator
                         }"
                         :value="product.amount"
