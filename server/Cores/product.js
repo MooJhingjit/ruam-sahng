@@ -22,8 +22,8 @@ const getTable = async (obj) => {
   let products = {}
   let condition = {}
 
-  if (obj.type == 'schedule') {
-    condition.status = { $nin: ['send'] }
+  if (obj.type == 'schedule' || obj.searchStatusType  === 'all') {
+    condition.status = { $nin: ['send'] } // not showing send status
   }
   if (obj.searchStatusType && obj.searchStatusType  !== 'all') {
     condition.status = obj.searchStatusType
