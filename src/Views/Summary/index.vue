@@ -227,7 +227,7 @@ export default {
   margin: 0;
 }
 .table-container {
-    height: 22em;
+    height: auto;
 }
 // table {
 //     display: flex;
