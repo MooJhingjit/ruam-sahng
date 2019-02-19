@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.4.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.30faf089919515d592df3d3f02ef092b.js"
+  "/precache-manifest.86df866a8ac4eb45fc539f10cde7c6f0.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "ruam-sahng"});

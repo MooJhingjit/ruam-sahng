@@ -95,7 +95,7 @@
                   </template>
                  </template>
                 <template slot="status" scope="props">
-                  <span :class="getStatusClass(props.rowData.product.status)">{{JOBSTATUS[props.rowData.product.status]}}</span>
+                  <span :class="getStatusClass(props.rowData.product.status, props.rowData.product)">{{JOBSTATUS[props.rowData.product.status]}}</span>
                 </template>
                 <template slot="actions" scope="props">
                   <my-button :config="{
@@ -263,12 +263,14 @@ export default {
     goToDetail (rowData) {
       this.GO_TOPAGE('ProductUpdate', { key: rowData.product._id })
     },
-    getStatusClass (status) {
+    getStatusClass (status, item) {
+      console.log(item)
       return [
         { '': status === 'ip' },
         // { 'label label-warning mr-1': status === 'review' },
         { 'label label-success mr-1': status === 'done' },
-        { 'label label-secondary mr-1': status === 'send' }
+        { 'label label-secondary mr-1': status === 'send' && !this.IS_LATE(item.dateEnd)},
+        { 'label label-error mr-1': status === 'send' && this.IS_LATE(item.dateEnd) }
       ]
     },
     onPaginationData (paginationData) {
