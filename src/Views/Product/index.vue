@@ -264,13 +264,13 @@ export default {
       this.GO_TOPAGE('ProductUpdate', { key: rowData.product._id })
     },
     getStatusClass (status, item) {
-      console.log(item)
+      // console.log(item)
       return [
         { '': status === 'ip' },
         // { 'label label-warning mr-1': status === 'review' },
         { 'label label-success mr-1': status === 'done' },
-        { 'label label-secondary mr-1': status === 'send' && !this.IS_LATE(item.dateEnd)},
-        { 'label label-error mr-1': status === 'send' && this.IS_LATE(item.dateEnd) }
+        { 'label label-secondary mr-1': status === 'send' && !this.IS_LATE(item.sendAt, item.dateEnd)},
+        { 'label label-error mr-1': status === 'send' && this.IS_LATE(item.sendAt, item.dateEnd) }
       ]
     },
     onPaginationData (paginationData) {
