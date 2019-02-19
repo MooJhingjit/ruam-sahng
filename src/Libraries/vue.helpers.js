@@ -116,14 +116,17 @@ export default {
       if (date === '' || date === null) return
       return moment(date).format(format)
     },
-    IS_LATE (dateEnd, dateStart = '') {
+    IS_LATE (dateEnd, dateStart = null) {
       // console.log(dateEnd)
       // let today = moment()
       // dateEnd = moment(dateEnd)
       // let dataDiff = dateEnd.diff(today, 'days')
       // console.log(dataDiff)
       // return (dataDiff < 0)
-      return moment(dateStart).isAfter(dateEnd, 'day')
+      if (dateStart === null) {
+        return moment().isAfter(dateEnd, 'day')
+      }
+      return moment(dateEnd).isAfter(dateStart, 'day')
     },
     IS_SAMEDATE (dateEnd) {
       // console.log(dateEnd)
